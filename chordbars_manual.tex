@@ -1,0 +1,38 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[left=2.00cm,vmargin=1cm]{geometry}
+
+%\usepackage{lstlisting}
+
+%\usepackage{chordbars}
+
+\title{Package chordbars manual}
+\author{S. Kramm}
+
+\begin{document}
+\maketitle
+
+This package will help produce song structure, showing both bar count and song chords.
+
+It is based on Tikz.
+
+It provides a single environnment named {\ttfamily chordbar}, inside which on can define the chords for each bar.
+
+For example:
+
+\begin{lstlisting}
+\begin{chordbar}{4}{1}{Intro}
+\chordf{1}{C}
+\chordf{2}{D}
+\chordf{3}{Em}
+\chordf{4}{Em}
+\end{chordbar}
+\end{lstlisting}
+
+This environment has three arguments
+\begin{enumerate}
+\item The number of bars needed.
+\item The number of times the whole pattern gets repeated.
+\item The part name.
+\end{enumerate}
+\end{document}
