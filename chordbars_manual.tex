@@ -10,21 +10,28 @@
 }
 \usepackage{chordbars}
 
-\title{Package chordbars manual}
+\title{The chordbars Package}
 \author{S. Kramm}
-
+\date{\today - release 0.1}
 \begin{document}
 \maketitle
 
 \begin{abstract}
-This Tikz-based package can be useful for guitar / bass / piano / whatever players that are playing musical accompaniment.
+This Tikz-based package can be useful for guitar / bass / piano / whatever players that are playing "popular music" accompaniment.
 It produces rectangular song patterns with "1 square per bar", with the chord shown inside the square.
 It also handles the song structure by showing the bar count.
 \end{abstract}
 
+\section{Motivation}
+
+This type of acompaniment notation is used when you don't need the melody, but you do need the exact bar and chord count.
+In that case, the full musical sheet is useless, although it can be used to print the chords.
+So some people like to write down the requested song/chord structure in a graphical view (see below). To produce these, some people use GUI software such as word processors, but this has a lot of drawbacks.
+The aim of this package is to have a \LaTeX way of producing these, with minimal effort.
+
+
 \section{Usage}
 This package provides a single environnment named {\ttfamily chordbar}, inside which one can define the chords for each bar.
-
 For example, this code:
 
 \begin{lstlisting}
@@ -58,7 +65,6 @@ This environment has three arguments:
 It also keep tracks of the measure count, including repeatitions. For example, this:
 
 \begin{lstlisting}
-\resetchordbars
 \begin{chordbar}{4}{3}{part1}
 \end{chordbar}
 \begin{chordbar}{4}{1}{part 2}
@@ -73,6 +79,14 @@ will give the following output, correctly printing out '13' as the initial bar n
 
 \begin{chordbar}{4}{1}{}
 \end{chordbar}
+
+\section{Additional commands}
+
+Besides the commands that can be used inside the chordbar environment, this package provides the following commands:
+
+\begin{itemize}
+\item {\ttfamily \textbackslash resetchordbars}: this will reset the bar and part counters, useful if you want to print two songs in the same document.
+\end{itemize}
 
 
 \section{FAQ}
