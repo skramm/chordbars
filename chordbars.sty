@@ -17,13 +17,19 @@
 \newcounter{NumMesure}
 \newcounter{NumPart}
 
+\newcommand{\resetchordbars}
+{
+	\setcounter{NumMesure}{0}
+	\setcounter{NumPart}{0}
+}
+
 % arg 1: number of bars (4, 8, ...)
 % arg 2: nb of repeats
 % arg 3: part name
 \newenvironment{chordbar}[3]
 {
-%\fontfamily{arev}\selectfont { %
 	\def\barsize{1.6}%	
+%
 % Draw full bar chord
 	\newcommand{\chordf}[2]
 	{ %
@@ -40,8 +46,10 @@
 		{ %
 			\draw (-\barsize/4+##1*\barsize,1*\barsize/4) node {##2};%		
 		} %
-		\draw (##1*2-2*\barsize,0) -- (##1*\barsize,\barsize);
+		\draw (\barsize*##1-\barsize,0) -- (##1*\barsize,\barsize);
 	}%
+%
+	\fontfamily{phv}\selectfont
 %
 	\refstepcounter{NumPart}%
 	\refstepcounter{NumMesure}%

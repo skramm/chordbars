@@ -3,7 +3,11 @@
 \usepackage[left=2.00cm,vmargin=1cm]{geometry}
 
 \usepackage{listings}
-
+\lstset{
+	frame=single
+	,language=TeX
+	,basicstyle=\ttfamily,
+}
 \usepackage{chordbars}
 
 \title{Package chordbars manual}
@@ -12,11 +16,14 @@
 \begin{document}
 \maketitle
 
-This package will help produce song structure, showing both bar count and song chords.
+\begin{abstract}
+This Tikz-based package can be useful for guitar / bass / piano / whatever players that are playing musical accompaniment.
+It produces rectangular song patterns with "1 square per bar", with the chord shown inside the square.
+It also handles the song structure by showing the bar count.
+\end{abstract}
 
-It is based on Tikz.
-
-It provides a single environnment named {\ttfamily chordbar}, inside which one can define the chords for each bar.
+\section{Usage}
+This package provides a single environnment named {\ttfamily chordbar}, inside which one can define the chords for each bar.
 
 For example, this code:
 
@@ -41,13 +48,37 @@ will produce this:
 \end{chordbar}
 
 
-This environment has three arguments
+This environment has three arguments:
 \begin{enumerate}
-\item The number of bars needed.
-\item The number of times the whole pattern gets repeated.
-\item The part name.
+\item the number of bars needed for a pattern,
+\item the number of times the whole pattern gets repeated (useful for bars counting),
+\item the part name.
 \end{enumerate}
 
-It also keep tracks of the measure count, including repeatitions, 
+It also keep tracks of the measure count, including repeatitions. For example, this:
 
+\begin{lstlisting}
+\resetchordbars
+\begin{chordbar}{4}{3}{part1}
+\end{chordbar}
+\begin{chordbar}{4}{1}{part 2}
+\end{chordbar}
+\end{lstlisting}
+
+will give the following output, correctly printing out '13' as the initial bar number of the second part (part 1 is 4 bars long and is repeated 3 times).
+
+\resetchordbars
+\begin{chordbar}{4}{3}{}
+\end{chordbar}
+
+\begin{chordbar}{4}{1}{}
+\end{chordbar}
+
+
+\section{FAQ}
+
+\begin{itemize}
+\item Q: How do I do with bars having more/less than 4 beats ? \\
+A: This has not been considered here.
+\end{itemize}
 \end{document}
