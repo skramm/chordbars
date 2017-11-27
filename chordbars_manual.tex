@@ -2,9 +2,9 @@
 \usepackage[utf8]{inputenc}
 \usepackage[left=2.00cm,vmargin=1cm]{geometry}
 
-%\usepackage{lstlisting}
+\usepackage{listings}
 
-%\usepackage{chordbars}
+\usepackage{chordbars}
 
 \title{Package chordbars manual}
 \author{S. Kramm}
@@ -16,18 +16,30 @@ This package will help produce song structure, showing both bar count and song c
 
 It is based on Tikz.
 
-It provides a single environnment named {\ttfamily chordbar}, inside which on can define the chords for each bar.
+It provides a single environnment named {\ttfamily chordbar}, inside which one can define the chords for each bar.
 
-For example:
+For example, this code:
 
 \begin{lstlisting}
 \begin{chordbar}{4}{1}{Intro}
 \chordf{1}{C}
 \chordf{2}{D}
-\chordf{3}{Em}
+\chordh{3}{Em}{1}
+\chordh{3}{B}{2}
 \chordf{4}{Em}
 \end{chordbar}
 \end{lstlisting}
+
+will produce this:
+
+\begin{chordbar}{4}{1}{Intro}
+\chordf{1}{C}
+\chordf{2}{D}
+\chordh{3}{Em}{1}
+\chordh{3}{B}{2}
+\chordf{4}{Em}
+\end{chordbar}
+
 
 This environment has three arguments
 \begin{enumerate}
@@ -35,4 +47,7 @@ This environment has three arguments
 \item The number of times the whole pattern gets repeated.
 \item The part name.
 \end{enumerate}
+
+It also keep tracks of the measure count, including repeatitions, 
+
 \end{document}

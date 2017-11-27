@@ -6,11 +6,14 @@
 \ProvidesPackage{chordbars}
 \RequirePackage{tikz}
 \RequirePackage{calc}
+\RequirePackage{ifthen}
 
-%\usetikzlibrary{math}
+%\RequirePackage{arev}
+
+\usetikzlibrary{math}
 
 
-
+ %
 \newcounter{NumMesure}
 \newcounter{NumPart}
 
@@ -19,6 +22,7 @@
 % arg 3: part name
 \newenvironment{chordbar}[3]
 {
+%\fontfamily{arev}\selectfont { %
 	\def\barsize{1.6}%	
 % Draw full bar chord
 	\newcommand{\chordf}[2]
@@ -29,8 +33,14 @@
 % Draw half bar chord (TODO)
 	\newcommand{\chordh}[3]
 	{ %
-		\draw (-\barsize/2+##1*\barsize,\barsize/2) node {##2};%
-		\draw ((\value{##1}-1)*\barsize,0) -- (##1*\barsize,\barsize);
+		\ifthenelse{\equal{##3}{1}}
+		{ %
+			\draw (-3*\barsize/4+##1*\barsize,3*\barsize/4) node {##2};%
+		} %
+		{ %
+			\draw (-\barsize/4+##1*\barsize,1*\barsize/4) node {##2};%		
+		} %
+		\draw (##1*2-2*\barsize,0) -- (##1*\barsize,\barsize);
 	}%
 %
 	\refstepcounter{NumPart}%
@@ -53,7 +63,7 @@
 {
 	\end{tikzpicture}
 	\par\noindent%
-	\ignorespacesafterend
+	\ignorespacesafterend	
 }
 
 
