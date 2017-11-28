@@ -46,6 +46,7 @@
 		{ %
 			\draw (-\barsize/4+##1*\barsize,1*\barsize/4) node {##2};%		
 		} %
+%		\draw [line width=1pt] (\barsize*##1-\barsize,0) -- (##1*\barsize,\barsize);
 		\draw (\barsize*##1-\barsize,0) -- (##1*\barsize,\barsize);
 	}%
 %
@@ -55,7 +56,7 @@
 	\refstepcounter{NumMesure}%
 	\noindent\ignorespaces %
 %	\def\barsize{1.6}%	
-	\begin{tikzpicture}
+	\begin{tikzpicture}[line width=1pt]
 	\draw (0,\barsize*1.1) node [anchor=west, align=left] {Part \theNumPart: #3}; % title
 	\draw (0,0) -- (0,\barsize);
 	\draw (0,0) -- (#1*\barsize,0);
