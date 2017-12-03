@@ -3,17 +3,32 @@
 % see https://github.com/skramm/chordbars
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{chordbars}
+\ProvidesPackage{chordbars}[2017/11/28 version 0.1]
+
 \RequirePackage{tikz}
+\usetikzlibrary{math,shapes}
+
 \RequirePackage{calc}
 \RequirePackage{ifthen}
 
-%\RequirePackage{arev}
 
-\usetikzlibrary{math}
+\makeatletter
+\def\@maketitle{%
+  \vskip 2em%
+  \begin{center}%
+  	\begin{tikzpicture}[line width=1pt]
+  	\tikzset{%
+  	  bignode/.style     = {font=\fontsize{20}{22.4}\selectfont}
+  	 }
+	\tikzstyle{block} = [rectangle, draw, text width=15em, text centered, minimum height=4em]
+      	\node [block,bignode,font=\bfseries] (init) { \@title~-~\@author };
+  	\end{tikzpicture}
+  \end{center}%
+  \par
+  \vskip 1.5em}
+\makeatother
 
 
- %
 \newcounter{NumMesure}
 \newcounter{NumPart}
 
