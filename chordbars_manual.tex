@@ -12,13 +12,13 @@
 
 \title{The chordbars Package}
 \author{S. Kramm}
-\date{\today - release 0.1}
+\date{\today - release 0.11}
 \begin{document}
 \maketitle
 
 \begin{abstract}
-This Tikz-based package can be useful for guitar / bass / piano / whatever players that are playing "popular music" accompaniment.
-It produces rectangular song patterns with "1 square per bar", with the chord shown inside the square.
+This Tikz-based package is targeted at guitar / bass / piano / whatever players that are playing "popular music" accompaniment. They usually need only the chords and the song structure.
+This package produces rectangular song patterns with "1 square per bar", with the chord shown inside the square.
 It also handles the song structure by showing the bar count.
 \end{abstract}
 
@@ -36,22 +36,22 @@ For example, this code:
 
 \begin{lstlisting}
 \begin{chordbar}{4}{1}{Intro}
-\chordf{1}{C}
-\chordf{2}{D}
-\chordh{3}{Em}{1}
-\chordh{3}{B}{2}
-\chordf{4}{Em}
+\chordf{C}
+\chordf{D}
+\chordh{Em}{1}
+\chordh{B}{2}
+\chordf{Em}
 \end{chordbar}
 \end{lstlisting}
 
 will produce this:
 
 \begin{chordbar}{4}{1}{Intro}
-\chordf{1}{C}
-\chordf{2}{D}
-\chordh{3}{Em}{1}
-\chordh{3}{B}{2}
-\chordf{4}{Em}
+\chordf{C}
+\chordf{D}
+\chordh{Em}{1}
+\chordh{B}{2}
+\chordf{Em}
 \end{chordbar}
 
 

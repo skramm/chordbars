@@ -11,48 +11,83 @@
 \RequirePackage{calc}
 \RequirePackage{ifthen}
 
+% maketitle definition
+%\makeatletter
+%\def\@maketitle{%
+%  \vskip 2em%
+%  \begin{center}%
+%  	\begin{tikzpicture}[line width=1pt]
+%  	\tikzset{%
+%  	  bignode/.style     = {font=\fontsize{20}{22.4}\selectfont}
+%  	 }
+%	\tikzstyle{block} = [rectangle, draw, text width=15em, text centered, minimum height=4em]
+%      	\node [block,bignode,font=\bfseries] (init) { \@title~-~\@author };
+%  	\end{tikzpicture}
+%  \end{center}%
+%  \par
+%  \vskip 1.5em}
+%\makeatother
 
-\makeatletter
-\def\@maketitle{%
-  \vskip 2em%
+\newcommand{\songtitle}
+{
   \begin{center}%
-  	\begin{tikzpicture}[line width=1pt]
-  	\tikzset{%
-  	  bignode/.style     = {font=\fontsize{20}{22.4}\selectfont}
-  	 }
-	\tikzstyle{block} = [rectangle, draw, text width=15em, text centered, minimum height=4em]
-      	\node [block,bignode,font=\bfseries] (init) { \@title~-~\@author };
+  	\begin{tikzpicture}[line width=1.5pt]
+	\tikzstyle{block} = [rectangle, draw, text width=20em, text centered, minimum height=4em]
+      	\node [block,font=\fontsize{20}{28}\selectfont\bfseries] (init) { \@title~-~\@author };
   	\end{tikzpicture}
   \end{center}%
   \par
-  \vskip 1.5em}
-\makeatother
+  \vskip 1.5em
+}
 
 
 \newcounter{NumMesure}
 \newcounter{NumPart}
+\newcounter{CurrentBar}
 
 \newcommand{\resetchordbars}
 {
 	\setcounter{NumMesure}{0}
 	\setcounter{NumPart}{0}
+	\setcounter{CurrentBar}{0}
 }
-
+%
 % arg 1: number of bars (4, 8, ...)
 % arg 2: nb of repeats
 % arg 3: part name
 \newenvironment{chordbar}[3]
 {
 	\def\barsize{1.6}%	
+	\setcounter{CurrentBar}{0}
+%
+	\newcommand{\chordf}[1]
+	{ %
+		\refstepcounter{CurrentBar}%
+		\draw (-\barsize/2+\theCurrentBar*\barsize,\barsize/2) node {##1};%
+	}%
+%
+	\newcommand{\chordh}[2]
+	{ %
+		\ifthenelse{\equal{##2}{1}}
+		{
+			\refstepcounter{CurrentBar}%
+			\draw (-3*\barsize/4+\theCurrentBar*\barsize,3*\barsize/4) node {##1};
+		}
+		{
+			\draw (-\barsize/4+\theCurrentBar*\barsize,1*\barsize/4) node {##1};%	
+		}
+		\draw (\barsize*\theCurrentBar-\barsize,0) -- (\theCurrentBar*\barsize,\barsize);		
+%		\draw (-\barsize/2+\theCurrentBar*\barsize,\barsize/2) node {##1};%
+	}%
 %
 % Draw full bar chord
-	\newcommand{\chordf}[2]
+	\newcommand{\chordfn}[2]
 	{ %
 		\draw (-\barsize/2+##1*\barsize,\barsize/2) node {##2};%
 	}%
 %
-% Draw half bar chord (TODO)
-	\newcommand{\chordh}[3]
+% Draw half bar chord
+	\newcommand{\chordhn}[3]
 	{ %
 		\ifthenelse{\equal{##3}{1}}
 		{ %
@@ -70,7 +105,6 @@
 	\refstepcounter{NumPart}%
 	\refstepcounter{NumMesure}%
 	\noindent\ignorespaces %
-%	\def\barsize{1.6}%	
 	\begin{tikzpicture}[line width=1pt]
 	\draw (0,\barsize*1.1) node [anchor=west, align=left] {Part \theNumPart: #3}; % title
 	\draw (0,0) -- (0,\barsize);
