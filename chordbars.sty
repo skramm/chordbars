@@ -51,13 +51,16 @@
 	\setcounter{NumPart}{0}
 	\setcounter{CurrentBar}{0}
 }
-%
-% arg 1: number of bars (4, 8, ...)
-% arg 2: nb of repeats
-% arg 3: part name
+
+
+\def\barsize{1.6}%	
+
+% arg 1: number of 4 beat bars (4, 8, ...)
+% arg 2: nb of repetitions
+% arg 3: part name (can be empty)
 \newenvironment{chordbar}[3]
 {
-	\def\barsize{1.6}%	
+%	\def\barsize{1.6}%	
 	\setcounter{CurrentBar}{0}
 %
 	\newcommand{\chordf}[1]
@@ -123,6 +126,48 @@
 	\par\noindent%
 	\ignorespacesafterend	
 }
+
+
+\newcounter{dd2}
+
+\newenvironment{chordbarh}[3]
+{
+	\fontfamily{phv}\selectfont
+%
+	\refstepcounter{NumPart}%
+	\refstepcounter{NumMesure}%
+%	
+	\pgfmathsetmacro{\NbVLines}{#1/2}	
+	\pgfmathsetmacro{\arg}{#1}	
+	\setcounter{dd2}{#1/2}
+	\noindent\ignorespaces %
+	\begin{tikzpicture}[line width=1pt]
+	\draw (0,\barsize*1.1) node [anchor=west, align=left] {Part \theNumPart: #3}; % title
+	\draw (0,0) -- (0,\barsize);
+	\draw (0,0) -- (\value{dd2}*\barsize,0);
+	\draw (\barsize-\barsize/2,-.2) node{\theNumMesure};	
+	\foreach \k in {1,...,\NbVLines}
+	{
+		\draw (\k*\barsize,0) -- (\k*\barsize,\barsize);
+	};
+	\ifodd\arg%
+		\draw (\value{dd2}*\barsize,0) -- ({(1+\arg)*\barsize/2},\barsize);%
+		\draw (0,\barsize) -- ({(\value{dd2}+1)*\barsize},\barsize);
+		\draw ({(\value{dd2}+1)*\barsize+1},0.5) node {x~#2};
+	\else %
+		\draw (0,\barsize) -- (#1*0.5*\barsize,\barsize);
+		\draw (\value{dd2}*\barsize+1,0.5) node {x~#2};
+	\fi
+
+	\setcounter{NumMesure}{#1*#2+\value{NumMesure}-1}
+
+}%
+{
+	\end{tikzpicture}
+	\par\noindent%
+	\ignorespacesafterend	
+}
+
 
 
 \endinput
