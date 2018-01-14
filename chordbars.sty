@@ -55,6 +55,52 @@
 
 \def\barsize{1.6}%	
 
+%==========================================================================
+% attempt of new version with several lines (WIP)
+% arg 1: total number of 4 beat bars (4, 8, ...)
+% arg 2: nb of bars per line
+% arg 3: nb of repetitions
+% arg 4: part name (can be empty)
+
+\newenvironment{chordbarl}[4]
+{
+	\fontfamily{phv}\selectfont
+%
+	\refstepcounter{NumPart}%
+	\refstepcounter{NumMesure}%
+	\noindent\ignorespaces %
+	\begin{tikzpicture}[line width=1pt,y=-1cm]
+	\draw (-.2,.5) node{\theNumMesure};	
+
+% initial horizontal line
+	\draw (0,0) -- (#2*\barsize,0);
+	\draw (0,-.5) node [anchor=west, align=left] {Part \theNumPart: #4}; % title
+
+	\pgfmathtruncatemacro{\nblines}{#1/#2}	
+	\foreach \line in {1,...,\nblines}
+	{
+%
+%		\pgfmathsetmacro{\ypos}{(1+\line)*\barsize}
+		\draw (0,{\barsize*(\line-1)}) -- (0,\line*\barsize);
+
+
+		\draw (0,{\line*\barsize}) -- (#2*\barsize,{\line*\barsize});
+		\foreach \k in {1,...,#2}
+		{
+			\draw (\k*\barsize,{(\line-1)*\barsize}) -- (\k*\barsize,{\line*\barsize});
+		};
+	}
+	\setcounter{NumMesure}{#1*#2+\value{NumMesure}-1}
+	\draw (#1*\barsize+1,0.5) node {x~#3};
+}%
+{
+	\end{tikzpicture}
+	\par\noindent%
+	\ignorespacesafterend	
+}
+
+%==========================================================================
+
 % arg 1: number of 4 beat bars (4, 8, ...)
 % arg 2: nb of repetitions
 % arg 3: part name (can be empty)
@@ -113,7 +159,7 @@
 	\draw (0,0) -- (0,\barsize);
 	\draw (0,0) -- (#1*\barsize,0);
 	\draw (0,\barsize) -- (#1*\barsize,\barsize);
-	\draw (\barsize-\barsize/2,-.2) node{\theNumMesure};	
+	\draw (-.2,.5) node{\theNumMesure};	
 	\foreach \k in {1,...,#1}
 	{
 		\draw (\k*\barsize,0) -- (\k*\barsize,\barsize);
@@ -145,7 +191,10 @@
 	\draw (0,\barsize*1.1) node [anchor=west, align=left] {Part \theNumPart: #3}; % title
 	\draw (0,0) -- (0,\barsize);
 	\draw (0,0) -- (\value{dd2}*\barsize,0);
-	\draw (\barsize-\barsize/2,-.2) node{\theNumMesure};	
+	\draw (-.2,.5) node{\theNumMesure};	
+%
+% Draw vertical lines
+%	
 	\foreach \k in {1,...,\NbVLines}
 	{
 		\draw (\k*\barsize,0) -- (\k*\barsize,\barsize);
@@ -153,13 +202,21 @@
 	\ifodd\arg%
 		\draw (\value{dd2}*\barsize,0) -- ({(1+\arg)*\barsize/2},\barsize);%
 		\draw (0,\barsize) -- ({(\value{dd2}+1)*\barsize},\barsize);
-		\draw ({(\value{dd2}+1)*\barsize+1},0.5) node {x~#2};
+%
+		\draw ({(\NbVLines+1)*\barsize+1},0.5) node {x~#2};
 	\else %
 		\draw (0,\barsize) -- (#1*0.5*\barsize,\barsize);
 		\draw (\value{dd2}*\barsize+1,0.5) node {x~#2};
 	\fi
+%
+% Compute the bar number
+%
+	\ifodd\arg%
+		\setcounter{NumMesure}{(\value{dd2}+1)*#2+\value{NumMesure}-1}
+	\else
+		\setcounter{NumMesure}{\value{dd2}*#2+\value{NumMesure}-1}
+	\fi
 
-	\setcounter{NumMesure}{#1*#2+\value{NumMesure}-1}
 
 }%
 {
