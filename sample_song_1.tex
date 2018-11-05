@@ -2,7 +2,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[left=2.00cm,vmargin=1cm]{geometry}
 
-\usepackage{chordbars}
+\usepackage{chordbars2}
 
 \title{Song Sample}
 \author{Author name}
@@ -13,16 +13,30 @@
 This is a demo example of the chordbars package.
 
 \begin{chordbar}{4}{1}{Intro}
+\chordf{C}
+\chordf{D}
+%\chordh{E}{2}
+%\chordh{E}{2}
+\chordf{F}
+\end{chordbar}
+
+\end{document}
+
+\begin{chordbar}{4}{1}{Intro}
 \chordfn{1}{C}
 \chordfn{2}{D}
 \chordfn{3}{Em}
 \chordfn{4}{Em}
 \end{chordbar}
 
-
-\begin{chordbarl}{8}{4}{2}{2 lines}
+% this part has 8 bars (4 bars, 2 lines)
+\begin{chordbarl}{8}{4}{3}{2 lines}
+\chordf{C}
+\chordf{D}
+\chordhn{3}{1}{Em}
 \end{chordbarl}
 
+% this part has 5 bars on 2 lines
 \begin{chordbarh}{5}{2}{5 half bars}
 \end{chordbarh}
 
