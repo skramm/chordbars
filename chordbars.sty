@@ -11,6 +11,9 @@
 \ProvidesPackage{chordbars}[2017/11/28 version 0.1]
 
 \RequirePackage{tikz}
+\RequirePackage{pgfmath}
+\RequirePackage{tkz-euclide}
+
 \usetikzlibrary{math,shapes}
 
 \RequirePackage{calc}
@@ -43,8 +46,6 @@
 
 \def\barsize{1.6}%	
 
-
-
 \newcommand{\tempchord}{}
 \newcommand{\tempchordf}{}
 \newcommand{\tempchordh}{}
@@ -59,7 +60,26 @@
 \newenvironment{chordbar}[3]
 {
 	\setcounter{CurrentBar}{0}
-%
+
+	\newcommand{\repeatchord}%
+	{ %
+		\def\delta{0.32};
+		\pgfmathsetmacro{\Axa}{\theCurrentBar*\barsize+\delta*\barsize};
+		\pgfmathsetmacro{\Axb}{(\theCurrentBar+1)*\barsize-\delta*\barsize};
+		\pgfmathsetmacro{\Aya}{(1-\delta)*\barsize};
+		\pgfmathsetmacro{\Ayb}{\delta*\barsize};
+
+		\coordinate (A) at (\Axa,\Aya);
+		\coordinate (B) at (\Axb,\Ayb);
+
+		\coordinate (C) at (\Axa,\Ayb);
+		\coordinate (D) at (\Axb,\Aya);
+
+		\draw (A) node[circle,thin,draw,radius=0.1,fill] {};
+		\node at (B) [circle,fill,radius=0.1] {};
+		\draw [thick] (C) -- (D); %
+		\refstepcounter{CurrentBar};%
+	}%
 
 % FULL BAR CHORD
 % Argument: chord name
@@ -73,26 +93,37 @@
 	\fi
 
 
-% HALF BAR CHORD
-% Argument 1: chord name
-% Argument 2: 1 or 2, for first part or second part of bar
+% UN-NUMBERED HALF BAR CHORD
+% Argument 1: first chord (beat 1,2)
+% Argument 2: second chord (beat 3,4)
 
-	\ifdefined\chordh\else
-	\renewcommand{\tempchordh}[2]%
-	{ %
-		\ifthenelse{\equal{##2}{1}}
-		{
-			\refstepcounter{CurrentBar}%
-			\draw (-3*\barsize/4+\theCurrentBar*\barsize,3*\barsize/4) node {##1};
-		}
-		{
-			\draw (-\barsize/4+\theCurrentBar*\barsize,1*\barsize/4) node {##1};%	
-		}
+	\newcommand{\chordh}[2]%
+	{\refstepcounter{CurrentBar}%
 		\draw (\barsize*\theCurrentBar-\barsize,0) -- (\theCurrentBar*\barsize,\barsize);		
-%		\draw (-\barsize/2+\theCurrentBar*\barsize,\barsize/2) node {##1};%
-	}%
-	\global\let\chordh\tempchordh
-	\fi
+		\draw (-\barsize/4+\theCurrentBar*\barsize,1*\barsize/4) node {##2};%	
+		\draw (-3*\barsize/4+\theCurrentBar*\barsize,3*\barsize/4) node {##1};
+		\
+	}
+
+
+
+%	\ifdefined\chordh\else
+%	\renewcommand{\tempchordh}[2]%
+%	{ %
+%		\ifthenelse{\equal{##1}{1}}
+%		{
+%			\refstepcounter{CurrentBar}%
+%			\draw (-3*\barsize/4+\theCurrentBar*\barsize,3*\barsize/4) node {##2};
+%		}
+%		{
+%			\draw (-\barsize/4+\theCurrentBar*\barsize,1*\barsize/4) node {##2};%	
+%			\refstepcounter{CurrentBar}%
+%		}
+%		\draw (\barsize*\theCurrentBar-\barsize,0) -- (\theCurrentBar*\barsize,\barsize);		
+%%		\draw (-\barsize/2+\theCurrentBar*\barsize,\barsize/2) node {##1};%
+%	}%
+%	\global\let\chordh\tempchordh
+%	\fi
 
 	
 % Draw full bar chord
