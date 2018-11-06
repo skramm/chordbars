@@ -35,6 +35,7 @@
 \newcounter{NumMesure}
 \newcounter{NumPart}
 \newcounter{CurrentBar}
+\newcounter{CurrentBarD}
 
 \newcommand{\resetchordbars}
 {
@@ -98,7 +99,8 @@
 % Argument 2: second chord (beat 3,4)
 
 	\newcommand{\chordh}[2]%
-	{\refstepcounter{CurrentBar}%
+	{
+		\refstepcounter{CurrentBar}%
 		\draw (\barsize*\theCurrentBar-\barsize,0) -- (\theCurrentBar*\barsize,\barsize);		
 		\draw (-\barsize/4+\theCurrentBar*\barsize,1*\barsize/4) node {##2};%	
 		\draw (-3*\barsize/4+\theCurrentBar*\barsize,3*\barsize/4) node {##1};
@@ -138,6 +140,7 @@
     \renewcommand{\tempchordfn}[2]%
     {%
 	    \draw (-\barsize/2+##1*\barsize,\barsize/2) node {##2};%
+	    \setcounter{CurrentBar}{##1}%
     }%
     \global\let\chordfn\tempchordfn
   \fi
@@ -146,7 +149,6 @@
 % Draw half bar chord
 	\ifdefined\chordhn\else
 	\renewcommand{\tempchordhn}[3]%
-%	\newcommand{\chordhn}[3]
 	{ %
 		\ifthenelse{\equal{##3}{1}}
 		{ %
@@ -163,7 +165,8 @@
 
 %
 	\fontfamily{phv}\selectfont
-%
+%\setlength{\parindent}{0in}
+
 	\refstepcounter{NumPart}%
 	\refstepcounter{NumMesure}%
 	\noindent\ignorespaces %
@@ -197,8 +200,8 @@
 \newenvironment{chordbarl}[4]
 {
 	\fontfamily{phv}\selectfont
-
-
+	\setcounter{CurrentBar}{0}
+	\setcounter{CurrentBarD}{0}
 
 %	\newcommand{\chordfn}[2]
 %	{ %
@@ -216,22 +219,28 @@
 	\draw (0,0) -- (#2*\barsize,0);
 	\draw (0,-.5) node [anchor=west, align=left] {Part \theNumPart: #4}; % title
 
-	\pgfmathtruncatemacro{\nblines}{#1/#2}	
+	\pgfmathtruncatemacro{\nblines}{(#1-1)/#2+1}	
 	\foreach \line in {1,...,\nblines}
 	{
 %
 %		\pgfmathsetmacro{\ypos}{(1+\line)*\barsize}
 		\draw (0,{\barsize*(\line-1)}) -- (0,\line*\barsize);
 
-
 		\draw (0,{\line*\barsize}) -- (#2*\barsize,{\line*\barsize});
-		\foreach \k in {1,...,#2}
+		\def\nbbars{#2};
+%		\ifthenelse{\equal{#1}{\CurrentBarD}}
+%		{ %
+%		}
+%		{
+%		}		
+		\foreach \k in {1,...,\nbbars}
 		{
 			\draw (\k*\barsize,{(\line-1)*\barsize}) -- (\k*\barsize,{\line*\barsize});
+			\refstepcounter{CurrentBarD}%
 		};
 	}
 	\setcounter{NumMesure}{#1*#2+\value{NumMesure}-1}
-	\draw (#1*\barsize+1,0.5) node {x~#3};
+	\draw (#2*\barsize+1,0.5) node {x~#3};
 }%
 {
 	\end{tikzpicture}

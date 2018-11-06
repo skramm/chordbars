@@ -12,14 +12,15 @@
 
 \title{The chordbars Package}
 \author{S. Kramm}
-\date{\today - release 0.11}
+\date{\today - release 0.12}
 \begin{document}
 \maketitle
 
 \begin{abstract}
-This Tikz-based package is targeted at guitar / bass / piano / whatever players that are playing "popular music" accompaniment. They usually need only the chords and the song structure.
+This Tikz-based musical notation related package is targeted at guitar / bass / piano / whatever players that are playing "popular music" accompaniment.
+They usually need only the chords and the song structure.
 This package produces rectangular song patterns with "1 square per bar", with the chord shown inside the square.
-It also handles the song structure by showing the bar count.
+It also handles the song structure by showing the bar count, and the repetitions of the patterns.
 \end{abstract}
 
 \section{Motivation}
@@ -31,15 +32,16 @@ The aim of this package is to have a \LaTeX way of producing these, with minimal
 
 
 \section{Usage}
-This package provides a single environnment named {\ttfamily chordbar}, inside which one can define the chords for each bar.
+This package provides XXX environnments,
+
+The first environment is named {\ttfamily chordbar}, inside which one can define the chords for each bar.
 For example, this code:
 
 \begin{lstlisting}
 \begin{chordbar}{4}{1}{Intro}
 \chordf{C}
-\chordf{D}
-\chordh{Em}{1}
-\chordh{B}{2}
+\repeatchord
+\chordh{Em}{B}
 \chordf{Em}
 \end{chordbar}
 \end{lstlisting}
@@ -48,9 +50,8 @@ will produce this:
 
 \begin{chordbar}{4}{1}{Intro}
 \chordf{C}
-\chordf{D}
-\chordh{Em}{1}
-\chordh{B}{2}
+\repeatchord
+\chordh{Em}{B}
 \chordf{Em}
 \end{chordbar}
 
@@ -67,6 +68,7 @@ It also keep tracks of the measure count, including repetitions. For example, th
 \begin{lstlisting}
 \begin{chordbar}{4}{3}{part1}
 \end{chordbar}
+
 \begin{chordbar}{4}{1}{part 2}
 \end{chordbar}
 \end{lstlisting}
@@ -76,7 +78,6 @@ will give the following output, correctly printing out '13' as the initial bar n
 \resetchordbars
 \begin{chordbar}{4}{3}{}
 \end{chordbar}
-
 \begin{chordbar}{4}{1}{}
 \end{chordbar}
 

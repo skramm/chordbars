@@ -19,30 +19,38 @@ This is a demo example of the chordbars package.
 \repeatchord
 \end{chordbar}
 
-\begin{chordbar}{4}{1}{Intro}
+\begin{chordbar}{4}{1}{Intro b}
 \chordf{C}
+\repeatchord
 \chordh{A}{D}
 \chordf{F}
-\repeatchord
 \end{chordbar}
 
-
-\begin{chordbar}{4}{1}{Intro}
+\begin{chordbar}{4}{1}{Intro c}
 \chordfn{1}{C}
-\chordfn{2}{D}
-\chordfn{3}{Em}
+%\chordfn{2}{D}
+\chordfn{2}{Em}
+\repeatchord
 \repeatchord
 \end{chordbar}
 
 
-\end{document}
+
 
 % this part has 8 bars (4 bars, 2 lines)
-\begin{chordbarl}{8}{4}{3}{2 lines}
+\begin{chordbarl}{12}{4}{2}{2 lines}
 \chordf{C}
 \chordf{D}
-\chordhn{3}{1}{Em}
+%\chordhn{3}{1}{Em}
 \end{chordbarl}
+
+\begin{chordbarl}{11}{4}{3}{2 lines}
+\chordf{C}
+\chordf{D}
+%\chordhn{3}{1}{Em}
+\end{chordbarl}
+
+\end{document}
 
 % this part has 5 bars on 2 lines
 \begin{chordbarh}{5}{2}{5 half bars}
