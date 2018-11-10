@@ -232,7 +232,12 @@
 	\newcommand{\chordf}[1]%
 	{ %
 		\refstepcounter{CurrentBarInLine}%
-		\draw (-\barsize/2+\theCurrentBarInLine*\barsize,(\value{CurrentLine}-1)*\barsize+\barsize/2) node {##1};%
+%		\draw (-\barsize/2+\theCurrentBarInLine*\barsize,(\value{CurrentLine}-1)*\barsize+\barsize/2) node {##1};%
+		\pgfmathsetmacro{\x}{-\barsize/2+\theCurrentBarInLine*\barsize};
+		\pgfmathsetmacro{\y}{\value{CurrentLine}-1)*\barsize+\barsize/2}		
+		\draw (\x,\y) node {##1};%
+%		\pgfmathsetmacro{\x}{-\barsize/2+\theCurrentBarInLine*\barsize};
+
 	}%
 	
 	\newcommand{\repeatchord}%
