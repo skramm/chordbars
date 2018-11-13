@@ -10,6 +10,13 @@
 }
 \usepackage{chordbars}
 
+% Bold + tt
+\newcommand{\btt}{\bfseries \ttfamily } 
+
+% shorthand
+\newcommand{\tbs}{\textbackslash{}} 
+
+
 \title{The chordbars Package}
 \author{S. Kramm}
 \date{\today - release 0.12}
@@ -32,7 +39,7 @@ The aim of this package is to have a \LaTeX way of producing these, with minimal
 
 
 \section{Usage}
-This package provides XXX environnments,
+This package provides 2 environnments,
 
 The first environment is named {\ttfamily chordbar}, inside which one can define the chords for each bar.
 For example, this code:
@@ -80,6 +87,35 @@ will give the following output, correctly printing out '13' as the initial bar n
 \end{chordbar}
 \begin{chordbar}{4}{1}{}
 \end{chordbar}
+
+\section{Configuration}
+
+Several commands allow to customize the way the grids are printed out.
+
+\begin{itemize}
+\item The command {\btt \tbs countbarsYes} enables counting the bars of the song:
+each grid will have printed on the left side the number of the first bar of the grid.
+It also enables printing the number of repetitions of this part on the right side of the grid.
+
+This command is the useful in the sense that this package can be used in two ways:
+it can provide the whole structure of a song.
+In that case, it is useful to have for each part the number of repetitions and the bar count, so that when the band leader says "lets start again at bar 75", everybody can find it easily.
+
+On the other side, this package can be used also to provide a quick way to show the harmony of the different parts, without any structure or bar count.
+This, printing the bar number becomes useless.
+
+The opposite is of course {\btt \tbs countbarsNo}.
+
+\item Additionaly, if the above command is issued, then the package can compute the total number of bars and the duration of the song.
+This is done by issuing the command {\btt \tbs printNbBars} at the end of the file.
+The duration of the song depends on both the {\em tempo} of the song, expressed in BPM, and the number of beats per bar.
+The latter can be given with the command {\btt \tbs bpm}.
+The number of beats per bar is limited at present at two values, 3 or 4, with the two commands
+{\btt \tbs bpbfour} or {\btt \tbs bpbthree}.
+The default value is 4 beats per bar.
+
+
+\end{itemize}
 
 \section{Additional commands}
 

@@ -68,10 +68,25 @@
 
 \newcommand{\printNbBars}
 {
-Total number of bars: \arabic{NumMesure}, duration=\pgfmathparse{\theNumMesure/\tempoBPM*60*\bpb}\pgfmathresult {} s.
+	\ifthenelse{\boolean{printBarNumber}}
+	{
+		Total number of bars: \arabic{NumMesure}, duration=\pgfmathparse{\theNumMesure/\tempoBPM*60*\bpb}\pgfmathresult {} s.
+	}{}
 }
 
-\def\barsize{1.3}%	
+\newboolean{printBarNumber}
+
+\newcommand{\countbarsYes}
+{
+	\setboolean{printBarNumber}{true}  
+}
+
+\newcommand{\countbarsNo}
+{
+	\setboolean{printBarNumber}{false}  
+}
+
+\def\barsize{1.5}%	
 
 \newcommand{\tempchord}{}
 \newcommand{\tempchordf}{}
@@ -87,6 +102,7 @@ Total number of bars: \arabic{NumMesure}, duration=\pgfmathparse{\theNumMesure/\
 \newenvironment{chordbar}[3]
 {
 	\setcounter{CurrentBarInLine}{0}
+	\setcounter{CurrentLine}{0}
 
 	\newcommand{\repeatchord}%
 	{ %
@@ -123,10 +139,24 @@ Total number of bars: \arabic{NumMesure}, duration=\pgfmathparse{\theNumMesure/\
 	{
 		\refstepcounter{CurrentBarInLine}%
 		\typeout{CurrentBarInLine=\theCurrentBarInLine}
-		\draw ({\barsize*(\theCurrentBarInLine-1)},\barsize) -- (\theCurrentBarInLine*\barsize,0);		
-		\draw (-\barsize/4+\theCurrentBarInLine*\barsize,3*\barsize/4) node {##2};%	
-		\draw (-3*\barsize/4+\theCurrentBarInLine*\barsize,1*\barsize/4) node {##1};
-		\
+		\draw ( %
+			{\barsize*(\theCurrentBarInLine-1)}, %
+			{(\theCurrentLine+1)*\barsize} %
+		) %
+		-- %
+		( %
+			{\theCurrentBarInLine*\barsize}, %
+			{\theCurrentLine*\barsize} %
+		);		
+		\draw (
+			{-3*\barsize/4+\theCurrentBarInLine*\barsize},
+			{\theCurrentLine*\barsize+1*\barsize/4}
+		) node {##1};
+		\draw (
+			{-\barsize/4+\theCurrentBarInLine*\barsize},
+			{\theCurrentLine*\barsize+3*\barsize/4}
+		) node {##2};%	
+		
 	}
 	\global\let\chordh\tempchordh
 	\fi
@@ -177,13 +207,18 @@ Total number of bars: \arabic{NumMesure}, duration=\pgfmathparse{\theNumMesure/\
 	\draw (0,0) -- (0,\barsize);
 	\draw (0,0) -- (#1*\barsize,0);
 	\draw (0,\barsize) -- (#1*\barsize,\barsize);
-	\draw (-.2,.5) node{\theNumMesure};	
+
+	\ifthenelse{\boolean{printBarNumber}}
+	{\draw (-.2,.5) node{\theNumMesure};}{}
+	
 	\foreach \k in {1,...,#1}
 	{
 		\draw (\k*\barsize,0) -- (\k*\barsize,\barsize);
 	};
 	\setcounter{NumMesure}{#1*#2+\value{NumMesure}-1}
-	\draw (#1*\barsize+1,0.5) node {x~#2};
+	\ifthenelse{\boolean{printBarNumber}}
+	{ \draw (#1*\barsize+1,0.5) node {x~#2}; }{}
+
 }%
 {
 	\end{tikzpicture}
@@ -214,7 +249,7 @@ Total number of bars: \arabic{NumMesure}, duration=\pgfmathparse{\theNumMesure/\
 	{ %
 		\refstepcounter{CurrentBarInLine}%
 		\pgfmathsetmacro{\x}{-\barsize/2+\theCurrentBarInLine*\barsize};
-		\pgfmathsetmacro{\y}{\value{CurrentLine}-1)*\barsize+\barsize/2}		
+		\pgfmathsetmacro{\y}{\value{CurrentLine})*\barsize+\barsize/2}		
 		\draw (\x,\y) node {##1};%
 	}%
 
@@ -223,8 +258,8 @@ Total number of bars: \arabic{NumMesure}, duration=\pgfmathparse{\theNumMesure/\
 		\def\delta{0.32};
 		\pgfmathsetmacro{\Axa}{\theCurrentBarInLine*\barsize+\delta*\barsize};
 		\pgfmathsetmacro{\Axb}{(\theCurrentBarInLine+1)*\barsize-\delta*\barsize};
-		\pgfmathsetmacro{\Aya}{(1-\delta)*\barsize+(\theCurrentLine-1)*\barsize};
-		\pgfmathsetmacro{\Ayb}{\delta*\barsize+(\theCurrentLine-1)*\barsize};
+		\pgfmathsetmacro{\Aya}{(1-\delta)*\barsize+\theCurrentLine*\barsize};
+		\pgfmathsetmacro{\Ayb}{\delta*\barsize+\theCurrentLine*\barsize};
 
 		\coordinate (A) at (\Axa,\Ayb);
 		\coordinate (B) at (\Axb,\Aya);
@@ -245,7 +280,7 @@ Total number of bars: \arabic{NumMesure}, duration=\pgfmathparse{\theNumMesure/\
 	\typeout{chordbarl: START}
 
 	\fontfamily{phv}\selectfont
-	\setcounter{CurrentLine}{1}
+	\setcounter{CurrentLine}{0}
 	\setcounter{CurrentBarInLine}{0}
 	\setcounter{CurrentBar}{0}
 
@@ -253,9 +288,13 @@ Total number of bars: \arabic{NumMesure}, duration=\pgfmathparse{\theNumMesure/\
 	\refstepcounter{NumMesure}%
 	\noindent\ignorespaces %
 	\vspace{\vspacebefore}
-	\begin{tikzpicture}[line width=1pt,x=1cm,y=-1cm]
-	\draw (-.2,.5) node{\theNumMesure};	
+%\resizebox{8cm}{!} {	
+%	\scalebox{2}{
+	\begin{tikzpicture}[line width=1pt,x=1cm,y=-1cm] %,scale=2]
 
+	\ifthenelse{\boolean{printBarNumber}}	
+	{\draw (-.2,.5) node{\theNumMesure};}{}
+	
 % initial horizontal line
 	\draw (0,0) -- (#2*\barsize,0);
 	\draw (0,-\barsize*.4) node [anchor=west, align=left] {\bf Part \theNumPart: #4}; % title
@@ -281,10 +320,14 @@ Total number of bars: \arabic{NumMesure}, duration=\pgfmathparse{\theNumMesure/\
 		};
 	}
 	\setcounter{NumMesure}{#1*#3+\value{NumMesure}-1}
-	\draw (#2*\barsize+1,0.5) node {x~#3}; % print the number of repetitions
+
+	\ifthenelse{\boolean{printBarNumber}}
+	{\draw (#2*\barsize+1,0.5) node {x~#3};}{} % print the number of repetitions
+
 }%
 {
 	\end{tikzpicture}
+%	} %
 %	\par\noindent%
 %	\ignorespacesafterend	
 	\vspace{\vspaceafter}

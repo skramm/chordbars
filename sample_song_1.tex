@@ -8,9 +8,12 @@
 \author{Author name}
 
 \begin{document}
-\songtitle
 \bpm{120}
 \bpbthree
+
+\countbarsYes
+
+\songtitle
 
 This is a demo example of the chordbars package.
 
@@ -51,7 +54,7 @@ This is a demo example of the chordbars package.
 
 \begin{chordbarl}{11}{4}{3}{2 lines}
 \chordf{C}
-\chordf{D}
+\chordh{D}{G}
 \chordf{E}
 \chordf{F}
 \newchordline
@@ -66,11 +69,17 @@ This is a demo example of the chordbars package.
 \chordf{F}
 \newchordline
 \chordf{G\#}
+\chordh{A}{G\#}
 \repeatchord
 \end{chordbarl}
 
-\begin{chordbar}{4}{1}{coda}
-\end{chordbar}
+%\end{document}
+
+\begin{chordbarl}{11}{4}{2}{coda}
+\chordf{E}
+\chordh{A}{F}
+\end{chordbarl}
+
 
 \printNbBars
 \end{document}
