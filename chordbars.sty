@@ -6,8 +6,6 @@
 %TODO: find a way to avoid the need for escaping "sharp" character ("#") for the user
 % see https://tex.stackexchange.com/questions/400981/
 
-%TODO: print repetition only if not 1
-
 
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{chordbars}[2017/11/28 version 0.1]
@@ -88,8 +86,7 @@
 	\setboolean{printBarNumber}{false}  
 }
 
-\def\barsize{1.5}%	
-
+\def\barsize{1.6}%	
 
 
 \xdef\NumberOfBarsPerLine{4}
@@ -125,6 +122,13 @@
 
 	\newcommand{\chordh}[2]%
 	{
+		\ifthenelse
+			{\theCurrentBarInLine=\NumberOfBarsPerLine}
+			{
+				\refstepcounter{CurrentLine}
+				\setcounter{CurrentBarInLine}{0}
+			}
+			{}
 		\refstepcounter{CurrentBarInLine}%
 		\typeout{CurrentBarInLine=\theCurrentBarInLine}
 		\draw ( %
@@ -147,9 +151,9 @@
 		
 	}
 	
-	\newcommand{\repeatchord}%
+	\newcommand{\repeatBar}%
 	{ %
-		\def\delta{0.32}
+		\def\delta{0.36}
 		\pgfmathsetmacro{\Axa}{\theCurrentBarInLine*\barsize+\delta*\barsize}
 		\pgfmathsetmacro{\Axb}{(\theCurrentBarInLine+1)*\barsize-\delta*\barsize}
 		\pgfmathsetmacro{\Aya}{(1-\delta)*\barsize+\theCurrentLine*\barsize}
@@ -170,6 +174,31 @@
 		}
 		\fi		
 	}%
+
+	\newcommand{\repeatBarPair}%
+	{ %
+		\def\delta{0.36}
+		\pgfmathsetmacro{\Axa}{\theCurrentBarInLine*\barsize+\delta*\barsize}
+		\pgfmathsetmacro{\Axb}{(\theCurrentBarInLine+2)*\barsize-\delta*\barsize}
+		\pgfmathsetmacro{\Aya}{(1-\delta)*\barsize+\theCurrentLine*\barsize}
+		\pgfmathsetmacro{\Ayb}{\delta*\barsize+\theCurrentLine*\barsize}
+
+		\coordinate (A) at (\Axa,\Ayb);
+		\coordinate (B) at (\Axb,\Aya);
+
+		\fill (A) circle[radius=2pt];
+		\fill (B) circle[radius=2pt];
+		\draw [thick] (\Axa,\Aya) -- (\Axb,\Ayb); %
+		%
+		\refstepcounter{CurrentBarInLine}
+		\ifnum\value{CurrentBarInLine}=#2
+		{
+			\refstepcounter{CurrentLine}
+			\setcounter{CurrentBarInLine}{0}
+		}
+		\fi		
+	}%
+
 	
 	\typeout{chordbarl: START #3}
 
@@ -177,7 +206,6 @@
 	\setcounter{CurrentLine}{0}
 	\setcounter{CurrentBarInLine}{0}
 	\setcounter{CurrentBar}{0}
-%	\let{NumberOfBarsPerLine}{#2}
 
 	\refstepcounter{NumPart}%
 	\refstepcounter{NumMesure}%
@@ -189,9 +217,10 @@
 
 	\ifthenelse
 		{\boolean{printBarNumber}}	
-		{\draw (-.2,.5*\barsize) node{\theNumMesure};}
+		{\draw (-.3,.5*\barsize) node{\bf \theNumMesure};}
 		{}
 
+% compute the number of bars of the first line
 	\xdef\NbBarsInitialLine{\NumberOfBarsPerLine}
 	\ifthenelse
 		{#1<\NumberOfBarsPerLine}
@@ -200,7 +229,9 @@
 			
 % initial horizontal line
 	\draw (0,0) -- (\NbBarsInitialLine*\barsize,0);
-	\draw (0,-\barsize*.4) node [anchor=west, align=left] {\bf Part \theNumPart: #3}; % title
+
+% draw part title	
+	\draw (0,-\barsize*.2) node [anchor=west, align=left] {\bf Part \theNumPart: #3}; 
 
 	\pgfmathtruncatemacro{\nblines}{(#1-1)/\NumberOfBarsPerLine+1}	
 	\typeout{chordbarl: nblines=\nblines}
@@ -214,7 +245,7 @@
 			\pgfmathtruncatemacro{\nbbars}{#1-\NumberOfBarsPerLine*(\nblines-1)}
 			\xdef\nbbars{\nbbars}
 		}
-		\fi;
+		\fi
 		\typeout{chordbarl: nbbars=\nbbars}
 		\foreach \k in {1,...,{\nbbars}}
 		{
@@ -222,13 +253,18 @@
 			\draw (0,{\line*\barsize}) -- (\k*\barsize,{\line*\barsize});
 			
 			\refstepcounter{CurrentBar}%
-		};
+		}
 	}
 	\setcounter{NumMesure}{#1*#2+\value{NumMesure}-1}
 
-	\ifthenelse{\boolean{printBarNumber}}
-	{\draw (\NbBarsInitialLine*\barsize+1,0.5*\barsize) node {x~#2};}{} % print the number of repetitions
-
+% print the number of repetitions
+	\ifnum#2=1 {}
+	\else
+	\ifthenelse
+			{\boolean{printBarNumber}}
+			{\draw (\NbBarsInitialLine*\barsize+1,0.5*\barsize) node {\Large \bf x~#2};}
+			{} 
+	\fi
 }%
 {
 \typeout{chordbar: END}
@@ -239,60 +275,61 @@
 	\vspace{\vspaceafter}
 }
 
+%\catcode`#=12
 
-\newcounter{dd2}
-
-\newenvironment{chordbarh}[3]
-{
-\typeout{chordbarh: START}
-
-	\fontfamily{phv}\selectfont
+%\newcounter{dd2}
 %
-	\refstepcounter{NumPart}%
-	\refstepcounter{NumMesure}%
-%	
-	\pgfmathsetmacro{\NbVLines}{#1/2}	
-	\pgfmathsetmacro{\arg}{#1}	
-	\setcounter{dd2}{#1/2}
-	\noindent\ignorespaces %
-	\vspace{\vspacebefore}
-	\begin{tikzpicture}[line width=1pt]
-	\draw (0,\barsize*1.1) node [anchor=west, align=left] {Part \theNumPart: #3}; % title
-	\draw (0,0) -- (0,\barsize);
-	\draw (0,0) -- (\value{dd2}*\barsize,0);
-	\draw (-.2,.5) node{\theNumMesure};	
+%\newenvironment{chordbarh}[3]
+%{
+%\typeout{chordbarh: START}
 %
-% Draw vertical lines
-%	
-	\foreach \k in {1,...,\NbVLines}
-	{
-		\draw (\k*\barsize,0) -- (\k*\barsize,\barsize);
-	};
-	\ifodd\arg%
-		\draw (\value{dd2}*\barsize,0) -- ({(1+\arg)*\barsize/2},\barsize);%
-		\draw (0,\barsize) -- ({(\value{dd2}+1)*\barsize},\barsize);
+%	\fontfamily{phv}\selectfont
+%%
+%	\refstepcounter{NumPart}%
+%	\refstepcounter{NumMesure}%
+%%	
+%	\pgfmathsetmacro{\NbVLines}{#1/2}	
+%	\pgfmathsetmacro{\arg}{#1}	
+%	\setcounter{dd2}{#1/2}
+%	\noindent\ignorespaces %
+%	\vspace{\vspacebefore}
+%	\begin{tikzpicture}[line width=1pt]
+%	\draw (0,\barsize*1.1) node [anchor=west, align=left] {Part \theNumPart: #3}; % title
+%	\draw (0,0) -- (0,\barsize);
+%	\draw (0,0) -- (\value{dd2}*\barsize,0);
+%	\draw (-.2,.5) node{\theNumMesure};	
+%%
+%% Draw vertical lines
+%%	
+%	\foreach \k in {1,...,\NbVLines}
+%	{
+%		\draw (\k*\barsize,0) -- (\k*\barsize,\barsize);
+%	};
+%	\ifodd\arg%
+%		\draw (\value{dd2}*\barsize,0) -- ({(1+\arg)*\barsize/2},\barsize);%
+%		\draw (0,\barsize) -- ({(\value{dd2}+1)*\barsize},\barsize);
+%%
+%		\draw ({(\NbVLines+1)*\barsize+1},0.5) node {x~#2};
+%	\else %
+%		\draw (0,\barsize) -- (#1*0.5*\barsize,\barsize);
+%		\draw (\value{dd2}*\barsize+1,0.5) node {x~#2};
+%	\fi
+%%
+%% Compute the bar number
+%%
+%	\ifodd\arg%
+%		\setcounter{NumMesure}{(\value{dd2}+1)*#2+\value{NumMesure}-1}
+%	\else
+%		\setcounter{NumMesure}{\value{dd2}*#2+\value{NumMesure}-1}
+%	\fi
 %
-		\draw ({(\NbVLines+1)*\barsize+1},0.5) node {x~#2};
-	\else %
-		\draw (0,\barsize) -- (#1*0.5*\barsize,\barsize);
-		\draw (\value{dd2}*\barsize+1,0.5) node {x~#2};
-	\fi
 %
-% Compute the bar number
-%
-	\ifodd\arg%
-		\setcounter{NumMesure}{(\value{dd2}+1)*#2+\value{NumMesure}-1}
-	\else
-		\setcounter{NumMesure}{\value{dd2}*#2+\value{NumMesure}-1}
-	\fi
-
-
-}%
-{
-	\end{tikzpicture}
-	\par\noindent%
-	\ignorespacesafterend	
-}
+%}%
+%{
+%	\end{tikzpicture}
+%	\par\noindent%
+%	\ignorespacesafterend	
+%}
 
 \endinput
   
