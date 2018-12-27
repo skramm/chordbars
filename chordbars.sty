@@ -6,6 +6,8 @@
 %TODO: find a way to avoid the need for escaping "sharp" character ("#") for the user
 % see https://tex.stackexchange.com/questions/400981/
 
+%TODO: print repetition only if not 1
+
 
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{chordbars}[2017/11/28 version 0.1]
@@ -88,54 +90,33 @@
 
 \def\barsize{1.5}%	
 
-\newcommand{\tempchord}{}
-\newcommand{\tempchordf}{}
-\newcommand{\tempchordh}{}
-\newcommand{\tempchordfn}{}
-\newcommand{\tempchordhn}{}
+
+
+\xdef\NumberOfBarsPerLine{4}
 
 %==========================================================================
-% one line of bars
-% arg 1: number of 4 beat bars (4, 8, ...)
+% version with several lines
+% arg 1: total number of 4 beat bars (4, 8, ...)
 % arg 2: nb of repetitions
 % arg 3: part name (can be empty)
+
 \newenvironment{chordbar}[3]
 {
-	\setcounter{CurrentBarInLine}{0}
-	\setcounter{CurrentLine}{0}
+	\newcommand{\newchordline}
+	{
+		\setcounter{CurrentBarInLine}{0}
+		\refstepcounter{CurrentLine}
+	}
 
-	\newcommand{\repeatchord}%
-	{ %
-		\def\delta{0.32};
-		\pgfmathsetmacro{\Axa}{\theCurrentBarInLine*\barsize+\delta*\barsize};
-		\pgfmathsetmacro{\Axb}{(\theCurrentBarInLine+1)*\barsize-\delta*\barsize};
-		\pgfmathsetmacro{\Aya}{(1-\delta)*\barsize};
-		\pgfmathsetmacro{\Ayb}{\delta*\barsize};
-
-		\coordinate (A) at (\Axa,\Ayb);
-		\coordinate (B) at (\Axb,\Aya);
-
-		\fill (A) circle[radius=2pt];
-		\fill (B) circle[radius=2pt];
-		\draw [thick] (\Axa,\Aya) -- (\Axb,\Ayb); %
-		\refstepcounter{CurrentBarInLine};%
-	}%
-
-% FULL BAR CHORD
 	\newcommand{\chordf}[1]%
 	{ %
 		\refstepcounter{CurrentBarInLine}%
-		\draw (-\barsize/2+\theCurrentBarInLine*\barsize,\barsize/2) node {##1};%
+		\pgfmathsetmacro{\x}{-\barsize/2+\theCurrentBarInLine*\barsize}
+		\pgfmathsetmacro{\y}{\value{CurrentLine})*\barsize+\barsize/2}		
+		\draw (\x,\y) node {##1};%
 	}%
 
-
-
-% UN-NUMBERED HALF BAR CHORD
-% Argument 1: first chord (beat 1,2)
-% Argument 2: second chord (beat 3,4)
-
-	\ifdefined\chordh\else
-	\renewcommand{\tempchordh}[2]%
+	\newcommand{\chordh}[2]%
 	{
 		\refstepcounter{CurrentBarInLine}%
 		\typeout{CurrentBarInLine=\theCurrentBarInLine}
@@ -158,108 +139,14 @@
 		) node {##2};%	
 		
 	}
-	\global\let\chordh\tempchordh
-	\fi
-
-% Draw full bar chord, with the bar number.
-% First argument: bar number, second: chord
-  \ifdefined\chordfn\else
-    \renewcommand{\tempchordfn}[2]%
-    {%
-	    \draw (-\barsize/2+##1*\barsize,\barsize/2) node {##2};%
-	    \setcounter{CurrentBarInLine}{##1}%
-    }%
-    \global\let\chordfn\tempchordfn
-  \fi
-
-
-% Draw half bar chord
-	\ifdefined\chordhn\else
-	\renewcommand{\tempchordhn}[3]%
-	{ %
-		\ifthenelse{\equal{##3}{1}}
-		{ %
-			\draw (-3*\barsize/4+##1*\barsize,3*\barsize/4) node {##2};%
-		} %
-		{ %
-			\draw (-\barsize/4+##1*\barsize,1*\barsize/4) node {##2};%		
-		} %
-%		\draw [line width=1pt] (\barsize*##1-\barsize,0) -- (##1*\barsize,\barsize);
-		\draw (\barsize*##1-\barsize,0) -- (##1*\barsize,\barsize);
-	}%
-	\global\let\chordhn\tempchordhn
-	\fi
-
-%
-	\fontfamily{phv}\selectfont
-%\setlength{\parindent}{0in}
-
-\typeout{chordbar: START}
-
-	\refstepcounter{NumPart}%
-	\refstepcounter{NumMesure}%
-	\noindent\ignorespaces %
-	\vspace{\vspacebefore}
-	\begin{tikzpicture}[line width=1pt,x=1cm,y=-1cm]
-%	\draw[->,red] (0,0)--(0,2);
-%	\draw[->,red] (0,0)--(2,0);
-	\draw (0,-\barsize*.4) node [anchor=west, align=left] {\bf Part \theNumPart: #3}; % title
-	\draw (0,0) -- (0,\barsize);
-	\draw (0,0) -- (#1*\barsize,0);
-	\draw (0,\barsize) -- (#1*\barsize,\barsize);
-
-	\ifthenelse{\boolean{printBarNumber}}
-	{\draw (-.2,.5) node{\theNumMesure};}{}
 	
-	\foreach \k in {1,...,#1}
-	{
-		\draw (\k*\barsize,0) -- (\k*\barsize,\barsize);
-	};
-	\setcounter{NumMesure}{#1*#2+\value{NumMesure}-1}
-	\ifthenelse{\boolean{printBarNumber}}
-	{ \draw (#1*\barsize+1,0.5) node {x~#2}; }{}
-
-}%
-{
-	\end{tikzpicture}
-%	\par\noindent%
-%	\ignorespacesafterend	
-	\vspace{\vspaceafter}
-}
-
-
-
-
-%==========================================================================
-% version with several lines
-% arg 1: total number of 4 beat bars (4, 8, ...)
-% arg 2: nb of bars per line
-% arg 3: nb of repetitions
-% arg 4: part name (can be empty)
-
-\newenvironment{chordbarl}[4]
-{
-	\newcommand{\newchordline}
-	{
-		\setcounter{CurrentBarInLine}{0}
-		\refstepcounter{CurrentLine}
-	}
-	
-	\newcommand{\chordf}[1]%
-	{ %
-		\refstepcounter{CurrentBarInLine}%
-		\pgfmathsetmacro{\x}{-\barsize/2+\theCurrentBarInLine*\barsize};
-		\pgfmathsetmacro{\y}{\value{CurrentLine})*\barsize+\barsize/2}		
-		\draw (\x,\y) node {##1};%
-	}%
-
 	\newcommand{\repeatchord}%
 	{ %
-		\def\delta{0.32};
-		\pgfmathsetmacro{\Axa}{\theCurrentBarInLine*\barsize+\delta*\barsize};
-		\pgfmathsetmacro{\Axb}{(\theCurrentBarInLine+1)*\barsize-\delta*\barsize};
-		\pgfmathsetmacro{\Aya}{(1-\delta)*\barsize+\theCurrentLine*\barsize};
-		\pgfmathsetmacro{\Ayb}{\delta*\barsize+\theCurrentLine*\barsize};
+		\def\delta{0.32}
+		\pgfmathsetmacro{\Axa}{\theCurrentBarInLine*\barsize+\delta*\barsize}
+		\pgfmathsetmacro{\Axb}{(\theCurrentBarInLine+1)*\barsize-\delta*\barsize}
+		\pgfmathsetmacro{\Aya}{(1-\delta)*\barsize+\theCurrentLine*\barsize}
+		\pgfmathsetmacro{\Ayb}{\delta*\barsize+\theCurrentLine*\barsize}
 
 		\coordinate (A) at (\Axa,\Ayb);
 		\coordinate (B) at (\Axb,\Aya);
@@ -268,10 +155,10 @@
 		\fill (B) circle[radius=2pt];
 		\draw [thick] (\Axa,\Aya) -- (\Axb,\Ayb); %
 		%
-		\refstepcounter{CurrentBarInLine};
+		\refstepcounter{CurrentBarInLine}
 		\ifnum\value{CurrentBarInLine}=#2
 		{
-			\refstepcounter{CurrentLine};
+			\refstepcounter{CurrentLine}
 			\setcounter{CurrentBarInLine}{0}
 		}
 		\fi		
@@ -283,6 +170,7 @@
 	\setcounter{CurrentLine}{0}
 	\setcounter{CurrentBarInLine}{0}
 	\setcounter{CurrentBar}{0}
+%	\let{NumberOfBarsPerLine}{#2}
 
 	\refstepcounter{NumPart}%
 	\refstepcounter{NumMesure}%
@@ -292,25 +180,35 @@
 %	\scalebox{2}{
 	\begin{tikzpicture}[line width=1pt,x=1cm,y=-1cm] %,scale=2]
 
-	\ifthenelse{\boolean{printBarNumber}}	
-	{\draw (-.2,.5) node{\theNumMesure};}{}
-	
-% initial horizontal line
-	\draw (0,0) -- (#2*\barsize,0);
-	\draw (0,-\barsize*.4) node [anchor=west, align=left] {\bf Part \theNumPart: #4}; % title
+	\ifthenelse
+		{\boolean{printBarNumber}}	
+		{\draw (-.2,.5*\barsize) node{\theNumMesure};}
+		{}
 
-	\pgfmathtruncatemacro{\nblines}{(#1-1)/#2+1}	
+	\xdef\NbBarsInitialLine{\NumberOfBarsPerLine}
+	\ifthenelse
+		{#1<\NumberOfBarsPerLine}
+		{\xdef\NbBarsInitialLine{#1}}
+		{}
+			
+% initial horizontal line
+	\draw (0,0) -- (\NbBarsInitialLine*\barsize,0);
+	\draw (0,-\barsize*.4) node [anchor=west, align=left] {\bf Part \theNumPart: #3}; % title
+
+	\pgfmathtruncatemacro{\nblines}{(#1-1)/\NumberOfBarsPerLine+1}	
+	\typeout{chordbarl: nblines=\nblines}
 	\foreach \line in {1,...,\nblines}
 	{
 
 		\draw (0,{\barsize*(\line-1)}) -- (0,\line*\barsize);
-		\xdef\nbbars{#2};
+		\xdef\nbbars{#2}
 		\ifnum\line=\nblines
 		{
-			\pgfmathtruncatemacro{\nbbars}{#1-#2*(\nblines-1)};
+			\pgfmathtruncatemacro{\nbbars}{#1-\NumberOfBarsPerLine*(\nblines-1)}
 			\xdef\nbbars{\nbbars}
 		}
 		\fi;
+		\typeout{chordbarl: nbbars=\nbbars}
 		\foreach \k in {1,...,{\nbbars}}
 		{
 			\draw (\k*\barsize,{(\line-1)*\barsize}) -- (\k*\barsize,{\line*\barsize});
@@ -319,13 +217,14 @@
 			\refstepcounter{CurrentBar}%
 		};
 	}
-	\setcounter{NumMesure}{#1*#3+\value{NumMesure}-1}
+	\setcounter{NumMesure}{#1*#2+\value{NumMesure}-1}
 
 	\ifthenelse{\boolean{printBarNumber}}
-	{\draw (#2*\barsize+1,0.5) node {x~#3};}{} % print the number of repetitions
+	{\draw (\NbBarsInitialLine*\barsize+1,0.5*\barsize) node {x~#2};}{} % print the number of repetitions
 
 }%
 {
+\typeout{chordbar: END}
 	\end{tikzpicture}
 %	} %
 %	\par\noindent%
