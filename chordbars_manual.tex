@@ -1,8 +1,8 @@
-%% chordbars_manual.tex
+%% file: chordbars_manual.tex
 %% Copyright 2018 M. Sebastien Kramm
 %
 % This work may be distributed and/or modified under the
-% conditions of the LaTeX Project Public License, either version 1.3
+% conditions of the LaTeX Project Public License, either version 1.3c
 % of this license or (at your option) any later version.
 % The latest version of this license is in
 %   http://www.latex-project.org/lppl.txt
@@ -41,7 +41,7 @@
 
 \title{The chordbars Package}
 \author{S. Kramm}
-\date{\today - release 1.0}
+\date{\today {} - release 1.1}
 \begin{document}
 \maketitle
 
@@ -70,7 +70,7 @@ The first argument is the number of bars, and the second is the pattern name.
 The latter one can be empty.
 Inside this environment, you can use several commands, the most basic one is 
 \verb|\chordf| (for "Chord Full bar") that has as unique argument the chord name.
-This argument will just be printed out "as is", usually something like "Cm7", Db9, FMaj7", etc.
+This argument will just be printed out "as is", usually something like Cm7, Db9, FMaj7, etc.
 
 For example, the classical 12-bar blues progression will be written as:
 
@@ -81,22 +81,25 @@ This will be rendered as:
 
 \input{listing_blues.lst}
 
-As usual, spaces and line-feeds are ignored.
+Each square stands for a 4-beat bar, and this is read left to right.
+The special symbol you can see in bars 4, 6 and 8 means "play the same content on this bar as the previous bar".
 
-The default behavior is to have 4-bars long lines, but you can change this anytime with the command 
+As usual with \LaTeX{} source files, spaces and line-feeds are ignored.
+
+The default behavior is to have 4-bars long lines, but you can change this anytime by giving a different value to {\btt \tbs NumberOfBarsPerLine}. For example, issuing the command
 
 \begin{lstlisting}
 \def\NumberOfBarsPerLine{3}
 \end{lstlisting}
 
-This will print out the same 12-bars blues as above, but printed out in a rather awkward view with 6 bars per line\footnote{Don't do this, of course!}.
+just before the above source code will print out the same 12-bars blues as above, but in a rather awkward view with 6 bars per line\footnote{Don't do this, of course!}.
 
 \def\NumberOfBarsPerLine{6}
 \input{listing_blues.lst}
 
 \subsection{Handling song structure and bar count}
 
-This package can also be used to print out the song structure, by showing the number of repetitions of each part and by counting the bars.
+This package can also be used to print the song structure by showing the number of repetitions of each part and by counting the bars.
 The number of repetitions of the part can be given as an optional argument to the environment.
 To enable this, you need to activate this option, with this inserted after the \verb!\begin{document}! :
 
@@ -163,14 +166,14 @@ that will be rendered as this:
 \chordline{C#m7}{8}{Intro}
 
 Of course, the part and bar count will take this into account.
-Please note that this will always be a single line, so it is limited to standard situations (4 or 8 bars), it should be used for longer parts.
+Please note that this will always be a single line, so it is limited to standard situations (4 or 8 bars), it should not be used for longer parts.
 
 \subsection{Half bars}
 
 In some tunes, there can be a "special" bar inserted at one point that only has 2 beats instead of the regular 4-beat bars .
 This is handled with the special command {\btt \tbs addHalfBar} thats needs to be inserted in last position in a {\btt chordbar} environment.
 
-See for example this chord progression and its rendering;
+See for example this chord progression and its rendering:
 
 \lstinputlisting{listing_halfbar.lst}
 
@@ -178,7 +181,8 @@ See for example this chord progression and its rendering;
 \countbarsYes
 \input{listing_halfbar.lst}
 
-Please note that the bar count is adjusted to take this extra bar into account.
+"Part 1" has an extra 2-beats bar added at the end, and the bar count is adjusted to take this into account.
+So "Part 2" starts at bar 6.
 
 \section{Configuration}
 \label{sec:config}
@@ -207,7 +211,7 @@ This, printing the bar number becomes useless.
 
 To stop this behaviour (anytime), the command is {\btt \tbs countbarsNo}.
 
-\item Additionaly, if the above command is issued, then the package can compute the total number of bars and the duration of the song.
+\item Additionaly, if the bar counting is enabled, then the package can compute the total number of bars and the duration of the song.
 This is done by issuing the command {\btt \tbs printNbBars} at the end of the file.
 The duration of the song depends on both the {\em tempo} of the song, expressed in BPM, and the number of beats per bar.
 The latter can be given with the command {\btt \tbs bpm}, for example:
@@ -219,10 +223,10 @@ The default value is 4 beats per bar.
 
 \item As you have seen above, the command {\btt \tbs repeatBar} will be rendered as "./."
 %$\textdiscount${}
-and means "repeat last chord".
+and means "repeat last bar".
 In some situations, it can be useful to show a repetition spanning two bars.
 For this you can use {\btt \tbs repeatBarPair}.
-For example, see the source below showing a classical II/V-I pattern played twice and its rendering:
+For example, see the source below showing a classical II-V-I pattern played twice and its rendering:
 
 \noindent
 \begin{minipage}{0.45\textwidth}
@@ -230,6 +234,7 @@ For example, see the source below showing a classical II/V-I pattern played twic
 \end{minipage}
 %
 \begin{minipage}{0.42\textwidth}
+\countbarsNo
 \input{listing_RBP.lst}
 \end{minipage}
 
