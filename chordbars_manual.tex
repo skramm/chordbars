@@ -1,3 +1,22 @@
+%% chordbars_manual.tex
+%% Copyright 2018 M. Sebastien Kramm
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+% 
+% The Current Maintainer of this work is M. Sebastien Kramm
+%
+% This work consists of the files chordbars.sty and chordbars_manual.tex
+
+% Home page: https://github.com/skramm/chordbars
+
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{hyperref}
@@ -22,7 +41,7 @@
 
 \title{The chordbars Package}
 \author{S. Kramm}
-\date{\today - release 0.4}
+\date{\today - release 1.0}
 \begin{document}
 \maketitle
 
@@ -69,12 +88,13 @@ The default behavior is to have 4-bars long lines, but you can change this anyti
 \def\NumberOfBarsPerLine{3}
 \end{lstlisting}
 
-This will print out the same 12-bars blues as above, but printed out in a rather awkward view with 3 bars per line\footnote{Don't do this, of course!}.
+This will print out the same 12-bars blues as above, but printed out in a rather awkward view with 6 bars per line\footnote{Don't do this, of course!}.
 
-\def\NumberOfBarsPerLine{3}
+\def\NumberOfBarsPerLine{6}
 \input{listing_blues.lst}
 
 This package can also be used to print out the song structure, by showing the number of repetitions of each part and by counting the bars.
+The number of repetitions of the part can be given as an optional argument to the environment.
 To enable this, you need to activate this option, with this inserted after the \verb!\begin{document}! :
 
 \begin{lstlisting}
@@ -89,9 +109,11 @@ will give the following output, correctly printing out '13' as the initial bar n
 \def\NumberOfBarsPerLine{4}
 \resetchordbars
 \countbarsYes
+%\mbox{
 \input{listingA.lst}
+%}
 
-\paragraph{Two chords per bar} 
+\paragraph{Two chords per bar.} 
 The command \verb|\chordh| enables printing two chords per bar, as this happens quite often.
 Its two arguments are the two chords of the bar.
 For example, the well-know tune "House of the Rising Sun"\footnote{The Animals} chord structure can be printed as this:
@@ -103,7 +125,7 @@ This will be rendered as:
 \countbarsNo
 \input{listing_HOTRS.lst}
 
-\paragraph{Sharps and flats} If you know \LaTeX, you may know that the {\btt \#} character is a "reserved character" and as such you should'nt be able to use it inside your source file.
+\paragraph{Sharps and flats.} If you know \LaTeX, you may know that the {\btt \#} character is a "reserved character" and as such you should'nt be able to use it inside your source file.
 However a special trick has been used here so you can directly type {\btt \tbs chordf\{C\#\}}.
 
 Warning: this {\bf may} lead to some problems in "some" situations, that are not yet clearly identified\footnote{See \url{https://tex.stackexchange.com/a/467566/11083} for details.}.
@@ -153,7 +175,9 @@ To stop this behaviour (anytime), the command is {\btt \tbs countbarsNo}.
 \item Additionaly, if the above command is issued, then the package can compute the total number of bars and the duration of the song.
 This is done by issuing the command {\btt \tbs printNbBars} at the end of the file.
 The duration of the song depends on both the {\em tempo} of the song, expressed in BPM, and the number of beats per bar.
-The latter can be given with the command {\btt \tbs bpm}.
+The latter can be given with the command {\btt \tbs bpm}, for example:
+{\btt \tbs bpm\{120\}}.
+
 The number of beats per bar is limited at present at two values, 3 or 4, with the two commands
 {\btt \tbs bpbfour} or {\btt \tbs bpbthree}.
 The default value is 4 beats per bar.

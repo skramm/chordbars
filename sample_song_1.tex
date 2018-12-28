@@ -1,3 +1,5 @@
+% this is mostly a test file, to check features
+
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[left=2.00cm,vmargin=1cm]{geometry}
@@ -6,6 +8,7 @@
 
 \title{Song Sample}
 \author{Author name}
+
 
 \begin{document}
 \bpm{120}
@@ -20,12 +23,14 @@ This is a demo example of the chordbars package.
 
 
 \begin{chordbar}{4}{Intro}
-\chordf{C}
-\chordh{A#}{D$\sharp$}
+\chordf{C\flat}
+\chordh{A#}{D\sharp}
 \repeatBarPair
 \end{chordbar}
 
 You can print some notes between the different parts
+
+\def\barsize{2}%	
 
 \begin{chordbar}[3]{6}{Intro b}
 \chordf{C#}
@@ -44,6 +49,7 @@ You can print some notes between the different parts
 %\repeatchord
 %\end{chordbar}
 
+\def\barsize{1.4}%
 % this part has 8 bars (4 bars, 2 lines)
 \begin{chordbar}[2]{4}{TEST}
 \chordf{C}
@@ -52,6 +58,12 @@ You can print some notes between the different parts
 \repeatBar
 \end{chordbar}
 
+\begin{chordbar}{5}{Test of repeatbarpair}
+\chordh{G}{C7}
+\chordf{FMaj7}
+\repeatBarPair
+\chordf{FMaj7}
+\end{chordbar}
 
 
 % this part has 8 bars (4 bars, 2 lines, repeated 3 times)
