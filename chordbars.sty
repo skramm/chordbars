@@ -17,6 +17,9 @@
 
 % Home page: https://github.com/skramm/chordbars
 
+% TODO define command \addHalfBar
+% TODO define command to have 1 chord per beat
+
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{chordbars}[2017-12-28 version 1.0]
 
@@ -98,14 +101,66 @@
 }
 
 \def\barsize{1.6}%	
-
+\def\delta{0.36}
 
 \xdef\NumberOfBarsPerLine{4}
 
+% arg1: chord
+% arg2: number of bars
+% arg3: title
+\newcommand{\chordline}[3]
+{
+	{\fontfamily{phv}\selectfont
+	\noindent\ignorespaces %
+	\vspace{\vspacebefore}
+	\refstepcounter{NumMesure}%
+	\refstepcounter{NumPart}%
+	\begin{tikzpicture}[line width=1pt,x=1cm,y=-1cm]
+
+% draw part title	
+	\ifthenelse
+		{\boolean{printBarNumber}}	
+		{
+			\draw (0,-\barsize*.2) node [anchor=west, align=left] {\bf Part \theNumPart: #3};
+			\draw (-.3,.5*\barsize) node{\bf \theNumMesure};
+		} 
+		{
+			\draw (0,-\barsize*.2) node [anchor=west, align=left] {\bf #3};
+		} 
+
+	\draw (0,0) -- (#2*\barsize,0);               % horizontal lines
+	\draw (0,\barsize) -- (#2*\barsize,\barsize);
+
+	\draw (0,0) -- (0,\barsize);                  % first vertical line
+	\draw (\barsize,0) -- (\barsize,\barsize);    % second vertical line
+	\draw (\barsize/2,\barsize/2) node {#1};      % chord name
+
+	\foreach \k in {2,...,{#2}}
+	{
+		\draw (\k*\barsize,0) -- (\k*\barsize,\barsize);
+
+		\pgfmathsetmacro{\Axa}{(\k-1)*\barsize+\delta*\barsize}
+		\pgfmathsetmacro{\Axb}{\k*\barsize-\delta*\barsize}
+		\pgfmathsetmacro{\Aya}{(1-\delta)*\barsize}
+		\pgfmathsetmacro{\Ayb}{\delta*\barsize}
+
+		\coordinate (A) at (\Axa,\Ayb);
+		\coordinate (B) at (\Axb,\Aya);
+
+		\fill (A) circle[radius=2pt];
+		\fill (B) circle[radius=2pt];
+		\draw [thick] (\Axa,\Aya) -- (\Axb,\Ayb); % Draw "repeat" symbol
+	}					
+				
+	\end{tikzpicture}
+	}
+	\addtocounter{NumMesure}{#2}
+}
+
 %==========================================================================
 % main environment, has 2 mandatory arguments
-% arg 1: total number of 4 beat bars (4, 8, ...)
-% arg 2: part name (can be empty)
+% arg 1 (#2 inside): total number of 4 beat bars (4, 8, ...)
+% arg 2 {#3 inside}: part name (can be empty)
 % optional arg: nb of repetitions (default is 1)
 
 \newenvironment{chordbar}[3][1]
@@ -173,7 +228,6 @@
 			{}
 		\refstepcounter{CurrentBarInLine}%
 	
-		\def\delta{0.36}
 		\pgfmathsetmacro{\Axa}{(\theCurrentBarInLine-1)*\barsize+\delta*\barsize}
 		\pgfmathsetmacro{\Axb}{\theCurrentBarInLine*\barsize-\delta*\barsize}
 		\pgfmathsetmacro{\Aya}{(1-\delta)*\barsize+\theCurrentLine*\barsize}
@@ -189,7 +243,6 @@
 
 	\newcommand{\repeatBarPair}%
 	{ %
-		\def\delta{0.36}
 		\pgfmathsetmacro{\Axa}{\theCurrentBarInLine*\barsize+\delta*\barsize}
 		\pgfmathsetmacro{\Axb}{(\theCurrentBarInLine+2)*\barsize-\delta*\barsize}
 		\pgfmathsetmacro{\Aya}{(1-\delta)*\barsize+\theCurrentLine*\barsize}
@@ -211,8 +264,40 @@
 		}
 		\fi		
 	}%
+
+	\newcommand{\addHalfBar}[1]%
+	{
+		\refstepcounter{NumMesure}%
+		\refstepcounter{CurrentBarInLine}%
+
+
+		\pgfmathsetmacro{\xa}{(\theCurrentBarInLine-1)*\barsize}
+		\pgfmathsetmacro{\xb}{\theCurrentBarInLine*\barsize}
+
+		\pgfmathsetmacro{\ya}{\theCurrentLine*\barsize}
+		\pgfmathsetmacro{\ya}{(\theCurrentLine+1)*\barsize}
+		
+% diagonal line
+%	\draw (\xa,\ya) -- (\xb,\yb);
+		\draw
+		(\theCurrentBarInLine*\barsize,{\theCurrentLine*\barsize})
+			--
+		({(\theCurrentBarInLine-1)*\barsize},{(\theCurrentLine+1)*\barsize});
+
+% horizontal line
+		\draw
+		(\theCurrentBarInLine*\barsize,{\theCurrentLine*\barsize})
+			--
+		({(\theCurrentBarInLine-1)*\barsize},{(\theCurrentLine)*\barsize});
+
+
+		\pgfmathsetmacro{\x}{-3*\barsize/4+\theCurrentBarInLine*\barsize}
+		\pgfmathsetmacro{\y}{\value{CurrentLine})*\barsize+\barsize/4}		
+		\draw (\x,\y) node {##1};%
 	
-	\typeout{chordbarl: START #2}
+	}
+		
+	\typeout{chordbar: START #3}
 
 	\fontfamily{phv}\selectfont
 	\setcounter{CurrentLine}{0}
@@ -300,7 +385,6 @@
 \renewcommand{\sharp}{\ensuremath{\OLDsharp}}
 \let\OLDflat\flat
 \renewcommand{\flat}{\ensuremath{\OLDflat}}
-
 
 \endinput
   

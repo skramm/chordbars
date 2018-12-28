@@ -23,14 +23,20 @@ This is a demo example of the chordbars package.
 
 
 \begin{chordbar}{4}{Intro}
-\chordf{C\flat}
-\chordh{A#}{D\sharp}
-\repeatBarPair
+%\chordf{C\flat}
+%\chordf{C\flat}
+%\chordh{A#}{D\sharp}
+%\repeatBarPair
 \end{chordbar}
+
+
+Whole line of same chord:
+
+\chordline{C#m7}{8}{Intro}
 
 You can print some notes between the different parts
 
-\def\barsize{2}%	
+\def\barsize{1.8}%	
 
 \begin{chordbar}[3]{6}{Intro b}
 \chordf{C#}
@@ -63,6 +69,15 @@ You can print some notes between the different parts
 \chordf{FMaj7}
 \repeatBarPair
 \chordf{FMaj7}
+\addHalfBar{Dm}
+\end{chordbar}
+
+\begin{chordbar}{4}{Test of addHalfBar}
+\chordh{G}{C7}
+\chordf{FMaj7}
+\repeatBar
+\chordf{Dm}
+\addHalfBar{Gm}
 \end{chordbar}
 
 

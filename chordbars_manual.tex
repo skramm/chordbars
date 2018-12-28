@@ -64,6 +64,7 @@ The aim of this package is to have a \LaTeX way of producing these, with minimal
 
 
 \section{Usage}
+\subsection{Basic usage}
 This package provides a single environnment, named {\ttfamily chordbar}, that has 2 mandatory arguments.
 The first argument is the number of bars, and the second is the pattern name.
 The latter one can be empty.
@@ -93,6 +94,8 @@ This will print out the same 12-bars blues as above, but printed out in a rather
 \def\NumberOfBarsPerLine{6}
 \input{listing_blues.lst}
 
+\subsection{Handling song structure and bar count}
+
 This package can also be used to print out the song structure, by showing the number of repetitions of each part and by counting the bars.
 The number of repetitions of the part can be given as an optional argument to the environment.
 To enable this, you need to activate this option, with this inserted after the \verb!\begin{document}! :
@@ -113,7 +116,7 @@ will give the following output, correctly printing out '13' as the initial bar n
 \input{listingA.lst}
 %}
 
-\paragraph{Two chords per bar.} 
+\subsection{Two chords per bar.} 
 The command \verb|\chordh| enables printing two chords per bar, as this happens quite often.
 Its two arguments are the two chords of the bar.
 For example, the well-know tune "House of the Rising Sun"\footnote{The Animals} chord structure can be printed as this:
@@ -125,7 +128,7 @@ This will be rendered as:
 \countbarsNo
 \input{listing_HOTRS.lst}
 
-\paragraph{Sharps and flats.} If you know \LaTeX, you may know that the {\btt \#} character is a "reserved character" and as such you should'nt be able to use it inside your source file.
+\subsection{Sharps and flats.} If you know \LaTeX, you may know that the {\btt \#} character is a "reserved character" and as such you should'nt be able to use it inside your source file.
 However a special trick has been used here so you can directly type {\btt \tbs chordf\{C\#\}}.
 
 Warning: this {\bf may} lead to some problems in "some" situations, that are not yet clearly identified\footnote{See \url{https://tex.stackexchange.com/a/467566/11083} for details.}.
@@ -146,7 +149,39 @@ You can see below the compared renderings of the two alternatives:
 \input{listing_sharp_flat.lst}
 \end{minipage}
 
+\subsection{Long parts on same chord}
+In some songs, you often have several bars on the same chord, say as an introduction or a bridge between two parts.
+Instead of filling a whole chordbars environment, a command is provided that will simply render the desired number of bars with the initial chord noted in first bar.
+
+For example, if you need a 8 bar intro on Gm7 chord, you can do this:
+\begin{lstlisting}
+\chordline{C#m7}{8}{Intro}
+\end{lstlisting}
+
+that will be rendered as this:
+
+\chordline{C#m7}{8}{Intro}
+
+Of course, the part and bar count will take this into account.
+Please note that this will always be a single line, so it is limited to standard situations (4 or 8 bars), it should be used for longer parts.
+
+\subsection{Half bars}
+
+In some tunes, there can be a "special" bar inserted at one point that only has 2 beats instead of the regular 4-beat bars .
+This is handled with the special command {\btt \tbs addHalfBar} thats needs to be inserted in last position in a {\btt chordbar} environment.
+
+See for example this chord progression and its rendering;
+
+\lstinputlisting{listing_halfbar.lst}
+
+\resetchordbars
+\countbarsYes
+\input{listing_halfbar.lst}
+
+Please note that the bar count is adjusted to take this extra bar into account.
+
 \section{Configuration}
+\label{sec:config}
 
 Several commands allow to customize the way the grids are printed out.
 
@@ -182,9 +217,11 @@ The number of beats per bar is limited at present at two values, 3 or 4, with th
 {\btt \tbs bpbfour} or {\btt \tbs bpbthree}.
 The default value is 4 beats per bar.
 
-\item As you have seen above, the command {\btt \tbs repeatBar} will be rendered as \textdiscount{} and means "repeat last chord".
-In some situations, it can be useful to show a repetitions spanning two bars.
-Fo this you can use {\btt \tbs repeatBarPair}.
+\item As you have seen above, the command {\btt \tbs repeatBar} will be rendered as "./."
+%$\textdiscount${}
+and means "repeat last chord".
+In some situations, it can be useful to show a repetition spanning two bars.
+For this you can use {\btt \tbs repeatBarPair}.
 For example, see the source below showing a classical II/V-I pattern played twice and its rendering:
 
 \noindent
@@ -196,15 +233,6 @@ For example, see the source below showing a classical II/V-I pattern played twic
 \input{listing_RBP.lst}
 \end{minipage}
 
-
-
-%\end{itemize}
-
-%\section{Additional commands}
-
-%Besides the commands that can be used inside the chordbar environment, this package provides the following commands:
-
-%\begin{itemize}
 \item {\ttfamily \textbackslash resetchordbars}: this will reset the bar and part counters, useful if you want to print two songs in the same document.
 \end{itemize}
 
@@ -213,6 +241,31 @@ For example, see the source below showing a classical II/V-I pattern played twic
 
 This section is useful for those who want to contribute or expand this package.
 
-(TO BE EXPANDED)
+Internal counters:
+
+\begin{itemize}
+\item {\btt NumMesure}
+\item {\btt NumPart}
+\item {\btt CurrentBarInLine}
+\item {\btt CurrentBar}
+\item {\btt CurrentLine}
+\end{itemize}
+
+\section{Troubleshooting}
+
+The relative sizes of the grid and the chord printing are not automatically adjusted.
+Thus, in some case, the chord name will be too large for the grid.
+In that case, you just need to enlarge the grid size (see section \ref {sec:config}).
+
+\section{Release history}
+
+\begin{itemize}
+\item 2018-12-28: First release (v1.0) and upload to CTAN
+
+\item 2018-12-29: added commands {\btt \tbs chordline} and {\btt \tbs addHalfBar}, bugfixes
+\end{itemize}
+
+
+
 
 \end{document}
