@@ -15,23 +15,25 @@
 
 \songtitle
 
-\def\barsize{1.6}%	
+%\def\barsize{1.5}%	
 This is a demo example of the chordbars package.
 
 
-\begin{chordbar}{3}{1}{Intro}
+\begin{chordbar}{4}{Intro}
 \chordf{C}
-%\chordh{A}{D}
-%\chordf{F}
-%\repeatchord
+\chordh{A#}{D$\sharp$}
+\repeatBarPair
 \end{chordbar}
 
-\begin{chordbar}{5}{3}{Intro b}
-\chordf{C}
-%\repeatchord
+You can print some notes between the different parts
+
+\begin{chordbar}[3]{6}{Intro b}
+\chordf{C#}
+\repeatBar
 \chordh{A}{D}
 \chordf{F}
 \chordf{F}
+\chordf{D}
 \end{chordbar}
 
 %\begin{chordbar}{4}{1}{Intro c}
@@ -43,61 +45,64 @@ This is a demo example of the chordbars package.
 %\end{chordbar}
 
 % this part has 8 bars (4 bars, 2 lines)
-\begin{chordbar}{4}{2}{TEST}
+\begin{chordbar}[2]{4}{TEST}
 \chordf{C}
 \chordf{D}
 \chordh{E}{F}
-\repeatchord
+\repeatBar
 \end{chordbar}
 
 
 
 % this part has 8 bars (4 bars, 2 lines, repeated 3 times)
-\begin{chordbar}{5}{2}{2 lines}
+\begin{chordbar}[2]{6}{2 lines}
 \chordf{C}
 \chordf{D}
 \chordh{E}{F}
-\repeatchord
-\repeatchord
+\repeatBar
+\chordf{D}
+\repeatBar
 %\chordhn{3}{1}{Em}
 \end{chordbar}
 
-\begin{chordbar}{11}{4}{2 lines}
+\begin{chordbar}[4]{11}{2 lines}
 \chordf{C}
 \chordh{D}{G}
 \chordf{E}
-\chordf{F}
+%\chordf{F}
 \newchordline
 \chordf{G\#}
-\repeatchord
+\repeatBar
 \end{chordbar}
 
-\begin{chordbar}{10}{2}{2 lines of 5 bars}
-\chordf{1}{C}
-\chordf{3}{D}
+\begin{chordbar}[2]{10}{2 lines of 5 bars}
+\chordf{C}
+\chordf{D}
 \chordf{E}
 \chordf{F}
 \newchordline
-\chordf{G\#}
-\chordh{A}{G\#}
-\repeatchord
+\chordf{G#}
+\chordh{A}{G#}
+\repeatBar
 \end{chordbar}
 
 %\end{document}
 
-\begin{chordbar}{11}{2}{coda}
+\begin{chordbar}[2]{11}{coda}
 \chordf{E}
 \chordh{A}{F}
 \end{chordbar}
 
 
 \printNbBars
-\end{document}
 
+\end{document}
 % this part has 5 bars on 2 lines
 \begin{chordbarh}{5}{2}{5 half bars}
-\chordf{C}
+%\chordf{C}
 \end{chordbarh}
+
+\end{document}
 
 \begin{chordbarh}{6}{2}{6 half bars}
 \end{chordbarh}

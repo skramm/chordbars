@@ -4,8 +4,9 @@
 % see https://github.com/skramm/chordbars
 
 %TODO: find a way to avoid the need for escaping "sharp" character ("#") for the user
-% see https://tex.stackexchange.com/questions/400981/
-
+% see:
+% -https://tex.stackexchange.com/questions/400981/
+% -https://tex.stackexchange.com/a/38720/11083
 
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{chordbars}[2017/11/28 version 0.1]
@@ -18,6 +19,7 @@
 
 \RequirePackage{calc}
 \RequirePackage{ifthen}
+%\RequirePackage{fixltx2e}
 
 \def\vspacebefore{1ex}
 \def\vspaceafter{1ex}
@@ -91,13 +93,23 @@
 
 \xdef\NumberOfBarsPerLine{4}
 
+\newenvironment{AAA}[3][abc]
+{
+AAA \newline
+arg1=#1
+\newline arg2=#2
+\newline arg3=#3
+}
+{
+\newline Bye!
+}
 %==========================================================================
-% version with several lines
+% main environment, has 2 mandatory arguments
 % arg 1: total number of 4 beat bars (4, 8, ...)
-% arg 2: nb of repetitions
-% arg 3: part name (can be empty)
+% arg 2: part name (can be empty)
+% optional arg: nb of repetitions (default is 1)
 
-\newenvironment{chordbar}[3]
+\newenvironment{chordbar}[3][1]
 {
 	\newcommand{\newchordline}
 	{
@@ -200,7 +212,7 @@
 	}%
 
 	
-	\typeout{chordbarl: START #3}
+	\typeout{chordbarl: START #2}
 
 	\fontfamily{phv}\selectfont
 	\setcounter{CurrentLine}{0}
@@ -223,7 +235,7 @@
 % compute the number of bars of the first line
 	\xdef\NbBarsInitialLine{\NumberOfBarsPerLine}
 	\ifthenelse
-		{#1<\NumberOfBarsPerLine}
+		{#2<\NumberOfBarsPerLine}
 		{\xdef\NbBarsInitialLine{#1}}
 		{}
 			
@@ -233,7 +245,7 @@
 % draw part title	
 	\draw (0,-\barsize*.2) node [anchor=west, align=left] {\bf Part \theNumPart: #3}; 
 
-	\pgfmathtruncatemacro{\nblines}{(#1-1)/\NumberOfBarsPerLine+1}	
+	\pgfmathtruncatemacro{\nblines}{(#2-1)/\NumberOfBarsPerLine+1}	
 	\typeout{chordbarl: nblines=\nblines}
 	\foreach \line in {1,...,\nblines}
 	{
@@ -242,7 +254,7 @@
 		\xdef\nbbars{\NumberOfBarsPerLine}
 		\ifnum\line=\nblines
 		{
-			\pgfmathtruncatemacro{\nbbars}{#1-\NumberOfBarsPerLine*(\nblines-1)}
+			\pgfmathtruncatemacro{\nbbars}{#2-\NumberOfBarsPerLine*(\nblines-1)}
 			\xdef\nbbars{\nbbars}
 		}
 		\fi
@@ -258,11 +270,11 @@
 	\setcounter{NumMesure}{#1*#2+\value{NumMesure}-1}
 
 % print the number of repetitions
-	\ifnum#2=1 {}
+	\ifnum#1=1 {}
 	\else
 	\ifthenelse
 			{\boolean{printBarNumber}}
-			{\draw (\NbBarsInitialLine*\barsize+1,0.5*\barsize) node {\Large \bf x~#2};}
+			{\draw (\NbBarsInitialLine*\barsize+1,0.5*\barsize) node {\Large \bf x~#1};}
 			{} 
 	\fi
 }%
@@ -330,6 +342,9 @@
 %	\par\noindent%
 %	\ignorespacesafterend	
 %}
+
+
+\AtBeginDocument{\catcode`#=12 }
 
 \endinput
   

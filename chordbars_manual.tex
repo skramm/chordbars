@@ -1,12 +1,14 @@
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
+\usepackage{hyperref}
 \usepackage[left=2.00cm,vmargin=1cm]{geometry}
 
 \usepackage{listings}
 \lstset{
 	frame=single
 	,language=TeX
-	,basicstyle=\ttfamily,
+	,basicstyle=\ttfamily
+	,escapechar=\*
 }
 \usepackage{chordbars}
 
@@ -19,7 +21,7 @@
 
 \title{The chordbars Package}
 \author{S. Kramm}
-\date{\today - release 0.12}
+\date{\today - release 0.4}
 \begin{document}
 \maketitle
 
@@ -30,6 +32,8 @@ This package produces rectangular song patterns with "1 square per bar", with th
 It also handles the song structure by showing the bar count, and the repetitions of the patterns.
 \end{abstract}
 
+Package home page: \url{https://github.com/skramm/chordbars}
+
 \section{Motivation}
 
 This type of acompaniment notation is used when you don't need the melody, but you do need the exact bar and chord count.
@@ -39,54 +43,70 @@ The aim of this package is to have a \LaTeX way of producing these, with minimal
 
 
 \section{Usage}
-This package provides 2 environnments,
+This package provides a single environnment, named {\ttfamily chordbar}, that has 2 mandatory arguments.
+The first arguments is the number of bars, and the second is the pattern name. The latter one can be empty.
 
-The first environment is named {\ttfamily chordbar}, inside which one can define the chords for each bar.
-For example, this code:
+\lstinputlisting{listing_blues.lst}
 
-\begin{lstlisting}
-\begin{chordbar}{4}{1}{Intro}
-\chordf{C}
-\repeatchord
-\chordh{Em}{B}
-\chordf{Em}
-\end{chordbar}
-\end{lstlisting}
+
 
 will produce this:
 
-\begin{chordbar}{4}{1}{Intro}
-\chordf{C}
-\repeatchord
-\chordh{Em}{B}
-\chordf{Em}
-\end{chordbar}
+\input{listing_blues.lst}
 
+As usual, spaces and line-feeds are ignored.
 
-This environment has three arguments:
-\begin{enumerate}
-\item the number of bars needed for a pattern,
-\item the number of times the whole pattern gets repeated (useful for bars counting),
-\item the part name.
-\end{enumerate}
-
-It also keep tracks of the measure count, including repetitions. For example, this:
+The default behavior is to have 4-bars long lines, but you can change this anytime with the command 
 
 \begin{lstlisting}
-\begin{chordbar}{4}{3}{part1}
-\end{chordbar}
-
-\begin{chordbar}{4}{1}{part 2}
-\end{chordbar}
+\def\NumberOfBarsPerLine{3}
 \end{lstlisting}
+
+This will print out the same 12-bars blues as above, but printed out in a rather awkward view with 3 bars per line\footnote{Don't do this, of course!}.
+
+\def\NumberOfBarsPerLine{3}
+\input{listing_blues.lst}
+
+This package can also be used to print out the song structure, by showing the number of repetitions of each part and by counting the bars.
+To enable this, you need to activate this option, with this inserted after the \verb!\begin{document}! :
+
+\begin{lstlisting}
+\countbarsYes
+\end{lstlisting}
+
+Then, this:
+\lstinputlisting{listingA.lst}
 
 will give the following output, correctly printing out '13' as the initial bar number of the second part (part 1 is 4 bars long and is repeated 3 times).
 
+\def\NumberOfBarsPerLine{4}
 \resetchordbars
-\begin{chordbar}{4}{3}{}
-\end{chordbar}
-\begin{chordbar}{4}{1}{}
-\end{chordbar}
+\countbarsYes
+\input{listingA.lst}
+
+The command \verb|\chordh| enables printing two chords per bar, as this happen quite often.
+Its two arguments are the two chords of the bar.
+For example, the well-know tune "House of the Rising Sun"\footnote{The Animals} chord structure can be printed as this:
+
+\lstinputlisting{listing_HOTRS.lst}
+
+This will be rendered as:
+\resetchordbars
+\countbarsNo
+\input{listing_HOTRS.lst}
+
+\paragraph{Sharps and flats} If you know \LaTeX a bit, you probably know that the {\tt \#} character is a "reserved character" and as such you should'nt be able to use it inside your source file.
+However a special trick has been used here so you can directly type {\tt C\#}\footnote{See \url{https://tex.stackexchange.com/a/467566/11083} for details.}.
+This {\bf may} lead to some problems in "some" situations, that have not be clearly identified.
+If you encounter an issue, please report it on the home page of this package and give an MCVE\footnote{Minimal, Complete, and Verifiable Example}.
+
+The alternate solution is either to escape the \# or to use the \btt sharp math symbol ():
+
+\begin{lstlisting}
+\chordbar{C\#}
+\chordbar{C$\sharp$}
+\end{lstlisting}
+
 
 \section{Configuration}
 
@@ -104,7 +124,7 @@ In that case, it is useful to have for each part the number of repetitions and t
 On the other side, this package can be used also to provide a quick way to show the harmony of the different parts, without any structure or bar count.
 This, printing the bar number becomes useless.
 
-The opposite is of course {\btt \tbs countbarsNo}.
+To stop the behaviour, the command is {\btt \tbs countbarsNo}.
 
 \item Additionaly, if the above command is issued, then the package can compute the total number of bars and the duration of the song.
 This is done by issuing the command {\btt \tbs printNbBars} at the end of the file.
@@ -126,10 +146,9 @@ Besides the commands that can be used inside the chordbar environment, this pack
 \end{itemize}
 
 
-\section{FAQ}
+\section{Reference}
 
-\begin{itemize}
-\item Q: How do I do with bars having more/less than 4 beats ? \\
-A: This has not been considered here.
-\end{itemize}
+This section is useful for those who want to contribute or expand this package.
+
+
 \end{document}
