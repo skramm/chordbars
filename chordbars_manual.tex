@@ -2,8 +2,9 @@
 \usepackage[utf8]{inputenc}
 \usepackage{hyperref}
 \usepackage[left=2.00cm,vmargin=1cm]{geometry}
-
+\usepackage{mathcomp} % for \textdiscount
 \usepackage{listings}
+
 \lstset{
 	frame=single
 	,language=TeX
@@ -36,21 +37,27 @@ Package home page: \url{https://github.com/skramm/chordbars}
 
 \section{Motivation}
 
-This type of acompaniment notation is used when you don't need the melody, but you do need the exact bar and chord count.
+This type of acompaniment notation is used when you don't need the melody, but you do need the exact chord and bar count.
 In that case, the full musical sheet is useless, although it can be used to print the chords.
-So some people like to write down the requested song/chord structure in a graphical view (see below). To produce these, some people use GUI software such as word processors, but this has a lot of drawbacks.
+So some people like to write down the requested song/chord structure in a graphical view (see below).
+To produce these, some people use GUI software such as word processors, but this has a lot of drawbacks.
 The aim of this package is to have a \LaTeX way of producing these, with minimal effort.
 
 
 \section{Usage}
 This package provides a single environnment, named {\ttfamily chordbar}, that has 2 mandatory arguments.
-The first arguments is the number of bars, and the second is the pattern name. The latter one can be empty.
+The first argument is the number of bars, and the second is the pattern name.
+The latter one can be empty.
+Inside this environment, you can use several commands, the most basic one is 
+\verb|\chordf| (for "Chord Full bar") that has as unique argument the chord name.
+This argument will just be printed out "as is", usually something like "Cm7", Db9, FMaj7", etc.
+
+For example, the classical 12-bar blues progression will be written as:
 
 \lstinputlisting{listing_blues.lst}
 
 
-
-will produce this:
+This will be rendered as:
 
 \input{listing_blues.lst}
 
@@ -84,7 +91,8 @@ will give the following output, correctly printing out '13' as the initial bar n
 \countbarsYes
 \input{listingA.lst}
 
-The command \verb|\chordh| enables printing two chords per bar, as this happen quite often.
+\paragraph{Two chords per bar} 
+The command \verb|\chordh| enables printing two chords per bar, as this happens quite often.
 Its two arguments are the two chords of the bar.
 For example, the well-know tune "House of the Rising Sun"\footnote{The Animals} chord structure can be printed as this:
 
@@ -95,41 +103,52 @@ This will be rendered as:
 \countbarsNo
 \input{listing_HOTRS.lst}
 
-\paragraph{Sharps and flats} If you know \LaTeX, you may know that the {\tt \#} character is a "reserved character" and as such you should'nt be able to use it inside your source file.
-However a special trick has been used here so you can directly type {\tt C\#}\footnote{See \url{https://tex.stackexchange.com/a/467566/11083} for details.}.
-This {\bf may} lead to some problems in "some" situations, that have not be clearly identified.
-If you encounter an issue, please report it on the home page of this package and give an MCVE\footnote{Minimal, Complete, and Verifiable Example}.
+\paragraph{Sharps and flats} If you know \LaTeX, you may know that the {\btt \#} character is a "reserved character" and as such you should'nt be able to use it inside your source file.
+However a special trick has been used here so you can directly type {\btt \tbs chordf\{C\#\}}.
 
-The alternate solution is either to escape the \# or to use the {\btt sharp} and {\btt flat} symbols, that have been "textified" so you don't need to enter math mode.
+Warning: this {\bf may} lead to some problems in "some" situations, that are not yet clearly identified\footnote{See \url{https://tex.stackexchange.com/a/467566/11083} for details.}.
+If you encounter an issue, please report it on the home page of this package and post an MCVE\footnote{Minimal, Complete, and Verifiable Example}.
+
+The alternate solution is either to escape the \# or to use the {\btt \tbs sharp} and {\btt \tbs flat} symbols, that have been "textified" so you don't need to enter math mode.
 This has the advantage of being also a bit "prettier", although maybe less readable (?).
-You can compare the result with this:
+You can see below the compared renderings of the two alternatives:
 
-\begin{lstlisting}
-\chordbar{C\#}
-\chordbar{C\sharp}
-\end{lstlisting}
+\vspace{1em}
 
+\noindent
+\begin{minipage}{0.54\textwidth}
 \lstinputlisting{listing_sharp_flat.lst}
-
+\end{minipage}
+%
+\begin{minipage}{0.42\textwidth}
 \input{listing_sharp_flat.lst}
+\end{minipage}
 
 \section{Configuration}
 
 Several commands allow to customize the way the grids are printed out.
 
 \begin{itemize}
+
+\item The size of the grids can be adjusted with the internal variable 
+{\btt \tbs barsize}.
+The default value is 1.6, but you can adjust it anytime inside your document, for example with:\\
+{\btt \tbs def\tbs barsize\{1.8\}}
+
+The font size is at present fixed.
+
 \item The command {\btt \tbs countbarsYes} enables counting the bars of the song:
 each grid will have printed on the left side the number of the first bar of the grid.
 It also enables printing the number of repetitions of this part on the right side of the grid.
 
-This command is the useful in the sense that this package can be used in two ways:
+This command is useful in the sense that this package can be used in two ways:
 it can provide the whole structure of a song.
 In that case, it is useful to have for each part the number of repetitions and the bar count, so that when the band leader says "lets start again at bar 75", everybody can find it easily.
 
 On the other side, this package can be used also to provide a quick way to show the harmony of the different parts, without any structure or bar count.
 This, printing the bar number becomes useless.
 
-To stop the behaviour, the command is {\btt \tbs countbarsNo}.
+To stop this behaviour (anytime), the command is {\btt \tbs countbarsNo}.
 
 \item Additionaly, if the above command is issued, then the package can compute the total number of bars and the duration of the song.
 This is done by issuing the command {\btt \tbs printNbBars} at the end of the file.
@@ -139,14 +158,29 @@ The number of beats per bar is limited at present at two values, 3 or 4, with th
 {\btt \tbs bpbfour} or {\btt \tbs bpbthree}.
 The default value is 4 beats per bar.
 
+\item As you have seen above, the command {\btt \tbs repeatBar} will be rendered as \textdiscount{} and means "repeat last chord".
+In some situations, it can be useful to show a repetitions spanning two bars.
+Fo this you can use {\btt \tbs repeatBarPair}.
+For example, see the source below showing a classical II/V-I pattern played twice and its rendering:
 
-\end{itemize}
+\noindent
+\begin{minipage}{0.45\textwidth}
+\lstinputlisting{listing_RBP.lst}
+\end{minipage}
+%
+\begin{minipage}{0.42\textwidth}
+\input{listing_RBP.lst}
+\end{minipage}
 
-\section{Additional commands}
 
-Besides the commands that can be used inside the chordbar environment, this package provides the following commands:
 
-\begin{itemize}
+%\end{itemize}
+
+%\section{Additional commands}
+
+%Besides the commands that can be used inside the chordbar environment, this package provides the following commands:
+
+%\begin{itemize}
 \item {\ttfamily \textbackslash resetchordbars}: this will reset the bar and part counters, useful if you want to print two songs in the same document.
 \end{itemize}
 
@@ -155,5 +189,6 @@ Besides the commands that can be used inside the chordbar environment, this pack
 
 This section is useful for those who want to contribute or expand this package.
 
+(TO BE EXPANDED)
 
 \end{document}
