@@ -19,7 +19,6 @@
 
 
 % TODO define command to have 1 chord per beat
-% TODO bug fix: when 8 bars per line and only 4
 
 
 \NeedsTeXFormat{LaTeX2e}
@@ -272,15 +271,14 @@
 		\refstepcounter{NumMesure}%
 		\refstepcounter{CurrentBarInLine}%
 
-
-		\pgfmathsetmacro{\xa}{(\theCurrentBarInLine-1)*\barsize}
-		\pgfmathsetmacro{\xb}{\theCurrentBarInLine*\barsize}
-
-		\pgfmathsetmacro{\ya}{\theCurrentLine*\barsize}
-		\pgfmathsetmacro{\ya}{(\theCurrentLine+1)*\barsize}
+%		\pgfmathsetmacro{\xa}{(\theCurrentBarInLine-1)*\barsize}
+%		\pgfmathsetmacro{\xb}{\theCurrentBarInLine*\barsize}
+%
+%		\pgfmathsetmacro{\ya}{\theCurrentLine*\barsize}
+%		\pgfmathsetmacro{\ya}{(\theCurrentLine+1)*\barsize}
 		
 % diagonal line
-%	\draw (\xa,\ya) -- (\xb,\yb);
+%	\draw (\xa,\ya) -- (\xb,\yb);  A BUG HERE: investigate
 		\draw
 		(\theCurrentBarInLine*\barsize,{\theCurrentLine*\barsize})
 			--
@@ -323,7 +321,7 @@
 	\xdef\NbBarsInitialLine{\NumberOfBarsPerLine}
 	\ifthenelse
 		{#2<\NumberOfBarsPerLine}
-		{\xdef\NbBarsInitialLine{#1}}
+		{\xdef\NbBarsInitialLine{#2}}
 		{}
 			
 % initial horizontal line
