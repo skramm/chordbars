@@ -346,5 +346,14 @@ arg1=#1
 
 \AtBeginDocument{\catcode`#=12 }
 
+% additional code: redefine sharp and flat in text mode
+% from https://tex.stackexchange.com/a/422249/11083
+
+\let\OLDsharp\sharp
+\renewcommand{\sharp}{\ensuremath{\OLDsharp}}
+\let\OLDflat\flat
+\renewcommand{\flat}{\ensuremath{\OLDflat}}
+
+
 \endinput
   

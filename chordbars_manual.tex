@@ -95,18 +95,23 @@ This will be rendered as:
 \countbarsNo
 \input{listing_HOTRS.lst}
 
-\paragraph{Sharps and flats} If you know \LaTeX a bit, you probably know that the {\tt \#} character is a "reserved character" and as such you should'nt be able to use it inside your source file.
+\paragraph{Sharps and flats} If you know \LaTeX, you may know that the {\tt \#} character is a "reserved character" and as such you should'nt be able to use it inside your source file.
 However a special trick has been used here so you can directly type {\tt C\#}\footnote{See \url{https://tex.stackexchange.com/a/467566/11083} for details.}.
 This {\bf may} lead to some problems in "some" situations, that have not be clearly identified.
 If you encounter an issue, please report it on the home page of this package and give an MCVE\footnote{Minimal, Complete, and Verifiable Example}.
 
-The alternate solution is either to escape the \# or to use the \btt sharp math symbol ():
+The alternate solution is either to escape the \# or to use the {\btt sharp} and {\btt flat} symbols, that have been "textified" so you don't need to enter math mode.
+This has the advantage of being also a bit "prettier", although maybe less readable (?).
+You can compare the result with this:
 
 \begin{lstlisting}
 \chordbar{C\#}
-\chordbar{C$\sharp$}
+\chordbar{C\sharp}
 \end{lstlisting}
 
+\lstinputlisting{listing_sharp_flat.lst}
+
+\input{listing_sharp_flat.lst}
 
 \section{Configuration}
 
