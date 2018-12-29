@@ -32,12 +32,19 @@
 }
 \usepackage{chordbars}
 
+% Add an extra line between paragraphs.
+\setlength{\parskip}{0.5\baselineskip}
+
+% Remove the indent at the start of paragraphs.
+\setlength{\parindent}{0pt}
+
 % Bold + tt
 \newcommand{\btt}{\bfseries \ttfamily } 
 
 % shorthand
 \newcommand{\tbs}{\textbackslash{}} 
 
+%\usepackage{parskip}
 
 \title{The chordbars Package}
 \author{S. Kramm}
@@ -196,7 +203,12 @@ Several commands allow to customize the way the grids are printed out.
 The default value is 1.6, but you can adjust it anytime inside your document, for example with:\\
 {\btt \tbs def\tbs barsize\{1.8\}}
 
-The font size is at present fixed.
+The font used for the chords can be adjusted by redefining the variable {\btt \tbs chordFontSize} with classical \LaTeX{} font specifications.
+The default value is {\btt \tbs normalsize \tbs bfseries}.
+If you need better readability when extending grid size, you can add for example this, in the preamble of the document:
+
+{\btt \tbs def\tbs chordFontSize\{\tbs large\tbs bfserie\}}
+
 
 \item The command {\btt \tbs countbarsYes} enables counting the bars of the song:
 each grid will have printed on the left side the number of the first bar of the grid.
@@ -260,14 +272,14 @@ Internal counters:
 
 The relative sizes of the grid and the chord printing are not automatically adjusted.
 Thus, in some case, the chord name will be too large for the grid.
-In that case, you just need to enlarge the grid size (see section \ref {sec:config}).
+In that case, you just need to enlarge the grid size and/or adjust the font size (see section \ref {sec:config}).
 
 \section{Release history}
 
 \begin{itemize}
 \item 2018-12-28: First release (v1.0) and upload to CTAN
 
-\item 2018-12-29: added commands {\btt \tbs chordline} and {\btt \tbs addHalfBar}, bugfixes
+\item 2018-12-29: Release 1.1, added commands {\btt \tbs chordline} and {\btt \tbs addHalfBar}, added font commands, fixed manual, bugfixes
 \end{itemize}
 
 

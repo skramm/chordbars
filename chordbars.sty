@@ -104,6 +104,9 @@
 \def\barsize{1.6}%	
 \def\delta{0.36}
 
+\def\chordFontSize{\normalsize \bfseries}
+\def\titleFontSize{\large \bfseries}
+
 \xdef\NumberOfBarsPerLine{4}
 
 % arg1: chord
@@ -122,11 +125,11 @@
 	\ifthenelse
 		{\boolean{printBarNumber}}	
 		{
-			\draw (0,-\barsize*.2) node [anchor=west, align=left] {\bf Part \theNumPart: #3};
+			\draw (0,-\barsize*.2) node [anchor=west, align=left,font=\titleFontSize] {Part \theNumPart: #3};
 			\draw (-.3,.5*\barsize) node{\bf \theNumMesure};
 		} 
 		{
-			\draw (0,-\barsize*.2) node [anchor=west, align=left] {\bf #3};
+			\draw (0,-\barsize*.2) node [anchor=west, align=left,font=\titleFontSize] {#3};
 		} 
 
 	\draw (0,0) -- (#2*\barsize,0);               % horizontal lines
@@ -134,7 +137,7 @@
 
 	\draw (0,0) -- (0,\barsize);                  % first vertical line
 	\draw (\barsize,0) -- (\barsize,\barsize);    % second vertical line
-	\draw (\barsize/2,\barsize/2) node {#1};      % chord name
+	\draw (\barsize/2,\barsize/2) node [font=\chordFontSize]{#1};      % chord name
 
 	\foreach \k in {2,...,{#2}}
 	{
@@ -184,7 +187,7 @@
 		\refstepcounter{CurrentBarInLine}%
 		\pgfmathsetmacro{\x}{-\barsize/2+\theCurrentBarInLine*\barsize}
 		\pgfmathsetmacro{\y}{\value{CurrentLine})*\barsize+\barsize/2}		
-		\draw (\x,\y) node {##1};%
+		\draw (\x,\y) node [font=\chordFontSize]{##1};%
 	}%
 
 	\newcommand{\chordh}[2]%
@@ -210,11 +213,11 @@
 		\draw (
 			{-3*\barsize/4+\theCurrentBarInLine*\barsize},
 			{\theCurrentLine*\barsize+1*\barsize/4}
-		) node {##1};
+		) node [font=\chordFontSize]{##1};
 		\draw (
 			{-\barsize/4+\theCurrentBarInLine*\barsize},
 			{\theCurrentLine*\barsize+3*\barsize/4}
-		) node {##2};%	
+		) node [font=\chordFontSize]{##2};%	
 		
 	}
 	
@@ -293,7 +296,7 @@
 
 		\pgfmathsetmacro{\x}{-3*\barsize/4+\theCurrentBarInLine*\barsize}
 		\pgfmathsetmacro{\y}{\value{CurrentLine})*\barsize+\barsize/4}		
-		\draw (\x,\y) node {##1};%
+		\draw (\x,\y) node [font=\chordFontSize]{##1};%
 	
 	}
 		
@@ -330,8 +333,8 @@
 % draw part title	
 	\ifthenelse
 		{\boolean{printBarNumber}}	
-		{\draw (0,-\barsize*.2) node [anchor=west, align=left] {\bf Part \theNumPart: #3};} 
-		{\draw (0,-\barsize*.2) node [anchor=west, align=left] {\bf #3};} 
+		{\draw (0,-\barsize*.2) node [anchor=west, align=left,font=\titleFontSize] {Part \theNumPart: #3};} 
+		{\draw (0,-\barsize*.2) node [anchor=west, align=left,font=\titleFontSize] {#3};} 
 
 	\pgfmathtruncatemacro{\nblines}{(#2-1)/\NumberOfBarsPerLine+1}	
 	\typeout{chordbarl: nblines=\nblines}
