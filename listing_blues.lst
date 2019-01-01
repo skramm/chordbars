@@ -1,8 +1,8 @@
 \begin{chordbar}{12}{Classical 12 bar E blues}
-\chordf{E} \chordf{A}
-\chordf{E} \repeatBar
-\chordf{A} \repeatBar
-\chordf{E} \repeatBar
-\chordf{B} \chordf{A}
-\chordf{E} \chordf{B}
+\chordf{E7} \chordf{A7}
+\chordf{E7} \repeatBar
+\chordf{A7} \repeatBar
+\chordf{E7} \repeatBar
+\chordf{B7} \chordf{A7}
+\chordf{E7} \chordf{B7}
 \end{chordbar}
