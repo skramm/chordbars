@@ -67,7 +67,7 @@ This type of acompaniment notation is used when you don't need the melody, but y
 In that case, the full musical sheet is useless, although it can be used to print the chords.
 So some people like to write down the requested song/chord structure in a graphical view (see below).
 To produce these, some people use GUI software such as word processors, but this has a lot of drawbacks.
-The aim of this package is to have a \LaTeX way of producing these, with minimal effort.
+The aim of this package is to have a \LaTeX{} way of producing these, with minimal effort.
 
 
 \section{Usage}
@@ -81,12 +81,12 @@ This argument will just be printed out "as is", usually something like Cm7, Db9,
 
 For example, the classical 12-bar blues progression will be written as:
 
-\lstinputlisting{listing_blues.lst}
+\lstinputlisting{manual_lst/listing_blues.lst}
 
 
 This will be rendered as:
 
-\input{listing_blues.lst}
+\input{manual_lst/listing_blues.lst}
 
 Each square stands for a 4-beat bar, and this is read left to right.
 The special symbol you can see in bars 4, 6 and 8 means "play the same content on this bar as the previous bar".
@@ -102,7 +102,7 @@ The default behavior is to have 4-bars long lines, but you can change this anyti
 just before the above source code will print out the same 12-bars blues as above, but in a rather awkward view with 6 bars per line\footnote{Don't do this, of course!}.
 
 \def\NumberOfBarsPerLine{6}
-\input{listing_blues.lst}
+\input{manual_lst/listing_blues.lst}
 
 \subsection{Handling song structure and bar count}
 
@@ -115,7 +115,7 @@ To enable this, you need to activate this option, with this inserted after the \
 \end{lstlisting}
 
 Then, this:
-\lstinputlisting{listingA.lst}
+\lstinputlisting{manual_lst/listingA.lst}
 
 will give the following output, correctly printing out '13' as the initial bar number of the second part (part 1 is 4 bars long and is repeated 3 times).
 
@@ -123,7 +123,7 @@ will give the following output, correctly printing out '13' as the initial bar n
 \resetchordbars
 \countbarsYes
 %\mbox{
-\input{listingA.lst}
+\input{manual_lst/listingA.lst}
 %}
 
 \subsection{Two chords per bar.} 
@@ -131,12 +131,12 @@ The command \verb|\chordh| enables printing two chords per bar, as this happens 
 Its two arguments are the two chords of the bar.
 For example, the well-know tune "House of the Rising Sun"\footnote{The Animals} chord structure can be printed as this:
 
-\lstinputlisting{listing_HOTRS.lst}
+\lstinputlisting{manual_lst/listing_HOTRS.lst}
 
 This will be rendered as:
 \resetchordbars
 \countbarsNo
-\input{listing_HOTRS.lst}
+\input{manual_lst/listing_HOTRS.lst}
 
 \subsection{Sharps and flats.} If you know \LaTeX, you may know that the {\btt \#} character is a "reserved character" and as such you should'nt be able to use it inside your source file.
 However a special trick has been used here so you can directly type {\btt \tbs chordf\{C\#\}}.
@@ -152,11 +152,11 @@ You can see below the compared renderings of the two alternatives:
 
 \noindent
 \begin{minipage}{0.54\textwidth}
-\lstinputlisting{listing_sharp_flat.lst}
+\lstinputlisting{manual_lst/listing_sharp_flat.lst}
 \end{minipage}
 %
 \begin{minipage}{0.42\textwidth}
-\input{listing_sharp_flat.lst}
+\input{manual_lst/listing_sharp_flat.lst}
 \end{minipage}
 
 \subsection{Long parts on same chord}
@@ -182,11 +182,11 @@ This is handled with the special command {\btt \tbs addHalfBar} thats needs to b
 
 See for example this chord progression and its rendering:
 
-\lstinputlisting{listing_halfbar.lst}
+\lstinputlisting{manual_lst/listing_halfbar.lst}
 
 \resetchordbars
 \countbarsYes
-\input{listing_halfbar.lst}
+\input{manual_lst/listing_halfbar.lst}
 
 "Part 1" has an extra 2-beats bar added at the end, and the bar count is adjusted to take this into account.
 So "Part 2" starts at bar 6.
@@ -248,12 +248,12 @@ For example, see the source below showing a classical II-V-I pattern played twic
 
 \noindent
 \begin{minipage}{0.45\textwidth}
-\lstinputlisting{listing_RBP.lst}
+\lstinputlisting{manual_lst/listing_RBP.lst}
 \end{minipage}
 %
 \begin{minipage}{0.42\textwidth}
 \countbarsNo
-\input{listing_RBP.lst}
+\input{manual_lst/listing_RBP.lst}
 \end{minipage}
 
 \item {\ttfamily \textbackslash resetchordbars}: this will reset the bar and part counters, useful if you want to print two songs in the same document.
