@@ -39,9 +39,12 @@
 
 \newcommand{\songtitle}
 {
+%\tikzstyle{block} = [draw, rectangle, fill=blue!50,, text centered, minimum height=8mm,node distance=10em]
   \begin{center}%
   	\begin{tikzpicture}[line width=1.5pt]
 	\tikzstyle{block} = [rectangle, draw, text width=20em, text centered, minimum height=4em]
+%	\tikzstyle{block} = [rectangle, draw, text centered, minimum height=4em]
+%	\tikzstyle{block} = [rectangle, draw, minimum height=4em]
       	\node [block,font=\fontsize{20}{28}\selectfont\bfseries] (init) { \@title\\ \@author };
   	\end{tikzpicture}
   \end{center}%
@@ -159,6 +162,7 @@
 	\end{tikzpicture}
 	}
 	\addtocounter{NumMesure}{#2}
+	\addtocounter{NumMesure}{-1}
 }
 
 %==========================================================================
@@ -361,11 +365,11 @@
 	\setcounter{NumMesure}{#1*#2+\value{NumMesure}-1}
 
 % print the number of repetitions
-	\ifnum#1=1 {}
+	\ifnum#1=1 {} % do nothing
 	\else
 	\ifthenelse
 			{\boolean{printBarNumber}}
-			{\draw (\NbBarsInitialLine*\barsize+1,0.5*\barsize) node {\Large \bf x~#1};}
+			{\draw (\NbBarsInitialLine*\barsize+.6,0.5*\barsize) node {\Large \bf $\times$~#1};}
 			{} 
 	\fi
 }%
