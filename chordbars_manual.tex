@@ -138,7 +138,11 @@ This will be rendered as:
 \countbarsNo
 \input{manual_lst/listing_HOTRS.lst}
 
-\subsection{Sharps and flats.} If you know \LaTeX, you may know that the {\btt \#} character is a "reserved character" and as such you should'nt be able to use it inside your source file.
+\subsection{Chord notation}
+
+\paragraph{Sharps and flats}
+
+If you know \LaTeX, you may know that the {\btt \#} character is a "reserved character" and as such you should'nt be able to use it inside your source file.
 However a special trick has been used here so you can directly type {\btt \tbs chordf\{C\#\}}.
 
 Warning: this {\bf may} lead to some problems in "some" situations, that are not yet clearly identified\footnote{See \url{https://tex.stackexchange.com/a/467566/11083} for details.}.
@@ -151,13 +155,34 @@ You can see below the compared renderings of the two alternatives:
 \vspace{1em}
 
 \noindent
-\begin{minipage}{0.54\textwidth}
+\begin{minipage}{0.7\textwidth}
 \lstinputlisting{manual_lst/listing_sharp_flat.lst}
 \end{minipage}
 %
-\begin{minipage}{0.42\textwidth}
+\begin{minipage}{0.3\textwidth}
 \input{manual_lst/listing_sharp_flat.lst}
 \end{minipage}
+
+\paragraph{Other chords}
+This isn't directly related with the package but be aware that you can use some shorthands to write chord names.
+For example in Europe the "m7b5" (VII degree of minor scale) is frequently noted \O.
+This is rendered with the \LaTeX{} native symbol {\tt \textbackslash O}.
+The diminished chord, sometimes named "dim" (minor third, diminished fifth and minor seventh) is noted \dim.
+This is rendered with the command {\tt \textbackslash dim}
+(defined as an alias on symbol {\tt \textbackslash fullmoon} from package {\tt wasysym}.
+
+See below a comparison of these notations:
+
+\noindent
+\begin{minipage}{0.54\textwidth}
+\lstinputlisting{manual_lst/listing_notation.lst}
+\end{minipage}
+%
+\begin{minipage}{0.42\textwidth}
+\input{manual_lst/listing_notation.lst}
+\end{minipage}
+
+
 
 \subsection{Long parts on same chord}
 In some songs, you often have several bars on the same chord, say as an introduction or a bridge between two parts.
