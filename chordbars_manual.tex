@@ -81,6 +81,7 @@ This argument will just be printed out "as is", usually something like Cm7, Db9,
 
 For example, the classical 12-bar blues progression will be written as:
 
+\def\chordFontSize{\huge\bfseries}
 \lstinputlisting{manual_lst/listing_blues.lst}
 
 
@@ -94,6 +95,7 @@ The special symbol you can see in bars 4, 6 and 8 means "play the same content o
 As usual with \LaTeX{} source files, spaces and line-feeds are ignored.
 
 The default behavior is to have 4-bars long lines, but you can change this anytime by giving a different value to {\btt \tbs NumberOfBarsPerLine}. For example, issuing the command
+
 
 \begin{lstlisting}
 \def\NumberOfBarsPerLine{3}
@@ -134,6 +136,7 @@ For example, the well-know tune "House of the Rising Sun"\footnote{The Animals} 
 \lstinputlisting{manual_lst/listing_HOTRS.lst}
 
 This will be rendered as:
+\def\chordFontSize{\Large\bfseries}
 \resetchordbars
 \countbarsNo
 \input{manual_lst/listing_HOTRS.lst}
@@ -155,7 +158,7 @@ You can see below the compared renderings of the two alternatives:
 \vspace{1em}
 
 \noindent
-\begin{minipage}{0.7\textwidth}
+\begin{minipage}{0.6\textwidth}
 \lstinputlisting{manual_lst/listing_sharp_flat.lst}
 \end{minipage}
 %
@@ -165,7 +168,7 @@ You can see below the compared renderings of the two alternatives:
 
 \paragraph{Other chords}
 This isn't directly related with the package but be aware that you can use some shorthands to write chord names.
-For example in Europe the "m7b5" (VII degree of minor scale) is frequently noted \O.
+For example in Europe the "m7b5" (VII degree of minor scale) is frequently noted \O and called "hafl-dimished" chord.
 This is rendered with the \LaTeX{} native symbol {\tt \textbackslash O}.
 The diminished chord, sometimes named "dim" (minor third, diminished fifth and minor seventh) is noted \dim.
 This is rendered with the command {\tt \textbackslash dim}
@@ -173,6 +176,7 @@ This is rendered with the command {\tt \textbackslash dim}
 
 See below a comparison of these notations:
 
+\def\chordFontSize{\normalsize\bfseries}
 \noindent
 \begin{minipage}{0.54\textwidth}
 \lstinputlisting{manual_lst/listing_notation.lst}
@@ -231,14 +235,14 @@ Several commands allow to customize the way the grids are printed out.
 
 \item The size of the grids can be adjusted with the internal variable 
 {\btt \tbs barsize}.
-The default value is 1.6, but you can adjust it anytime inside your document, for example with:\\
+The default value is 1.6cm, but you can adjust it anytime inside your document, for example with:\\
 {\btt \tbs def\tbs barsize\{1.8\}}
 
 The font used for the chords can be adjusted by redefining the variable {\btt \tbs chordFontSize} with classical \LaTeX{} font specifications.
 The default value is {\btt \tbs normalsize \tbs bfseries}.
-If you need better readability when extending grid size, you can add for example this, in the preamble of the document:
+If you need better readability when extending grid size, you can add for example this anywhere in your document:
 
-{\btt \tbs def\tbs chordFontSize\{\tbs large\tbs bfseries\}}
+{\btt \tbs def\tbs chordFontSize\{\tbs huge\tbs bfseries\}}
 
 
 \item The command {\btt \tbs countbarsYes} enables counting the bars of the song:
@@ -250,7 +254,7 @@ it can provide the whole structure of a song.
 In that case, it is useful to have for each part the number of repetitions and the bar count, so that when the band leader says "lets start again at bar 75", everybody can find it easily.
 
 On the other side, this package can be used also to provide a quick way to show the harmony of the different parts, without any structure or bar count.
-This, printing the bar number becomes useless.
+In this situation, printing the bar number is useless.
 
 To stop this behaviour (anytime), the command is {\btt \tbs countbarsNo}.
 
