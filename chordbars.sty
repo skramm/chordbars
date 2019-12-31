@@ -99,16 +99,21 @@
 	}{}
 }
 
+% This boolean will be used to adjust horizontal position of the
+% number of repetitions when a half bar is added (see \addHalfBar)
+\newboolean{hasHalfBar}
+%\setboolean{hasHalfBar}{false}  
+
 \newboolean{printBarNumber}
 
 \newcommand{\countbarsYes}
 {
-	\setboolean{printBarNumber}{true}  
+	\setboolean{printBarNumber}{true} 
 }
 
 \newcommand{\countbarsNo}
 {
-	\setboolean{printBarNumber}{false}  
+	\setboolean{printBarNumber}{false}
 }
 
 \def\barsize{1.6}%	
@@ -282,7 +287,15 @@
 
 	\newcommand{\addHalfBar}[1]%
 	{
-		\refstepcounter{NumMesure}%
+		\setboolean{hasHalfBar}{true}  
+%
+% BUG HERE: the part might have some repetitions (arg 1), so we need to increment
+% NumMesure by the number of repetions
+%		\refstepcounter{NumMesure}%
+% REPLACED BY
+		\addtocounter{NumMesure}{#1}
+% /BUG
+%		
 		\refstepcounter{CurrentBarInLine}%
 
 %		\pgfmathsetmacro{\xa}{(\theCurrentBarInLine-1)*\barsize}
@@ -310,13 +323,16 @@
 		\draw (\x,\y) node [font=\chordFontSize]{##1};%
 	
 	}
-		
+
+% HERE beginning of environment code		
 %	\typeout{chordbar: START #3}
 
 	\fontfamily{phv}\selectfont
 	\setcounter{CurrentLine}{0}
 	\setcounter{CurrentBarInLine}{0}
 	\setcounter{CurrentBar}{0}
+%	\setboolean{hasHalfBar}{true}  
+	\setboolean{hasHalfBar}{false}  
 
 	\refstepcounter{NumPart}%
 	\refstepcounter{NumMesure}%
@@ -374,9 +390,16 @@
 % print the number of repetitions
 	\ifnum#1=1 {} % do nothing
 	\else
-	\ifthenelse
+%--------------------
+% THIS HERE IS WIP !	
+		\ifthenelse
+			 {\boolean{hasHalfBar}}
+			 {\def\xoffset{2.0}}
+			 {\def\xoffset{1.5}}
+%--------------------			 
+ 		\ifthenelse
 			{\boolean{printBarNumber}}
-			{\draw (\NbBarsInitialLine*\barsize+.6,0.5*\barsize) node {\Large \bf $\times$~#1};}
+			{\draw (\NbBarsInitialLine*\barsize+\xoffset,0.5*\barsize) node {\Large \bf $\times$~#1};}
 			{} 
 	\fi
 }%
