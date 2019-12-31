@@ -1,0 +1,51 @@
+\documentclass[11pt]{article}
+%\usepackage[utf8]{inputenc}
+\usepackage{ifthen}
+\usepackage{tikz}
+%\usepackage{pgfmath}
+
+
+
+
+\newenvironment{myenva}
+{
+	\begin{tikzpicture}
+}
+{
+	\end{tikzpicture}
+}
+
+\newenvironment{myenvb}
+{
+	\scalebox{4}{
+	\begin{tikzpicture}
+}
+{
+	\end{tikzpicture}
+	}
+}
+
+
+\newcommand{\mydraw}
+{
+\draw (0,0) -- (1,0) -- (1,1) -- (0,1);
+}
+	
+\begin{document}
+
+
+\scalebox{3}{
+\begin{myenva}
+\mydraw
+\end{myenva}
+}
+
+
+\begin{myenvb}
+\mydraw
+\end{myenvb}
+
+
+
+
+\end{document}

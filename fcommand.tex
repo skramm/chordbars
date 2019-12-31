@@ -1,0 +1,6 @@
+%fcommand.tex
+	\newcommand{\chordf}[1]%
+	{ %
+		\refstepcounter{CurrentBar}%
+		\draw (-\barsize/2+\theCurrentBar*\barsize,\barsize/2) node {##1};%
+	}%

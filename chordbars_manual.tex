@@ -163,16 +163,28 @@ You can see below the compared renderings of the two alternatives:
 \end{minipage}
 %
 \begin{minipage}{0.3\textwidth}
+\def\chordFontSize{\Huge\bfseries}
 \input{manual_lst/listing_sharp_flat.lst}
 \end{minipage}
 
 \paragraph{Other chords}
-This isn't directly related with the package but be aware that you can use some shorthands to write chord names.
-For example in Europe the "m7b5" (VIIth degree of minor scale) is frequently noted \O{} and called "half-diminished" chord.
+This isn't directly related with the package but it provides some shorthands to write chord names.
+
+%For example in Europe the "m7b5" (VIIth degree of minor scale) is frequently noted \O{} and called "half-diminished" chord.
+%This is rendered with the \LaTeX{} native symbol {\tt \textbackslash O}.
+%The diminished chord, sometimes named "dim" (minor third, diminished fifth and minor seventh) is noted \dim.
+%This is rendered with the command {\tt \textbackslash dim}
+%(defined as an alias on symbol {\tt \textbackslash fullmoon} from package {\tt wasysym}.
+\begin{itemize}
+\item The "m7b5" (VIIth degree of minor scale) is frequently noted \O{} and called "half-diminished" chord.
 This is rendered with the \LaTeX{} native symbol {\tt \textbackslash O}.
-The diminished chord, sometimes named "dim" (minor third, diminished fifth and minor seventh) is noted \dim.
+\item The diminished chord, sometimes named "dim" (minor third, diminished fifth and minor seventh) is noted \dim.
 This is rendered with the command {\tt \textbackslash dim}
 (defined as an alias on symbol {\tt \textbackslash fullmoon} from package {\tt wasysym}.
+\item The Maj7 chord is sometimes noted $\Delta$
+(\LaTeX{} math symbol {\tt \$\textbackslash Delta\$}).
+A shorthand is provided with the symbol {\tt \textbackslash Maj7}.
+\end{itemize}
 
 See below a comparison of these notations:
 
@@ -206,7 +218,7 @@ Please note that this will always be a single line, so it is limited to standard
 
 \subsection{Half bars}
 
-In some tunes, there can be a "special" bar inserted at one point that only has 2 beats instead of the regular 4-beat bars .
+In some tunes, there can be a "special" bar inserted at one point that only has 2 beats instead of the regular 4-beat bars.
 This is handled with the special command {\btt \tbs addHalfBar} thats needs to be inserted in last position in a {\btt chordbar} environment.
 
 See for example this chord progression and its rendering:
@@ -316,8 +328,10 @@ In that case, you just need to enlarge the grid size and/or adjust the font size
 
 \item 2018-12-29: Release 1.1, added commands {\btt \tbs chordline} and {\btt \tbs addHalfBar}, added font commands, fixed manual, bugfixes
 
-\item 2018-XX-XX
- fixed symbol for nb of repetitions
+\item 2019-XX-XX
+ - fixed symbol for nb of repetitions
+ - added "dim" chords
+ - bugfixes
 \end{itemize}
 
 

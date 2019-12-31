@@ -37,14 +37,14 @@ Whole line of same chord:
 You can print some notes between the different parts
 
 \def\barsize{1.8}%	
-
+\def\chordFontSize{\huge\bfseries}
 \begin{chordbar}[3]{6}{Intro b}
 \chordf{C#}
 \repeatBar
 \chordh{A}{D}
 \chordf{F}
 \chordf{F}
-\chordf{D}
+\chordf{D\Maj7}
 \end{chordbar}
 
 %\begin{chordbar}{4}{1}{Intro c}
@@ -64,6 +64,7 @@ You can print some notes between the different parts
 \repeatBar
 \end{chordbar}
 
+\def\chordFontSize{\Large\bfseries}
 \begin{chordbar}{5}{Test of repeatbarpair}
 \chordh{G}{C7}
 \chordf{FMaj7}
