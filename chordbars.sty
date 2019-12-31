@@ -40,6 +40,7 @@
 \def\vspacebefore{1ex}
 \def\vspaceafter{1ex}
 \def\dim{\fullmoon}
+\def\Maj7{$\Delta$}
 
 \newcommand{\songtitle}
 {
@@ -210,7 +211,7 @@
 			}
 			{}
 		\refstepcounter{CurrentBarInLine}%
-		\typeout{CurrentBarInLine=\theCurrentBarInLine}
+%		\typeout{CurrentBarInLine=\theCurrentBarInLine}
 		\draw ( %
 			{\barsize*(\theCurrentBarInLine-1)}, %
 			{(\theCurrentLine+1)*\barsize} %
@@ -310,7 +311,7 @@
 	
 	}
 		
-	\typeout{chordbar: START #3}
+%	\typeout{chordbar: START #3}
 
 	\fontfamily{phv}\selectfont
 	\setcounter{CurrentLine}{0}
@@ -347,7 +348,7 @@
 		{\draw (0,-\barsize*.2) node [anchor=west, align=left,font=\titleFontSize] {#3};} 
 
 	\pgfmathtruncatemacro{\nblines}{(#2-1)/\NumberOfBarsPerLine+1}	
-	\typeout{chordbarl: nblines=\nblines}
+%	\typeout{chordbarl: nblines=\nblines}
 	\foreach \line in {1,...,\nblines}
 	{
 
@@ -359,7 +360,7 @@
 			\xdef\nbbars{\nbbars}
 		}
 		\fi
-		\typeout{chordbarl: nbbars=\nbbars}
+%		\typeout{chordbarl: nbbars=\nbbars}
 		\foreach \k in {1,...,{\nbbars}}
 		{
 			\draw (\k*\barsize,{(\line-1)*\barsize}) -- (\k*\barsize,{\line*\barsize});
@@ -380,7 +381,7 @@
 	\fi
 }%
 {
-\typeout{chordbar: END}
+%\typeout{chordbar: END}
 	\end{tikzpicture}
 %	} %
 %	\par\noindent%
