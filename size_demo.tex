@@ -1,0 +1,151 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[left=2.00cm,vmargin=1cm]{geometry}
+\usepackage[12pt]{moresize}
+\usepackage{hyperref}
+\usepackage{chordbars}
+
+\title{Size demo of the chorbars package}
+\author{S. Kramm}
+
+\begin{document}
+
+
+\countbarsNo
+
+\songtitle
+
+
+This is an size-demo, provided to be able to have a quick glance at what size choices can be done.
+It is build with the "article" class,
+using a default "12pt" font size and the "moresize" package
+\footnote{Without this additional package, and according to \url{https://www.sascha-frank.com/latex-font-size.html},
+the \textbackslash huge and \textbackslash Huge are both 25pt (the same!) when using the "12pt" article option.
+This is not the case when using "11pt" font size.}.
+See chordbar manual or source file for details.
+
+Build on \today.
+
+\section{- barsize=1.5}
+\def\barsize{1.5}%	
+
+\def\chordFontSize{\large\bfseries}
+\begin{chordbar}{4}{Font=large}
+\chordf{C}
+\chordf{Dm7}
+\chordf{Em7}
+\chordf{F\Maj7}
+\end{chordbar}
+
+
+\def\chordFontSize{\Large\bfseries}
+\begin{chordbar}{4}{Font=Large}
+\chordf{C}
+\chordf{Dm7}
+\chordf{Em7}
+\chordf{F\Maj7}
+\end{chordbar}
+
+\def\chordFontSize{\LARGE\bfseries}
+\begin{chordbar}{4}{Font=LARGE}
+\chordf{C}
+\chordf{Dm7}
+\chordf{Em7}
+\chordf{F\Maj7}
+\end{chordbar}
+
+\section{- barsize=2}
+\def\barsize{2}%	
+
+\def\chordFontSize{\LARGE\bfseries}
+\begin{chordbar}{4}{Font=LARGE}
+\chordf{C}
+\chordf{Dm7}
+\chordf{Em7}
+\chordf{F\Maj7}
+\end{chordbar}
+
+\def\chordFontSize{\huge\bfseries}
+\begin{chordbar}{4}{Font=huge}
+\chordf{C}
+\chordf{Dm7}
+\chordf{Em7}
+\chordf{F\Maj7}
+\end{chordbar}
+
+
+\def\chordFontSize{\Huge\bfseries}
+\begin{chordbar}{4}{Font=Huge}
+\chordf{C}
+\chordf{Dm7}
+\chordf{Em7}
+\chordf{F\Maj7}
+\end{chordbar}
+
+
+\section{- barsize=2.5}
+\def\barsize{2.5}%	
+
+\def\chordFontSize{\LARGE\bfseries}
+\begin{chordbar}{4}{Font=LARGE}
+\chordf{C}
+\chordf{Dm7}
+\chordf{Em7}
+\chordf{F\Maj7}
+\end{chordbar}
+
+\def\chordFontSize{\huge\bfseries}
+\begin{chordbar}{4}{Font=huge}
+\chordf{C}
+\chordf{Dm7}
+\chordf{Em7}
+\chordf{F\Maj7}
+\end{chordbar}
+
+
+\def\chordFontSize{\Huge\bfseries}
+\begin{chordbar}{4}{Font=Huge}
+\chordf{C}
+\chordf{Dm7}
+\chordf{Em7}
+\chordf{F\Maj7}
+\end{chordbar}
+
+\section{- barsize=3}
+\def\barsize{3}%	
+
+\def\chordFontSize{\LARGE\bfseries}
+\begin{chordbar}{4}{Font=LARGE}
+\chordf{C}
+\chordf{Dm7}
+\chordf{Em7}
+\chordf{F\Maj7}
+\end{chordbar}
+
+\def\chordFontSize{\huge\bfseries}
+\begin{chordbar}{4}{Font=huge}
+\chordf{C}
+\chordf{Dm7}
+\chordf{Em7}
+\chordf{F\Maj7}
+\end{chordbar}
+
+
+\def\chordFontSize{\Huge\bfseries}
+\begin{chordbar}{4}{Font=Huge}
+\chordf{C}
+\chordf{Dm7}
+\chordf{Em7}
+\chordf{F\Maj7}
+\end{chordbar}
+
+\def\chordFontSize{\HUGE\bfseries}
+\begin{chordbar}{4}{Font=HUGE}
+\chordf{C}
+\chordf{Dm7}
+\chordf{Em7}
+\chordf{F\Maj7}
+\end{chordbar}
+
+
+\end{document}

@@ -14,12 +14,15 @@
 %\bpm{120}
 %\bpbthree
 
+
 \countbarsYes
 
 \songtitle
 
 %\def\barsize{1.5}%	
-This is a demo example of the chordbars package.
+This is an example done with the chordbars package.
+It is just a pseudo-demo of what the package can achieve, don't take it too seriously.
+
 
 
 \begin{chordbar}{4}{Intro}
@@ -103,6 +106,8 @@ You can print some notes between the different parts
 \repeatBar
 \end{chordbar}
 
+\def\NumberOfBarsPerLine{5}
+
 \begin{chordbar}[2]{10}{2 lines of 5 bars}
 \chordf{C}
 \chordf{D}
@@ -114,73 +119,13 @@ You can print some notes between the different parts
 \repeatBar
 \end{chordbar}
 
-%\end{document}
-\xdef\NumberOfBarsPerLine{8}
+
+\def\NumberOfBarsPerLine{8}
 \begin{chordbar}[2]{6}{coda}
 \chordf{E}
 \chordh{A}{F}
 \end{chordbar}
 
-
-\printNbBars
-
-\end{document}
-% this part has 5 bars on 2 lines
-\begin{chordbarh}{5}{2}{5 half bars}
-%\chordf{C}
-\end{chordbarh}
-
-\end{document}
-
-\begin{chordbarh}{6}{2}{6 half bars}
-\end{chordbarh}
-
-\begin{chordbar}{4}{1}{Intro}
-\chordf{C}
-\chordf{D}
-\chordh{Bm}{1}
-\chordh{Em}{2}
-\chordf{Em}
-\end{chordbar}
-
-
-\begin{chordbar}{4}{1}{This is a very long description}
-\chordfn{1}{C}
-\chordfn{2}{D}
-\chordfn{3}{Em}
-\chordhn{4}{Em}{1}
-\chordhn{4}{B}{2}
-\end{chordbar}
-
-\begin{chordbar}{4}{1}{Intro}
-\chordhn{1}{C}{1}
-\chordhn{1}{D}{2}
-\chordhn{2}{E}{1}
-\chordhn{2}{F}{2}
-\end{chordbar}
-
-
-\begin{chordbar}{8}{2}{Verse}
-\chordf{Em}
-\chordf{Em6}
-\chordf{Em7}
-\chordf{Em-Maj7}
-\chordf{C}
-\chordf{C9}
-\chordf{C}
-\chordf{B}
-\end{chordbar}
-
-\begin{chordbar}{8}{1}{Bridge}
-\chordf{A7}
-\chordf{./.}
-\chordf{B7}
-\chordf{./.}
-\chordf{C}
-\chordf{./.}
-\chordf{B7}
-\chordf{./.}
-\end{chordbar}
 
 \printNbBars
 

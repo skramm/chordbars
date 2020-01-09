@@ -6,9 +6,11 @@ For details, see included manual.
 
 ![One More Time](manual_lst/OneMoreTime.png)
 
-Author: S. Kramm - 2018-2019
+* Author: S. Kramm - 2018-2020
+* Home page: https://github.com/skramm/chordbars
+* Manual: [chordbars_manual.pdf](chordbars_manual.pdf)
+* Licence: The LaTeX project public license (LPPL), version 1.3c
 
-Licence: The LaTeX project public license (LPPL), version 1.3c
 
 Available via CTAN: https://ctan.org/pkg/chordbars
-
+but latest version will be here.

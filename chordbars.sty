@@ -185,6 +185,7 @@
 
 \newenvironment{chordbar}[3][1]
 {
+    % "newline" command: just switches to next line
 	\newcommand{\newchordline}
 	{
 		\setcounter{CurrentBarInLine}{0}
@@ -289,20 +290,11 @@
 	{
 		\setboolean{hasHalfBar}{true}  
 %
-% BUG HERE: the part might have some repetitions (arg 1), so we need to increment
+% The part might have some repetitions (arg 1), so we need to increment
 % NumMesure by the number of repetions
-%		\refstepcounter{NumMesure}%
-% REPLACED BY
 		\addtocounter{NumMesure}{#1}
-% /BUG
 %		
 		\refstepcounter{CurrentBarInLine}%
-
-%		\pgfmathsetmacro{\xa}{(\theCurrentBarInLine-1)*\barsize}
-%		\pgfmathsetmacro{\xb}{\theCurrentBarInLine*\barsize}
-%
-%		\pgfmathsetmacro{\ya}{\theCurrentLine*\barsize}
-%		\pgfmathsetmacro{\ya}{(\theCurrentLine+1)*\barsize}
 		
 % diagonal line
 %	\draw (\xa,\ya) -- (\xb,\yb);  A BUG HERE: investigate
