@@ -34,13 +34,20 @@
 \RequirePackage{ifthen}
 \RequirePackage{wasysym} % for \fullmoon
 
+\RequirePackage{relsize} % added on 2020-01-18
+
 %\RequirePackage{fixltx2e}
 
 % This \dim command is used for diminished chords (until we find a nicer alternative)
 \def\vspacebefore{1ex}
 \def\vspaceafter{1ex}
+
 \def\dim{\fullmoon}
 \def\Maj7{$\Delta$}
+
+\def\add9{\relscale{0.8}\mdseries add9}
+\def\sus4{\relscale{0.8}\mdseries sus4}
+\def\add4{\relscale{0.8}\mdseries sus4}
 
 \newcommand{\songtitle}
 {
