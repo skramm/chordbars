@@ -38,13 +38,14 @@
 
 %\RequirePackage{fixltx2e}
 
-% This \dim command is used for diminished chords (until we find a nicer alternative)
+
 \def\vspacebefore{1ex}
 \def\vspaceafter{1ex}
 
+% This \dim command is used for diminished chords (until we find a nicer alternative)
 \def\dim{\fullmoon}
-\def\Maj7{$\Delta$}
 
+\def\Maj7{$\Delta$}
 \def\add9{\relscale{0.8}\mdseries add9}
 \def\sus4{\relscale{0.8}\mdseries sus4}
 \def\add4{\relscale{0.8}\mdseries sus4}
@@ -54,7 +55,7 @@
 %\tikzstyle{block} = [draw, rectangle, fill=blue!50,, text centered, minimum height=8mm,node distance=10em]
   \begin{center}%
   	\begin{tikzpicture}[line width=1.5pt]
-	\tikzstyle{block} = [rectangle, draw, text width=20em, text centered, minimum height=4em]
+	\tikzstyle{block} = [rectangle, draw, text width=30em, text centered, minimum height=4em]
 %	\tikzstyle{block} = [rectangle, draw, text centered, minimum height=4em]
 %	\tikzstyle{block} = [rectangle, draw, minimum height=4em]
       	\node [block,font=\fontsize{20}{28}\selectfont\bfseries] (init) { \@title\\ \@author };
@@ -410,6 +411,9 @@
 %	\ignorespacesafterend	
 	\vspace{\vspaceafter}
 }
+
+% REMOVE INDENTATION
+\setlength\parindent{0pt}
 
 % so the user can use # without escaping
 % see https://tex.stackexchange.com/questions/467562
