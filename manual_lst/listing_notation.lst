@@ -1,4 +1,5 @@
-\begin{chordbar}{4}{}
+\begin{chordbar}{5}{}
 \chordh{Em7b5}{Am7} \chordh{E\O}{Am7}
 \chordh{Edim}{Am7} \chordh{E\dim}{Am7}
+\chordf{G\Maj7}
 \end{chordbar}
