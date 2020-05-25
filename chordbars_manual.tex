@@ -23,12 +23,13 @@
 \usepackage[left=2.00cm,vmargin=1cm]{geometry}
 \usepackage{mathcomp} % for \textdiscount
 \usepackage{listings}
+\usepackage{mdframed}
 
 \lstset{
 	frame=single
 	,language=TeX
 	,basicstyle=\ttfamily
-	,escapechar=\*
+%	,escapechar=\*
 }
 \usepackage{chordbars}
 
@@ -141,6 +142,34 @@ This will be rendered as:
 \countbarsNo
 \input{manual_lst/listing_HOTRS.lst}
 
+
+\subsection{Starred environment version}
+
+In some situations, the song structure will hold some repetitions of some parts, say first verse, second verse, chorus, third verse, chorus, ..., with every verse and every chorus having the same harmonic structure.
+This can of course be represented by a new "chordbar" environment for every part, in which you just copy/paste the chords from previous section.
+But this will quicky generate a sheet having more than one page, which can make it difficult to use live.
+Personally, it if can fit on a single page, it's the best.
+
+Thus, this package provides a "starred" environment version.
+It is there just as a reminder that at this step, you just play "part xx", and the reader must check out above on the sheet the "part xx".
+Its usage is similar to the regular version, unless you just keep it empty.
+It will keep track of the measure count, and generate a unified view. 
+
+\lstinputlisting[float=*,caption=A demo of the starred environment version,label=lst:starred]{manual_lst/listing_starred.lst}
+
+For example, the above song structure could be written as Listing \ref{lst:starred}, and it will be rendered as seen on Fig.~\ref{fig:starred}.
+%This will be rendered as:
+\def\chordFontSize{\Large\bfseries}
+\resetchordbars
+\countbarsYes
+\begin{figure}
+\begin{mdframed}
+\input{manual_lst/listing_starred.lst}
+\end{mdframed}
+\caption{Rendering of Listing \ref{lst:starred}}
+\label{fig:starred}
+\end{figure}
+
 \subsection{Chord notation}
 
 \paragraph{Sharps and flats}
@@ -153,7 +182,9 @@ If you encounter an issue, please report it on the home page of this package and
 
 The alternate solution is either to escape the \# or to use the {\btt \tbs sharp} and {\btt \tbs flat} symbols, that have been "textified" so you don't need to enter math mode.
 This has the advantage of being also a bit "prettier", although maybe less readable (?).
-You can see below the compared renderings of the two alternatives:
+You can see below the compared renderings of the two alternatives.
+Keep in mind that the goal is not to be "pretty" but rather to be able to read it while performing on stage, in a potential difficult lighting situation.
+%in a dark environment such a gig stage.
 
 \vspace{1em}
 
@@ -164,6 +195,8 @@ You can see below the compared renderings of the two alternatives:
 %
 \begin{minipage}{0.3\textwidth}
 \def\chordFontSize{\Huge\bfseries}
+\resetchordbars
+\countbarsNo
 \input{manual_lst/listing_sharp_flat.lst}
 \end{minipage}
 
@@ -183,22 +216,25 @@ This is rendered with the command {\tt \textbackslash dim}
 (defined as an alias on symbol {\tt \textbackslash fullmoon} from package {\tt wasysym}.
 \item The Maj7 chord is sometimes noted $\Delta$
 (\LaTeX{} math symbol {\tt \$\textbackslash Delta\$}).
-A shorthand is provided with the symbol {\tt \textbackslash Maj7}.
+A shorthand is provided with the symbol {\tt \textbackslash MajS}.
+
+\item the "sus4" (chord without a third and with an added 4th) and the "add9" (chord without a 7th and with an added 9th) can be noted with 
+{\tt \textbackslash susF} and {\tt \textbackslash addN}.
 \end{itemize}
 
 See below a comparison of these notations:
 
 \def\chordFontSize{\normalsize\bfseries}
 \noindent
-\begin{minipage}{0.54\textwidth}
+\begin{minipage}{0.40\textwidth}
 \lstinputlisting{manual_lst/listing_notation.lst}
 \end{minipage}
 %
-\begin{minipage}{0.42\textwidth}
+\begin{minipage}{0.60\textwidth}
 \def\NumberOfBarsPerLine{5}
+\def\barsize{2.3}
 \input{manual_lst/listing_notation.lst}
 \end{minipage}
-
 
 
 \subsection{Long parts on same chord}
@@ -329,10 +365,11 @@ In that case, you just need to enlarge the grid size and/or adjust the font size
 
 \item 2018-12-29: Release 1.1, added commands {\btt \tbs chordline} and {\btt \tbs addHalfBar}, added font commands, fixed manual, bugfixes
 
-\item 2019-XX-XX
+\item 2020-05-25
  - fixed symbol ("times") for nb of repetitions
  - added "dim" and "Maj7" chords shorthands
  - fixed horizontal position of number of repetitions (WIP !!!)
+ - added starred version of environment chordbar
  - bugfixes
 \end{itemize}
 

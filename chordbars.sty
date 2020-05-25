@@ -19,7 +19,9 @@
 
 
 % LOG:
-%2020525 added \addMeasures command
+% - 2020525
+% - added \addMeasures command
+% - added starred version of chordbar environment
 
 % TODO define command to have 1 chord per beat
 
@@ -39,19 +41,16 @@
 
 \RequirePackage{relsize} % added on 2020-01-18
 
-%\RequirePackage{fixltx2e}
-
-
 \def\vspacebefore{1ex}
 \def\vspaceafter{1ex}
 
 % This \dim command is used for diminished chords (until we find a nicer alternative)
 \def\dim{\fullmoon}
 
-\def\Maj7{$\Delta$}
-\def\add9{\relscale{0.8}\mdseries add9}
-\def\sus4{\relscale{0.8}\mdseries sus4}
-\def\add4{\relscale{0.8}\mdseries add4}
+\def\MajS{$\Delta$}
+\def\addN{\relscale{0.8}\mdseries add9}
+\def\susF{\relscale{0.8}\mdseries sus4}
+%\def\add4{\relscale{0.8}\mdseries add4}
 
 \newcommand{\songtitle}
 {
@@ -158,8 +157,10 @@
 	\ifthenelse
 		{\boolean{printBarNumber}}	
 		{
-			\draw (0,-\barsize*.2) node [anchor=west, align=left,font=\titleFontSize] {Part \theNumPart: #3};
-			\draw (-.3,.5*\barsize) node{\bf \theNumMesure};
+			\draw (0,-\barsize*.2) node [anchor=west, align=left,font=\titleFontSize]
+				{Part \theNumPart: #3};
+			\draw (-.3,.5*\barsize) node
+				{\bf \theNumMesure};
 		} 
 		{
 			\draw (0,-\barsize*.2) node [anchor=west, align=left,font=\titleFontSize] {#3};
@@ -200,6 +201,45 @@
 % arg 1 (#2 inside): total number of 4 beat bars (4, 8, ...)
 % arg 2 {#3 inside}: part name (can be empty)
 % optional arg: nb of repetitions (default is 1)
+
+% starred version: does not print the grid ! Only does the counters update, and prints these
+\newenvironment{chordbar*}[3][1]
+{
+	\refstepcounter{NumPart}
+	\refstepcounter{NumMesure}
+
+	\@ifundefined{c@TmpA}{\newcounter{TmpA}}{}	
+	\setcounter{TmpA}{#1*#2+\value{NumMesure}-1}
+
+	\@ifundefined{c@TmpB}{\newcounter{TmpB}}{}
+	\setcounter{TmpB}{#1*#2}
+
+	\fontfamily{phv}\selectfont
+	\noindent\ignorespaces %
+%	\vspace{\vspacebefore}
+			
+	\begin{tikzpicture}
+	\ifthenelse
+		{\boolean{printBarNumber}}	
+		{\pgfmathsetmacro{\xpos}{0.6}}
+		{\pgfmathsetmacro{\xpos}{0}}
+	
+	\draw (0,0) node {}; % to align with other environments of the page
+
+	% if we have repetitions, we print it and also the total number of bars
+	\ifnum#1=1
+			{\draw (\xpos,-\barsize*.2) node [anchor=west, align=left,font=\titleFontSize]	
+				{- Part \theNumPart: #3, #2 bars, [ \theNumMesure {} $\rightarrow$ \theTmpA {} ] }; }
+	\else
+			{\draw (\xpos,-\barsize*.2) node [anchor=west, align=left,font=\titleFontSize]	
+				{- Part \theNumPart: #3, #2 bars $\times$ #1 (\theTmpB), [ \theNumMesure {} $\rightarrow$ \theTmpA {} ] }; }
+	\fi
+
+	\end{tikzpicture}
+
+	\setcounter{NumMesure}{\value{TmpA}}
+}
+
 
 \newenvironment{chordbar}[3][1]
 {
@@ -253,7 +293,6 @@
 			{-\barsize/4+\theCurrentBarInLine*\barsize},
 			{\theCurrentLine*\barsize+3*\barsize/4}
 		) node [font=\chordFontSize]{##2};%	
-		
 	}
 	
 	\newcommand{\repeatBar}%
@@ -370,8 +409,10 @@
 % draw part title	
 	\ifthenelse
 		{\boolean{printBarNumber}}	
-		{\draw (0,-\barsize*.2) node [anchor=west, align=left,font=\titleFontSize] {Part \theNumPart: #3};} 
-		{\draw (0,-\barsize*.2) node [anchor=west, align=left,font=\titleFontSize] {#3};} 
+		{\draw (0,-\barsize*.2) node [anchor=west, align=left,font=\titleFontSize]
+			{- Part \theNumPart: #3};} 
+		{\draw (0,-\barsize*.2) node [anchor=west, align=left,font=\titleFontSize]
+			{- #3};} 
 
 	\pgfmathtruncatemacro{\nblines}{(#2-1)/\NumberOfBarsPerLine+1}	
 %	\typeout{chordbarl: nblines=\nblines}

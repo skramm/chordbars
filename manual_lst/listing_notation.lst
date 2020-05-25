@@ -1,5 +1,7 @@
 \begin{chordbar}{5}{}
-\chordh{Em7b5}{Am7} \chordh{E\O}{Am7}
-\chordh{Edim}{Am7} \chordh{E\dim}{Am7}
-\chordf{G\Maj7}
+\chordh{Gm7b5}{G\O}
+\chordh{Gsus4}{G\susF}
+\chordh{Gdim}{G\dim}
+\chordh{Gadd9}{G\addN}
+\chordh{GMaj7}{G\MajS}
 \end{chordbar}

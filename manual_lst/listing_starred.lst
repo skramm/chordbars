@@ -1,0 +1,20 @@
+\begin{chordbar}[2]{4}{Verse}
+\chordf{Am} \repeatBar
+\chordf{Dm} \chordf{Em}
+\end{chordbar}
+
+\begin{chordbar}{4}{Chorus}
+\chordf{Cm} \chordf{G}
+\chordf{Am} \repeatBar
+\end{chordbar}
+
+\begin{chordbar*}[2]{4}{Verse}
+\end{chordbar*}
+
+\begin{chordbar*}{4}{Chorus}
+\end{chordbar*}
+
+\begin{chordbar}{4}{Final}
+\chordf{Am} \chordf{Dm}
+\chordf{Em} \chordf{Am}
+\end{chordbar}
