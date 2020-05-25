@@ -1,5 +1,5 @@
 %% file: chordbars.sty
-%% Copyright 2018 M. Sebastien Kramm
+%% Copyright 2018-2020 M. Sebastien Kramm
 %
 % This work may be distributed and/or modified under the
 % conditions of the LaTeX Project Public License, either version 1.3c
@@ -18,11 +18,14 @@
 % Home page: https://github.com/skramm/chordbars
 
 
+% LOG:
+%2020525 added \addMeasures command
+
 % TODO define command to have 1 chord per beat
 
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{chordbars}[2020-05-03 version 1.2]
+\ProvidesPackage{chordbars}[2020-05-25 version 1.2.1]
 
 \RequirePackage{tikz}
 \RequirePackage{pgfmath}
@@ -48,7 +51,7 @@
 \def\Maj7{$\Delta$}
 \def\add9{\relscale{0.8}\mdseries add9}
 \def\sus4{\relscale{0.8}\mdseries sus4}
-\def\add4{\relscale{0.8}\mdseries sus4}
+\def\add4{\relscale{0.8}\mdseries add4}
 
 \newcommand{\songtitle}
 {
@@ -95,6 +98,13 @@
 \newcommand{\resetchordbars}
 {
 	\setcounter{NumMesure}{0}
+	\setcounter{NumPart}{0}
+	\setcounter{CurrentBarInLine}{0}
+}
+
+\newcommand{\addMeasures}[1]
+{
+	\addtocounter{NumMesure}{#1}
 	\setcounter{NumPart}{0}
 	\setcounter{CurrentBarInLine}{0}
 }
