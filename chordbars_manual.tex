@@ -25,6 +25,9 @@
 \usepackage{listings}
 \usepackage{mdframed}
 
+\usepackage{enumitem}
+\setlist{nosep}
+
 \lstset{
 	frame=single
 	,language=TeX
@@ -91,7 +94,7 @@ This will be rendered as:
 \input{manual_lst/listing_blues.lst}
 
 Each square stands for a 4-beat bar, and this is read left to right.
-The special symbol you can see in bars 4, 6 and 8 means "play the same content on this bar as the previous bar".
+The special symbol you can see in bars 4, 6 and 8 means "play the same (harmonic) content on this bar as the previous bar".
 
 As usual with \LaTeX{} source files, spaces and line-feeds are ignored.
 
@@ -365,12 +368,15 @@ In that case, you just need to enlarge the grid size and/or adjust the font size
 
 \item 2018-12-29: Release 1.1, added commands {\btt \tbs chordline} and {\btt \tbs addHalfBar}, added font commands, fixed manual, bugfixes
 
-\item 2020-05-25
- - fixed symbol ("times") for nb of repetitions
- - added "dim" and "Maj7" chords shorthands
- - fixed horizontal position of number of repetitions (WIP !!!)
- - added starred version of environment chordbar
- - bugfixes
+\item 2020-05-29: release 1.2.2
+\begin{itemize}
+\item fixed symbol ("times") for nb of repetitions
+\item added some chords shorthands (dim, Maj7, sus4, add9)
+\item fixed horizontal position of number of repetitions (WIP !!!)
+\item added starred version of environment chordbar
+\item bugfixes
+\end{itemize}
+
 \end{itemize}
 
 
