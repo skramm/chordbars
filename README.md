@@ -11,6 +11,7 @@ For details, see included manual.
 * Manual: [chordbars_manual.pdf](chordbars_manual.pdf)
 * Licence: The LaTeX project public license (LPPL), version 1.3c
 
+latest release: v1.2.2, 29/05/2020
 
 Available via CTAN: https://ctan.org/pkg/chordbars
 but latest version will be here.
