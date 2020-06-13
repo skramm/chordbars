@@ -19,9 +19,11 @@
 
 
 % LOG:
-% - 2020525
+%- 20200525
 % - added \addMeasures command
 % - added starred version of chordbar environment
+%- 20200610
+% - fixed bug with \repeatBarPair
 
 % TODO define command to have 1 chord per beat
 
@@ -369,7 +371,9 @@
 		%
 		\refstepcounter{CurrentBarInLine}
 		\refstepcounter{CurrentBarInLine}
-		\ifnum\value{CurrentBarInLine}=#2
+
+%		\ifnum\value{CurrentBarInLine}=#2
+		\ifnum\value{CurrentBarInLine}=\NumberOfBarsPerLine
 		{
 			\refstepcounter{CurrentLine}
 			\setcounter{CurrentBarInLine}{0}
@@ -427,17 +431,24 @@
 	\begin{tikzpicture}[line width=1pt,x=1cm,y=-1cm] %,scale=2]
 
 \pgfmathsetmacro{\nbSeconds}{\theNumBeats/\tempoBPM*60.0}
+%\pgfmathsetmacro{\nbMinutes}{\pgfmathdiv{\nbSeconds}{60}}
 
 	\ifthenelse
-		{\boolean{printBarNumber}}	
-		{
-			\draw (-.3,.5*\barsize) node{\bf \theNumMesure};
-			\ifthenelse
-				{\boolean{printTime}}
-				{ \draw (-.4,.9*\barsize) node{\bf \pgfmathprintnumber{\nbSeconds}}; }
-				{}
-		}
-		{}
+	{\boolean{printBarNumber}}	
+	{
+		\draw (-.3,.5*\barsize) node{\bf \theNumMesure};
+		\ifthenelse
+			{\boolean{printTime}}
+			{
+				\draw [font=\itshape] (-.4,.9*\barsize) node{\bf \itshape
+%			 \pgfmathprintnumber{\nbMinutes}
+			::
+			 \pgfmathprintnumber{\nbSeconds}};
+
+			}
+			{}
+	}
+	{}
 
 % compute the number of bars of the first line
 	\xdef\NbBarsInitialLine{\NumberOfBarsPerLine}
