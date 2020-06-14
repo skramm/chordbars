@@ -80,12 +80,16 @@
 
 \newcounter{NumMesure}
 \newcounter{NumPart}
+\newcounter{NumCountIn}
 \newcounter{CurrentBarInLine}
 \newcounter{CurrentBar}
 \newcounter{CurrentLine}
 \newcounter{NumBeats}
 \newcounter{BeatsPerBar}
+
 \setcounter{BeatsPerBar}{4} % default value, see \bpbfour and \bpbthree
+
+\setcounter{NumCountIn}{1} % default value
 
 \xdef\tempoBPM{100}
 
@@ -109,6 +113,24 @@
 %	\xdef\bpb{3}
 	\setcounter{BeatsPerBar}{3}
 }
+
+\newcommand{\CountInOneBar}
+{
+	\setcounter{NumCountIn}{1}
+}
+
+\newcommand{\CountInTwoBars}
+{
+	\setcounter{NumCountIn}{2}
+}
+
+
+\newcommand{\hasCountIn}
+{
+	\setcounter{NumMesure}{\value{NumCountIn}}
+}
+
+
 
 \newcommand{\resetchordbars}
 {

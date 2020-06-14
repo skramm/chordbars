@@ -132,6 +132,20 @@ will give the following output, correctly printing out '13' as the initial bar n
 \input{manual_lst/listingA.lst}
 %}
 
+\paragraph{Handling "Count In" bars}
+
+In some situations (studio sheets), it can be useful to include the "count-in" in the bar count.
+Indeed, when using a "synced" recording software, recording usually starts with one or two empty bars.
+Thus, to be able to have the same bar count on the software and on the sheet produced with this software, the command {\tt \textbackslash hasCountIn} can be used so that the bar count does not start at 1, but rather at 2 or 3, to include the count-in.
+
+The default Count In value is 1 bar, but you can select 1 or 2 by issuing either
+{\tt \textbackslash CountInOneBar}
+or
+{\tt \textbackslash CountInTwoBars}
+before {\tt \textbackslash hasCountIn}.
+
+
+
 \subsection{Two chords per bar.} 
 The command \verb|\chordh| enables printing two chords per bar, as this happens quite often.
 Its two arguments are the two chords of the bar.
@@ -298,7 +312,7 @@ If you need better readability when extending grid size, you can add for example
 To see an example of relative sizes, check the provided file \href{https://github.com/skramm/chordbars/raw/master/size_demo.pdf}{size\_demo.pdf}.
 
 \item The command {\btt \tbs countbarsYes} enables counting the bars of the song:
-each grid will have printed on the left side the number of the first bar of the grid.
+each grid will have printed on the left side the index of the first bar of the grid.
 It also enables printing the number of repetitions of this part on the right side of the grid.
 
 This command is useful in the sense that this package can be used in two ways:
