@@ -132,17 +132,18 @@ will give the following output, correctly printing out '13' as the initial bar n
 \input{manual_lst/listingA.lst}
 %}
 
-\paragraph{Handling "Count In" bars}
+\paragraph{Handling "Count In" bars.}
 
 In some situations (studio sheets), it can be useful to include the "count-in" in the bar count.
 Indeed, when using a "synced" recording software, recording usually starts with one or two empty bars.
-Thus, to be able to have the same bar count on the software and on the sheet produced with this software, the command {\tt \textbackslash hasCountIn} can be used so that the bar count does not start at 1, but rather at 2 or 3, to include the count-in.
+Thus, to be able to have the same bar count on the software and on the song sheet, the command {\tt \textbackslash hasCountIn} can be used so that the bar count does not start at 1, but rather at 2 or 3, to include the count-in.
 
-The default Count In value is 1 bar, but you can select 1 or 2 by issuing either
+The default "Count In" number of bars is 1, but you can select 1 or 2 by issuing either
 {\tt \textbackslash CountInOneBar}
 or
 {\tt \textbackslash CountInTwoBars}
-before {\tt \textbackslash hasCountIn}.
+{\bfseries before}
+{\tt \textbackslash hasCountIn}.
 
 
 
@@ -161,7 +162,7 @@ This will be rendered as:
 
 
 \subsection{Starred environment version}
-
+\label{ss:starred}
 In some situations, the song structure will hold some repetitions of some parts, say first verse, second verse, chorus, third verse, chorus, ..., with every verse and every chorus having the same harmonic structure.
 This can of course be represented by a new "chordbar" environment for every part, in which you just copy/paste the chords from previous section.
 But this will quicky generate a sheet having more than one page, which can make it difficult to use live.
@@ -172,7 +173,7 @@ It is there just as a reminder that at this step, you just play "part xx", and t
 Its usage is similar to the regular version, unless you just keep it empty.
 It will keep track of the measure count, and generate a unified view. 
 
-\lstinputlisting[float=*,caption=A demo of the starred environment version,label=lst:starred]{manual_lst/listing_starred.lst}
+\lstinputlisting[float=*,caption={A demo of the starred environment version, see section \ref{ss:starred}.},label=lst:starred]{manual_lst/listing_starred.lst}
 
 For example, the above song structure could be written as Listing \ref{lst:starred}, and it will be rendered as seen on Fig.~\ref{fig:starred}.
 %This will be rendered as:
@@ -183,7 +184,7 @@ For example, the above song structure could be written as Listing \ref{lst:starr
 \begin{mdframed}
 \input{manual_lst/listing_starred.lst}
 \end{mdframed}
-\caption{Rendering of Listing \ref{lst:starred}}
+\caption{Rendering of Listing \ref{lst:starred}, see section \ref{ss:starred}.}
 \label{fig:starred}
 \end{figure}
 
@@ -341,6 +342,7 @@ In some situations, it can be useful to show a repetition spanning two bars.
 For this you can use {\btt \tbs repeatBarPair}.
 For example, see the source below showing a classical II-V-I pattern played twice and its rendering:
 
+\vspace{1em}
 \noindent
 \begin{minipage}{0.45\textwidth}
 \lstinputlisting{manual_lst/listing_RBP.lst}

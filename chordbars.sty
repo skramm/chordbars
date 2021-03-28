@@ -19,17 +19,19 @@
 
 
 % LOG:
+%- 20210328
+% - addded font spec for bar count (see \barCountFont )
+%- 20200610
+% - fixed bug with \repeatBarPair
 %- 20200525
 % - added \addMeasures command
 % - added starred version of chordbar environment
-%- 20200610
-% - fixed bug with \repeatBarPair
 
 % TODO define command to have 1 chord per beat
 
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{chordbars}[2020-05-25 version 1.2.1]
+\ProvidesPackage{chordbars}[2021-03-28 version 1.2.2]
 
 \RequirePackage{tikz}
 \RequirePackage{pgfmath}
@@ -52,6 +54,7 @@
 \def\MajS{$\Delta$}
 \def\addN{\relscale{0.8}\mdseries add9}
 \def\susF{\relscale{0.8}\mdseries sus4}
+\def\addF{\relscale{0.8}\mdseries add4}
 
 % This boolean will be used to check if we print or not the current time at each part
 \newboolean{printTime}
@@ -184,12 +187,18 @@
 	\setboolean{printTime}{false}
 }
 
-
+% % % % % % % % % % % % % % % % % % % % % %
+% DEFAULT SIZE
+% % % % % % % % % % % % % % % % % % % % % %
 \def\barsize{1.6}%	
 \def\delta{0.36}
 
-\def\chordFontSize{\normalsize \bfseries}
+% % % % % % % % % % % % % % % % % % % % % %
+% FONT SPECS
+% % % % % % % % % % % % % % % % % % % % % %
+\def\chordFont{\Large \bfseries}
 \def\titleFontSize{\large \bfseries}
+\def\barCountFont{\Large \bfseries}
 
 \xdef\NumberOfBarsPerLine{4}
 
@@ -223,7 +232,7 @@
 
 	\draw (0,0) -- (0,\barsize);                  % first vertical line
 	\draw (\barsize,0) -- (\barsize,\barsize);    % second vertical line
-	\draw (\barsize/2,\barsize/2) node [font=\chordFontSize]{#1};      % chord name
+	\draw (\barsize/2,\barsize/2) node [font=\chordFont]{#1};      % chord name
 
 	\foreach \k in {2,...,{#2}}
 	{
@@ -319,7 +328,7 @@
 		\refstepcounter{CurrentBarInLine}%
 		\pgfmathsetmacro{\x}{-\barsize/2+\theCurrentBarInLine*\barsize}
 		\pgfmathsetmacro{\y}{\value{CurrentLine})*\barsize+\barsize/2}		
-		\draw (\x,\y) node [font=\chordFontSize]{##1};%
+		\draw (\x,\y) node [font=\chordFont]{##1};%
 	}%
 
 	\newcommand{\chordh}[2]%
@@ -346,11 +355,11 @@
 		\draw (
 			{-3*\barsize/4+\theCurrentBarInLine*\barsize}, % x
 			{\theCurrentLine*\barsize+1*\barsize/4}        % y
-		) node [font=\chordFontSize]{##1};                 % first chord
+		) node [font=\chordFont]{##1};                 % first chord
 		\draw (
 			{-\barsize/4+\theCurrentBarInLine*\barsize},   % x
 			{\theCurrentLine*\barsize+3*\barsize/4}        % y
-		) node [font=\chordFontSize]{##2};%	               % second chord
+		) node [font=\chordFont]{##2};%	               % second chord
 	}
 	
 	\newcommand{\repeatBar}%
@@ -429,7 +438,7 @@
 
 		\pgfmathsetmacro{\x}{-3*\barsize/4+\theCurrentBarInLine*\barsize}
 		\pgfmathsetmacro{\y}{\value{CurrentLine})*\barsize+\barsize/4}		
-		\draw (\x,\y) node [font=\chordFontSize]{##1};%
+		\draw (\x,\y) node [font=\chordFont]{##1};%
 
 		\addtocounter{NumBeats}{2}
 	}
@@ -458,7 +467,7 @@
 	\ifthenelse
 	{\boolean{printBarNumber}}	
 	{
-		\draw (-.3,.5*\barsize) node{\bf \theNumMesure};
+		\draw (-.3,.5*\barsize) node{\barCountFont \theNumMesure};
 		\ifthenelse
 			{\boolean{printTime}}
 			{
