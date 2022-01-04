@@ -133,7 +133,7 @@ will give the following output, correctly printing out '13' as the initial bar n
 %}
 
 \subsection{Two chords per bar.} 
-The command \verb|\chordh| enables printing two chords per bar, as this happens quite often.
+The command \verb|\chordh| ("h" for "{\em half-chord}") enables printing two chords per bar, as this happens quite often.
 Its two arguments are the two chords of the bar.
 For example, the well-know tune "House of the Rising Sun"\footnote{The Animals} chord structure can be printed as this:
 
@@ -156,7 +156,7 @@ Personally, it if can fit on a single page, it's the best.
 Thus, this package provides a "starred" environment version.
 It is there just as a reminder that at this step, you just play "part xx", and the reader must check out above on the sheet the "part xx".
 Its usage is similar to the regular version, unless you just keep it empty.
-It will keep track of the measure count, and generate a unified view. 
+It will keep track of the measure count, and generates a unified view. 
 
 \lstinputlisting[float=*,caption=A demo of the starred environment version,label=lst:starred]{manual_lst/listing_starred.lst}
 
@@ -327,6 +327,7 @@ In some situations, it can be useful to show a repetition spanning two bars.
 For this you can use {\btt \tbs repeatBarPair}.
 For example, see the source below showing a classical II-V-I pattern played twice and its rendering:
 
+\vspace{1em}
 \noindent
 \begin{minipage}{0.45\textwidth}
 \lstinputlisting{manual_lst/listing_RBP.lst}
