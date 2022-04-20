@@ -321,6 +321,12 @@
 
 	\newcommand{\repeatBarPair}%
 	{ %
+		\ifnum\value{CurrentBarInLine}=\NumberOfBarsPerLine
+		{
+			\refstepcounter{CurrentLine}
+			\setcounter{CurrentBarInLine}{0}
+		}
+		\fi		
 		\pgfmathsetmacro{\Axa}{\theCurrentBarInLine*\barsize+\delta*\barsize}
 		\pgfmathsetmacro{\Axb}{(\theCurrentBarInLine+2)*\barsize-\delta*\barsize}
 		\pgfmathsetmacro{\Aya}{(1-\delta)*\barsize+\theCurrentLine*\barsize}
@@ -335,12 +341,6 @@
 		%
 		\refstepcounter{CurrentBarInLine}
 		\refstepcounter{CurrentBarInLine}
-		\ifnum\value{CurrentBarInLine}=#2
-		{
-			\refstepcounter{CurrentLine}
-			\setcounter{CurrentBarInLine}{0}
-		}
-		\fi		
 	}%
 
 	\newcommand{\addHalfBar}[1]%
