@@ -1,10 +1,32 @@
 #!/bin/bash
-# install script. Please adapt to your local config, this here should be ok for texlive 2021
-
-#mkdir -p /usr/local/texlive/texmf-local/tex/latex/chordbars/
-#mkdir -p /usr/local/share/texmf/tex/latex/chordbars/
+# install script. Please adapt to your local config, this here should be ok for texlive (2020 at least)
 
 
-cp chordbars.sty /usr/local/texlive/2021/texmf-dist/tex/latex/chordbars/chordbars.sty
+p=$(kpsewhich -var-value TEXMFLOCAL)
+
+#p1=$(which pdflatex)
+echo "p=$p"
+
+
+# this attemps to find the location of texlive
+# if the program is here:
+# /usr/local/texlive/2020/bin/x86_64-linux/pdflatex
+
+# /usr/local/texlive/2020/texmf-dist/tex/latex/chordbars/chordbars.sty
+
+loc1=tex/latex/local
+
+echo "installing chordbars.sty into $p/$loc1"
+
+mkdir -p $p/$loc1/chordbars
+cp chordbars.sty $p/$loc1/chordbars
+
+loc2=doc/local
+echo "installing chordbars doc into $p/$loc2"
+mkdir -p $p/$loc2/chordbars
+cp chordbars_manual.pdf $p/$loc2/chordbars
+cp -r manual_lst/ $p/$loc2/chordbars
+cp *.md $p/$loc2/chordbars
+
 texhash
 
