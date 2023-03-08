@@ -134,6 +134,7 @@
 }
 
 \def\barsize{1.6}%	
+\def\ycoeff{1.0}%	
 \def\delta{0.36}
 
 \def\chordFontSize{\normalsize \bfseries}
@@ -167,20 +168,20 @@
 		} 
 
 	\draw (0,0) -- (#2*\barsize,0);               % horizontal lines
-	\draw (0,\barsize) -- (#2*\barsize,\barsize);
+	\draw (0,\barsize*\ycoeff) -- (#2*\barsize,\barsize*\ycoeff);
 
-	\draw (0,0) -- (0,\barsize);                  % first vertical line
-	\draw (\barsize,0) -- (\barsize,\barsize);    % second vertical line
-	\draw (\barsize/2,\barsize/2) node [font=\chordFontSize]{#1};      % chord name
+	\draw (0,0) -- (0,\barsize*\ycoeff);                  % first vertical line
+	\draw (\barsize,0) -- (\barsize,\barsize*\ycoeff);    % second vertical line
+	\draw (\barsize/2,\ycoeff*\barsize/2) node [font=\chordFontSize]{#1};      % chord name
 
 	\foreach \k in {2,...,{#2}}
 	{
-		\draw (\k*\barsize,0) -- (\k*\barsize,\barsize);
+		\draw (\k*\barsize,0) -- (\k*\barsize,\barsize*\ycoeff);
 
 		\pgfmathsetmacro{\Axa}{(\k-1)*\barsize+\delta*\barsize}
 		\pgfmathsetmacro{\Axb}{\k*\barsize-\delta*\barsize}
-		\pgfmathsetmacro{\Aya}{(1-\delta)*\barsize}
-		\pgfmathsetmacro{\Ayb}{\delta*\barsize}
+		\pgfmathsetmacro{\Aya}{(1-\delta)*\barsize*\ycoeff}
+		\pgfmathsetmacro{\Ayb}{\delta*\barsize*\ycoeff}
 
 		\coordinate (A) at (\Axa,\Ayb);
 		\coordinate (B) at (\Axb,\Aya);
@@ -261,7 +262,7 @@
 			{}
 		\refstepcounter{CurrentBarInLine}%
 		\pgfmathsetmacro{\x}{-\barsize/2+\theCurrentBarInLine*\barsize}
-		\pgfmathsetmacro{\y}{\value{CurrentLine})*\barsize+\barsize/2}		
+		\pgfmathsetmacro{\y}{\value{CurrentLine})*\barsize*\ycoeff+\barsize*\ycoeff/2}		
 		\draw (\x,\y) node [font=\chordFontSize]{##1};%
 	}%
 
@@ -278,20 +279,20 @@
 %		\typeout{CurrentBarInLine=\theCurrentBarInLine}
 		\draw ( %
 			{\barsize*(\theCurrentBarInLine-1)}, %
-			{(\theCurrentLine+1)*\barsize} %
+			{(\theCurrentLine+1)*\barsize*\ycoeff} %
 		) %
 		-- %
 		( %
 			{\theCurrentBarInLine*\barsize}, %
-			{\theCurrentLine*\barsize} %
+			{\theCurrentLine*\barsize*\ycoeff} %
 		);		
 		\draw (
 			{-3*\barsize/4+\theCurrentBarInLine*\barsize},
-			{\theCurrentLine*\barsize+1*\barsize/4}
+			{\theCurrentLine*\barsize+1*\barsize/4*\ycoeff}
 		) node [font=\chordFontSize]{##1};
 		\draw (
 			{-\barsize/4+\theCurrentBarInLine*\barsize},
-			{\theCurrentLine*\barsize+3*\barsize/4}
+			{\theCurrentLine*\barsize+3*\barsize/4*\ycoeff}
 		) node [font=\chordFontSize]{##2};%	
 	}
 	
@@ -308,8 +309,8 @@
 	
 		\pgfmathsetmacro{\Axa}{(\theCurrentBarInLine-1)*\barsize+\delta*\barsize}
 		\pgfmathsetmacro{\Axb}{\theCurrentBarInLine*\barsize-\delta*\barsize}
-		\pgfmathsetmacro{\Aya}{(1-\delta)*\barsize+\theCurrentLine*\barsize}
-		\pgfmathsetmacro{\Ayb}{\delta*\barsize+\theCurrentLine*\barsize}
+		\pgfmathsetmacro{\Aya}{(1-\delta)*\barsize*\ycoeff+\theCurrentLine*\barsize*\ycoeff}
+		\pgfmathsetmacro{\Ayb}{\delta*\barsize*\ycoeff+\theCurrentLine*\barsize*\ycoeff}
 
 		\coordinate (A) at (\Axa,\Ayb);
 		\coordinate (B) at (\Axb,\Aya);
@@ -323,8 +324,8 @@
 	{ %
 		\pgfmathsetmacro{\Axa}{\theCurrentBarInLine*\barsize+\delta*\barsize}
 		\pgfmathsetmacro{\Axb}{(\theCurrentBarInLine+2)*\barsize-\delta*\barsize}
-		\pgfmathsetmacro{\Aya}{(1-\delta)*\barsize+\theCurrentLine*\barsize}
-		\pgfmathsetmacro{\Ayb}{\delta*\barsize+\theCurrentLine*\barsize}
+		\pgfmathsetmacro{\Aya}{(1-\delta)*\barsize+\theCurrentLine*\barsize*\ycoeff}
+		\pgfmathsetmacro{\Ayb}{\delta*\barsize+\theCurrentLine*\barsize*\ycoeff}
 
 		\coordinate (A) at (\Axa,\Ayb);
 		\coordinate (B) at (\Axb,\Aya);
@@ -356,9 +357,9 @@
 % diagonal line
 %	\draw (\xa,\ya) -- (\xb,\yb);  A BUG HERE: investigate
 		\draw
-		(\theCurrentBarInLine*\barsize,{\theCurrentLine*\barsize})
+		(\theCurrentBarInLine*\barsize,{\theCurrentLine*\barsize*\ycoeff})
 			--
-		({(\theCurrentBarInLine-1)*\barsize},{(\theCurrentLine+1)*\barsize});
+		({(\theCurrentBarInLine-1)*\barsize},{(\theCurrentLine+1)*\barsize*\ycoeff});
 
 % horizontal line
 		\draw
@@ -419,7 +420,7 @@
 	\foreach \line in {1,...,\nblines}
 	{
 
-		\draw (0,{\barsize*(\line-1)}) -- (0,\line*\barsize); % first vertical line
+		\draw (0,{\barsize*(\line-1)}) -- (0,\line*\barsize*\ycoeff); % first vertical line
 		\xdef\nbbars{\NumberOfBarsPerLine}
 		\ifnum\line=\nblines
 		{
@@ -430,8 +431,8 @@
 %		\typeout{chordbarl: nbbars=\nbbars}
 		\foreach \k in {1,...,{\nbbars}}
 		{
-			\draw (\k*\barsize,{(\line-1)*\barsize}) -- (\k*\barsize,{\line*\barsize});
-			\draw (0,{\line*\barsize}) -- (\k*\barsize,{\line*\barsize});
+			\draw (\k*\barsize,{(\line-1)*\barsize*\ycoeff}) -- (\k*\barsize,{\line*\barsize*\ycoeff});
+			\draw (0,{\line*\barsize*\ycoeff}) -- (\k*\barsize,{\line*\barsize*\ycoeff});
 			
 			\refstepcounter{CurrentBar}%
 		}

@@ -325,18 +325,20 @@ The default value is 4 beats per bar.
 and means "repeat last bar".
 In some situations, it can be useful to show a repetition spanning two bars.
 For this you can use {\btt \tbs repeatBarPair}.
-For example, see the source below showing a classical II-V-I pattern played twice and its rendering:
+For example, see the source below showing a classical II-V-I pattern played 4 times and its rendering:
+
+\def\NumberOfBarsPerLine{8}
 
 \vspace{1em}
 \noindent
-\begin{minipage}{0.45\textwidth}
+%\begin{minipage}{0.45\textwidth}
 \lstinputlisting{manual_lst/listing_RBP.lst}
-\end{minipage}
+%\end{minipage}
 %
-\begin{minipage}{0.42\textwidth}
+%\begin{minipage}{0.42\textwidth}
 \countbarsNo
 \input{manual_lst/listing_RBP.lst}
-\end{minipage}
+%\end{minipage}
 
 \item {\ttfamily \textbackslash resetchordbars}: this will reset the bar and part counters, useful if you want to print two songs in the same document.
 \end{itemize}
