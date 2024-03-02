@@ -282,12 +282,19 @@ The package provides a {\btt \tbs songtitle} command that will format nicely the
 
 Several commands allow to customize the way the grids are printed out.
 
-\begin{itemize}
+\subsection{Grid size}
 
-\item The size of the grids can be adjusted with the internal variable 
+The size of the grids can be adjusted with the internal variable 
 {\btt \tbs barsize}.
 The default value is 1.6cm, but you can adjust it anytime inside your document, for example with:\\
 {\btt \tbs def\tbs barsize\{1.8\}}
+
+The default behavior is to have a ratio of 0.8 between the vertical size and the horizontal size of the grid.
+This can be adjusted any time in the document with, say: \\
+{\btt \tbs def\tbs ycoeff\{0.6\}} \\
+(A value of 1 will produce squares).
+
+\subsection{Font}
 
 The font used for the chords can be adjusted by redefining the variable {\btt \tbs chordFontSize} with classical \LaTeX{} font specifications.
 The default value is {\btt \tbs normalsize \tbs bfseries}.
@@ -297,7 +304,9 @@ If you need better readability when extending grid size, you can add for example
 
 To see an example of relative sizes, check the provided file \href{https://github.com/skramm/chordbars/raw/master/size_demo.pdf}{size\_demo.pdf}.
 
-\item The command {\btt \tbs countbarsYes} enables counting the bars of the song:
+\subsection{Bar count}
+
+The command {\btt \tbs countbarsYes} enables counting the bars of the song:
 each grid will have printed on the left side the number of the first bar of the grid.
 It also enables printing the number of repetitions of this part on the right side of the grid.
 
@@ -310,7 +319,7 @@ In this situation, printing the bar number is useless.
 
 To stop this behaviour (anytime), the command is {\btt \tbs countbarsNo}.
 
-\item Additionaly, if the bar counting is enabled, then the package can compute the total number of bars and the duration of the song.
+Additionaly, if the bar counting is enabled, then the package can compute the total number of bars and the duration of the song.
 This is done by issuing the command {\btt \tbs printNbBars} at the end of the file.
 The duration of the song depends on both the {\em tempo} of the song, expressed in BPM, and the number of beats per bar.
 The latter can be given with the command {\btt \tbs bpm}, for example:
@@ -320,7 +329,11 @@ The number of beats per bar is limited at present at two values, 3 or 4, with th
 {\btt \tbs bpbfour} or {\btt \tbs bpbthree}.
 The default value is 4 beats per bar.
 
-\item As you have seen above, the command {\btt \tbs repeatBar} will be rendered as "./."
+The command {\ttfamily \textbackslash resetchordbars} will reset the bar and part counters, useful if you want to print two songs in the same document.
+
+\subsection{Repeating bars}
+
+As you have seen above, the command {\btt \tbs repeatBar} will be rendered as "./."
 %$\textdiscount${}
 and means "repeat last bar".
 In some situations, it can be useful to show a repetition spanning two bars.
@@ -339,9 +352,6 @@ For example, see the source below showing a classical II-V-I pattern played 4 ti
 \countbarsNo
 \input{manual_lst/listing_RBP.lst}
 %\end{minipage}
-
-\item {\ttfamily \textbackslash resetchordbars}: this will reset the bar and part counters, useful if you want to print two songs in the same document.
-\end{itemize}
 
 
 \section{Reference}
