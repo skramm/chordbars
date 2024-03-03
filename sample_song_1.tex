@@ -71,9 +71,9 @@ You can print some notes between the different parts
 \def\chordFontSize{\Large\bfseries}
 \begin{chordbar}{5}{Test of repeatbarpair}
 \chordh{G}{C7}
-\chordf{FMajS}
+\chordf{F\MajS}
 \repeatBarPair
-\chordf{FMajS}
+\chordf{F\MajS}
 \addHalfBar{Dm}
 \end{chordbar}
 
@@ -87,18 +87,16 @@ You can print some notes between the different parts
 \end{chordbar}
 
 
-% this part has 8 bars (4 bars, 2 lines, repeated 3 times)
-\begin{chordbar}[2]{6}{2 lines}
+\begin{chordbar}[3]{6}{6 bars on 2 lines, repeated 3 times}
 \chordf{C}
 \chordf{D}
 \chordh{E}{F}
 \repeatBar
 \chordf{D}
 \repeatBar
-%\chordhn{3}{1}{Em}
 \end{chordbar}
 
-\begin{chordbar}[4]{11}{2 lines}
+\begin{chordbar}[4]{11}{11 bars repeated 4 times, with an added half-bar}
 \chordf{C}
 \chordh{D}{G}
 \chordf{E}
@@ -106,11 +104,17 @@ You can print some notes between the different parts
 \newchordline
 \chordf{G\#}
 \repeatBar
+\repeatBar
+\repeatBar
+\chordf{C\susF}
+\repeatBar
+\repeatBar
+\addHalfBar{Bb}
 \end{chordbar}
 
 \def\NumberOfBarsPerLine{5}
 
-\begin{chordbar}[2]{10}{2 lines of 5 bars}
+\begin{chordbar}[2]{10}{2 lines of 5 bars, repeated twice}
 \chordf{C}
 \chordf{D}
 \chordf{E}
