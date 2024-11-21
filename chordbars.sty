@@ -113,7 +113,7 @@
 {
 	\ifthenelse{\boolean{printBarNumber}}
 	{
-		Total number of bars: \arabic{NumMesure}, duration=\pgfmathparse{\theNumMesure/\tempoBPM*60*\bpb}\pgfmathresult {} s.
+		Total number of bars: \arabic{NumMesure}; duration: \pgfmathparse{int(round(\theNumMesure/\tempoBPM*\bpb))}\pgfmathresult{}'\pgfmathparse{int(mod(round(\theNumMesure/\tempoBPM*60*\bpb), 60))}\pgfmathresult{}''.
 	}{}
 }
 
