@@ -1,22 +1,22 @@
 \begin{chordbar}[2]{4}{}
-\chordh{G}{C7} \chordf{FMaj7}
+\chordh{G}{C7} \chordf{F\MajS}
 \chordf{C} \chordf{D}
 \end{chordbar}
 
 \begin{chordbar}{4}{}
-\chordh{G}{C7} \chordf{FMaj7}
+\chordh{G}{C7} \chordf{F\MajS}
 \chordf{C} \chordf{D}
 \addHalfBar{Dm}
 \end{chordbar}
 
 \begin{chordbar}[2]{4}{}
-\chordh{G}{C7} \chordf{FMaj7}
+\chordh{G}{C7} \chordf{F\MajS}
 \chordf{C} \chordf{D}
 \addHalfBar{Dm}
 \end{chordbar}
 
 \begin{chordbar}{4}{}
-\chordf{G} \chordf{FMaj7}
+\chordf{G} \chordf{F\MajS}
 \chordf{C} \chordf{D}
 \end{chordbar}
 

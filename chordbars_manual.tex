@@ -151,7 +151,7 @@ This will be rendered as:
 In some situations, the song structure will hold some repetitions of some parts, say first verse, second verse, chorus, third verse, chorus, ..., with every verse and every chorus having the same harmonic structure.
 This can of course be represented by a new "chordbar" environment for every part, in which you just copy/paste the chords from previous section.
 But this will quicky generate a sheet having more than one page, which can make it difficult to use live.
-Personally, it if can fit on a single page, it's the best.
+Personally, if it can fit on a single page, it's the best.
 
 Thus, this package provides a "starred" environment version.
 It is there just as a reminder that at this step, you just play "part xx", and the reader must check out above on the sheet the "part xx".
@@ -273,7 +273,7 @@ Parts 2 and 3 have an extra 2-beats bar added at the end, and the bar count is a
 
 \subsection{Song title}
 
-The package provides a {\btt \tbs songtitle} command that will format nicely the data given in the preamble with the classical 
+The package provides a {\btt \tbs songtitle} command that will format nicely the data given in the preamble with the classical \LaTeX
 {\btt \tbs title} and {\btt \tbs author} commands.
 
 
@@ -307,11 +307,11 @@ To see an example of relative sizes, check the provided file \href{https://githu
 \subsection{Bar count}
 
 The command {\btt \tbs countbarsYes} enables counting the bars of the song:
-each grid will have printed on the left side the number of the first bar of the grid.
+each grid will have printed on the left side the index of the first bar of the grid.
 It also enables printing the number of repetitions of this part on the right side of the grid.
 
 This command is useful in the sense that this package can be used in two ways:
-it can provide the whole structure of a song.
+Firstly, it can provide the whole structure of a song.
 In that case, it is useful to have for each part the number of repetitions and the bar count, so that when the band leader says "lets start again at bar 75", everybody can find it easily.
 
 On the other side, this package can be used also to provide a quick way to show the harmony of the different parts, without any structure or bar count.
@@ -353,6 +353,7 @@ For example, see the source below showing a classical II-V-I pattern played 4 ti
 \input{manual_lst/listing_RBP.lst}
 %\end{minipage}
 
+\paragraph Warning: at present there is an issue with this command
 
 \section{Reference}
 
@@ -392,6 +393,9 @@ In that case, you just need to enlarge the grid size and/or adjust the font size
 
 \item 2024-03-02: release 1.3.2 (bugfix, added Makefile)
 
+\item 2024-11-21: (master branch)
+
+ - merged PR from @jsangradorp: total time now displayed with minutes/seconds
 \end{itemize}
 
 

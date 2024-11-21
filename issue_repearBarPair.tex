@@ -1,0 +1,41 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[left=2.00cm,vmargin=1cm]{geometry}
+\usepackage[12pt]{moresize}
+\usepackage{palatino}
+\usepackage{hyperref}
+\usepackage{chordbars}
+
+\title{Current issue with command repeatBarPair}
+\author{S. Kramm}
+
+\begin{document}
+
+
+\countbarsNo
+
+\songtitle
+
+Package home page: \url{https://github.com/skramm/chordbars}
+
+
+This file is there both to demonstrate a current issue and to use as a test file when solving it.
+
+
+
+Build on \today.
+
+
+\def\barsize{1.5}%	
+
+\def\chordFontSize{\large\bfseries}
+\begin{chordbar}{6}{test}
+\chordf{C}
+\chordf{Dm7}
+\chordf{Em7}
+\chordf{F\MajS}
+\repeatBarPair
+\end{chordbar}
+
+
+\end{document}
