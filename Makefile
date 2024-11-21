@@ -1,23 +1,25 @@
 
-#INFILES=$(wildcard *.tex)
-INFILES=chordbars_manual.tex sample_song_1.tex size_demo.tex
+INFILES=$(wildcard *.tex)
 OUTFILES= $(patsubst %.tex, %.pdf, $(INFILES))
 
 all: $(OUTFILES)
 	@echo "done $@"
 
-%.pdf: %.tex	Makefile chordbars.sty
+BUILD/%.tex: %.tex
 	@mkdir -p BUILD/
-	pdflatex -interaction=batchmode $< 1>BUILD/$(basename $<).stdout 2>BUILD/$(basename $<).stderr
+	@cp $< $@
+
+BUILD/%.pdf: BUILD/%.tex Makefile chordbars.sty $(INFILES)
+	cd BUILD; pdflatex -interaction=batchmode $(notdir $<) $(notdir $(basename $<)).stdout 2>$(notdir $(basename $<)).stderr
+
+%.pdf: BUILD/%.pdf
+	@cp $< $@
 	
 show:
 	@echo "INFILES=$(INFILES)"
 	@echo "OUTFILES=$(OUTFILES)"
 	
 clean:
-	-rm *.out
-	-rm *.log
-	-rm *.aux
-	-rm *.gz
+	-rm BUILD/*
 
 
