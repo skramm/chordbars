@@ -10,7 +10,7 @@ BUILD/%.tex: %.tex
 	@cp $< $@
 
 BUILD/%.pdf: BUILD/%.tex Makefile chordbars.sty $(INFILES)
-	cd BUILD; pdflatex -interaction=batchmode $(notdir $<) $(notdir $(basename $<)).stdout 2>$(notdir $(basename $<)).stderr
+	@cd BUILD; pdflatex -interaction=batchmode $(notdir $<) $(notdir $(basename $<)).stdout 2>$(notdir $(basename $<)).stderr
 
 %.pdf: BUILD/%.pdf
 	@cp $< $@
