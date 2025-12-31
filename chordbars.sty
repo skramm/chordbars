@@ -17,7 +17,6 @@
 
 % Home page: https://github.com/skramm/chordbars
 
-
 % LOG:
 %- 20210328
 % - addded font spec for bar count (see \barCountFont )
@@ -31,7 +30,7 @@
 % TODO define command to have 1 chord per beat
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{chordbars}[2025-10-04 version 1.3.5]
+\ProvidesPackage{chordbars}[2025-12-30 version 1.3.6]
 
 \RequirePackage{tikz}
 \RequirePackage{pgfmath}
@@ -399,6 +398,14 @@
 
 	\newcommand{\repeatBarPair}%
 	{ %
+		\ifthenelse
+			{\theCurrentBarInLine=\NumberOfBarsPerLine}
+			{
+				\refstepcounter{CurrentLine}
+				\setcounter{CurrentBarInLine}{0}
+			}
+			{}
+
 		\pgfmathsetmacro{\Axa}{\theCurrentBarInLine*\barsize+\delta*\barsize}
 		\pgfmathsetmacro{\Axb}{(\theCurrentBarInLine+2)*\barsize-\delta*\barsize}
 		\pgfmathsetmacro{\Aya}{(1-\delta)*\barsize*\ycoeff+\theCurrentLine*\barsize*\ycoeff}
@@ -413,14 +420,6 @@
 		%
 		\refstepcounter{CurrentBarInLine}
 		\refstepcounter{CurrentBarInLine}
-
-%		\ifnum\value{CurrentBarInLine}=#2
-		\ifnum\value{CurrentBarInLine}=\NumberOfBarsPerLine
-		{
-			\refstepcounter{CurrentLine}
-			\setcounter{CurrentBarInLine}{0}
-		}
-		\fi		
 	}%
 
 	\newcommand{\addHalfBar}[1]%
