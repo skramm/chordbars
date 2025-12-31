@@ -17,8 +17,9 @@
 
 % Home page: https://github.com/skramm/chordbars
 
-
 % LOG:
+%- 20210328
+% - addded font spec for bar count (see \barCountFont )
 % - 20241121: merged PR, printing of duration min/sec.
 % - 20240302: bugfixes with ycoef (version 1.3.2)
 % - 20230331: added "ycoeff" parameter (version 1.3.1)
@@ -29,7 +30,7 @@
 % TODO define command to have 1 chord per beat
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{chordbars}[2025-10-04 version 1.3.5]
+\ProvidesPackage{chordbars}[2025-12-30 version 1.3.6]
 
 \RequirePackage{tikz}
 \RequirePackage{pgfmath}
@@ -56,6 +57,11 @@
 
 % suspended fourth (no third)
 \def\susF{\relscale{0.8}\mdseries sus4}
+\def\addF{\relscale{0.8}\mdseries add4}
+
+% This boolean will be used to check if we print or not the current time at each part
+\newboolean{printTime}
+
 
 \newcommand{\songtitle}
 {
@@ -67,17 +73,30 @@
 %	\tikzstyle{block} = [rectangle, draw, text centered, minimum height=4em]
 %	\tikzstyle{block} = [rectangle, draw, minimum height=4em]
       	\node [block,font=\fontsize{20}{28}\selectfont\bfseries] (init) { \@title\\ \@author };
+%	\ifthenelse
+%			{\boolean{printTime}}
+%			{ \draw (5,-1) node{Tempo: \bf \tempoBPM BPM}; }
+%			{}
+      	
   	\end{tikzpicture}
   \end{center}%
+  
   \par
   \vspace{1em}
 }
 
 \newcounter{NumMesure}
 \newcounter{NumPart}
+\newcounter{NumCountIn}
 \newcounter{CurrentBarInLine}
 \newcounter{CurrentBar}
 \newcounter{CurrentLine}
+\newcounter{NumBeats}
+\newcounter{BeatsPerBar}
+
+\setcounter{BeatsPerBar}{4} % default value, see \bpbfour and \bpbthree
+
+\setcounter{NumCountIn}{1} % default value
 
 \xdef\tempoBPM{100}
 
@@ -89,16 +108,36 @@
 
 % "Beats Per Bar"
 % default value
-\xdef\bpb{4}
+%\xdef\bpb{4}
 
 \newcommand{\bpbfour}
 {
-	\xdef\bpb{4}
+%	\xdef\bpb{4}
+	\setcounter{BeatsPerBar}{4}
 }
 \newcommand{\bpbthree}
 {
-	\xdef\bpb{3}
+%	\xdef\bpb{3}
+	\setcounter{BeatsPerBar}{3}
 }
+
+\newcommand{\CountInOneBar}
+{
+	\setcounter{NumCountIn}{1}
+}
+
+\newcommand{\CountInTwoBars}
+{
+	\setcounter{NumCountIn}{2}
+}
+
+
+\newcommand{\hasCountIn}
+{
+	\setcounter{NumMesure}{\value{NumCountIn}}
+}
+
+
 
 \newcommand{\resetchordbars}
 {
@@ -131,6 +170,8 @@
 
 \newboolean{printBarNumber}
 
+
+
 \newcommand{\countbarsYes}
 {
 	\setboolean{printBarNumber}{true} 
@@ -141,12 +182,30 @@
 	\setboolean{printBarNumber}{false}
 }
 
+
+\newcommand{\printTimeYes}
+{
+	\setboolean{printTime}{true} 
+}
+
+\newcommand{\printTimeNo}
+{
+	\setboolean{printTime}{false}
+}
+
+% % % % % % % % % % % % % % % % % % % % % %
+% DEFAULT SIZE
+% % % % % % % % % % % % % % % % % % % % % %
 \def\barsize{1.6}%	
 \def\ycoeff{0.8}%	
 \def\delta{0.36}
 
-\def\chordFontSize{\normalsize \bfseries}
+% % % % % % % % % % % % % % % % % % % % % %
+% FONT SPECS
+% % % % % % % % % % % % % % % % % % % % % %
+\def\chordFont{\Large \bfseries}
 \def\titleFontSize{\large \bfseries}
+\def\barCountFont{\Large \bfseries}
 
 \xdef\NumberOfBarsPerLine{4}
 
@@ -180,7 +239,7 @@
 
 	\draw (0,0) -- (0,\barsize*\ycoeff);                  % first vertical line
 	\draw (\barsize,0) -- (\barsize,\barsize*\ycoeff);    % second vertical line
-	\draw (\barsize/2,\ycoeff*\barsize/2) node [font=\chordFontSize]{#1};      % chord name
+	\draw (\barsize/2,\ycoeff*\barsize/2) node [font=\chordFont]{#1};      % chord name
 
 	\foreach \k in {2,...,{#2}}
 	{
@@ -249,6 +308,11 @@
 	\setcounter{NumMesure}{\value{TmpA}}
 }
 
+%==========================================================================
+% main environment, has 2 mandatory arguments
+% arg 1 (#2 inside): total number of 4 beat bars (4, 8, ...)
+% arg 2 {#3 inside}: part name (can be empty)
+% optional arg: nb of repetitions (default is 1)
 
 \newenvironment{chordbar}[3][1]
 {
@@ -270,8 +334,10 @@
 			{}
 		\refstepcounter{CurrentBarInLine}%
 		\pgfmathsetmacro{\x}{-\barsize/2+\theCurrentBarInLine*\barsize}
+
 		\pgfmathsetmacro{\y}{\value{CurrentLine})*\barsize*\ycoeff+\barsize*\ycoeff/2}		
-		\draw (\x,\y) node [font=\chordFontSize]{##1};%
+		\draw (\x,\y) node [font=\chordFont]{##1};%
+
 	}%
 
 	\newcommand{\chordh}[2]%
@@ -294,14 +360,16 @@
 			{\theCurrentBarInLine*\barsize}, %
 			{\theCurrentLine*\barsize*\ycoeff} %
 		);		
+
+% TODO: fix position for half chords
 		\draw (                                              % print first chord
 			{-3*\barsize/4+\theCurrentBarInLine*\barsize},
 			{\theCurrentLine*\barsize*\ycoeff+1*\barsize/4*\ycoeff}
-		) node [font=\chordFontSize]{##1};
+		) node [font=\chordFont]{##1};
 		\draw (                                               % print second chord
 			{-\barsize/4+\theCurrentBarInLine*\barsize},
 			{\theCurrentLine*\barsize*\ycoeff+3*\barsize/4*\ycoeff}
-		) node [font=\chordFontSize]{##2};%	
+		) node [font=\chordFont]{##2};%	
 	}
 	
 	\newcommand{\repeatBar}%
@@ -330,6 +398,14 @@
 
 	\newcommand{\repeatBarPair}%
 	{ %
+		\ifthenelse
+			{\theCurrentBarInLine=\NumberOfBarsPerLine}
+			{
+				\refstepcounter{CurrentLine}
+				\setcounter{CurrentBarInLine}{0}
+			}
+			{}
+
 		\pgfmathsetmacro{\Axa}{\theCurrentBarInLine*\barsize+\delta*\barsize}
 		\pgfmathsetmacro{\Axb}{(\theCurrentBarInLine+2)*\barsize-\delta*\barsize}
 		\pgfmathsetmacro{\Aya}{(1-\delta)*\barsize*\ycoeff+\theCurrentLine*\barsize*\ycoeff}
@@ -344,12 +420,6 @@
 		%
 		\refstepcounter{CurrentBarInLine}
 		\refstepcounter{CurrentBarInLine}
-		\ifnum\value{CurrentBarInLine}=#2
-		{
-			\refstepcounter{CurrentLine}
-			\setcounter{CurrentBarInLine}{0}
-		}
-		\fi		
 	}%
 
 	\newcommand{\addHalfBar}[1]%
@@ -376,8 +446,11 @@
 		({(\theCurrentBarInLine-1)*\barsize},{(\theCurrentLine)*\barsize*\ycoeff});
 
 		\pgfmathsetmacro{\x}{-3*\barsize/4+\theCurrentBarInLine*\barsize}
+
+%		\addtocounter{NumBeats}{2}
+
 		\pgfmathsetmacro{\y}{\value{CurrentLine})*\barsize*\ycoeff+\barsize/4}		
-		\draw (\x,\y) node [font=\chordFontSize]{##1};%
+		\draw (\x,\y) node [font=\chordFont]{##1};%
 	
 	}
 
@@ -399,10 +472,25 @@
 %	\scalebox{2}{
 	\begin{tikzpicture}[line width=1pt,x=1cm,y=-1cm] %,scale=2]
 
+\pgfmathsetmacro{\nbSeconds}{\theNumBeats/\tempoBPM*60.0}
+%\pgfmathsetmacro{\nbMinutes}{\pgfmathdiv{\nbSeconds}{60}}
+
 	\ifthenelse
-		{\boolean{printBarNumber}}	
-		{\draw (-.3,.5*\barsize) node{\bf \theNumMesure};}
-		{}
+	{\boolean{printBarNumber}}	
+	{
+		\draw (-.3,.5*\barsize) node{\barCountFont \theNumMesure};
+		\ifthenelse
+			{\boolean{printTime}}
+			{
+				\draw [font=\itshape] (-.4,.9*\barsize) node{\bf \itshape
+%			 \pgfmathprintnumber{\nbMinutes}
+			::
+			 \pgfmathprintnumber{\nbSeconds}};
+
+			}
+			{}
+	}
+	{}
 
 % compute the number of bars of the first line
 	\xdef\NbBarsInitialLine{\NumberOfBarsPerLine}
@@ -447,7 +535,8 @@
 	\setcounter{NumMesure}{#1*#2+\value{NumMesure}-1}
 
 % print the number of repetitions
-	\ifnum#1=1 {} % do nothing
+	\ifnum#1=1
+		{} % do nothing
 	\else
 %--------------------
 % THIS HERE IS WIP !	
@@ -461,9 +550,15 @@
 			{\draw (\NbBarsInitialLine*\barsize+\xoffset,0.5*\barsize) node {\Large \bf $\times$~#1};}
 			{} 
 	\fi
+
+%\pgfmathparse{#1*#2*\bpb}
+%	\addtocounter{NumBeats}{\pgfmathresult}
+	\addtocounter{NumBeats}{#1*#2*\value{BeatsPerBar}}
+
 }%
 {
 %\typeout{chordbar: END}
+	
 	\end{tikzpicture}
 %	} %
 %	\par\noindent%

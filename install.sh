@@ -1,7 +1,6 @@
 #!/bin/bash
 # install script. Please adapt to your local config, this here should be ok for texlive (2020 at least)
 
-
 p=$(kpsewhich -var-value TEXMFLOCAL)
 
 if [ "$p" == "" ]
