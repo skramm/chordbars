@@ -1,5 +1,5 @@
 %% file: chordbars.sty
-%% Copyright 2018-2020 M. Sebastien Kramm
+%% Copyright 2018-2025 M. Sebastien Kramm
 %
 % This work may be distributed and/or modified under the
 % conditions of the LaTeX Project Public License, either version 1.3c
@@ -21,17 +21,17 @@
 % LOG:
 %- 20210328
 % - addded font spec for bar count (see \barCountFont )
-%- 20200610
-% - fixed bug with \repeatBarPair
-%- 20200525
+% - 20241121: merged PR, printing of duration min/sec.
+% - 20240302: bugfixes with ycoef (version 1.3.2)
+% - 20230331: added "ycoeff" parameter (version 1.3.1)
+% - 2020525
 % - added \addMeasures command
 % - added starred version of chordbar environment
 
 % TODO define command to have 1 chord per beat
 
-
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{chordbars}[2021-03-28 version 1.2.2]
+\ProvidesPackage{chordbars}[2025-10-04 version 1.3.5]
 
 \RequirePackage{tikz}
 \RequirePackage{pgfmath}
@@ -51,8 +51,12 @@
 % This \dim command is used for diminished chords (until we find a nicer alternative)
 \def\dim{\fullmoon}
 
+% Major seventh
 \def\MajS{$\Delta$}
+% added ninth
 \def\addN{\relscale{0.8}\mdseries add9}
+
+% suspended fourth (no third)
 \def\susF{\relscale{0.8}\mdseries sus4}
 \def\addF{\relscale{0.8}\mdseries add4}
 
@@ -62,10 +66,11 @@
 
 \newcommand{\songtitle}
 {
-%\tikzstyle{block} = [draw, rectangle, fill=blue!50,, text centered, minimum height=8mm,node distance=10em]
+\vspace{-15mm}
   \begin{center}%
-  	\begin{tikzpicture}[line width=1.5pt]
-	\tikzstyle{block} = [rectangle, draw, text width=30em, text centered, minimum height=4em]
+	\begin{tikzpicture}[line width=1.5pt]
+%	\tikzstyle{block} = [rectangle, draw, text width=30em, text centered, minimum height=4em]
+	\tikzstyle{block} = [rectangle, draw, text width=0.8\textwidth, text centered, minimum height=4em]
 %	\tikzstyle{block} = [rectangle, draw, text centered, minimum height=4em]
 %	\tikzstyle{block} = [rectangle, draw, minimum height=4em]
       	\node [block,font=\fontsize{20}{28}\selectfont\bfseries] (init) { \@title\\ \@author };
@@ -78,7 +83,7 @@
   \end{center}%
   
   \par
-  \vskip 1.5em
+  \vspace{1em}
 }
 
 \newcounter{NumMesure}
@@ -153,7 +158,9 @@
 {
 	\ifthenelse{\boolean{printBarNumber}}
 	{
-		Total number of bars: \arabic{NumMesure}, duration=\pgfmathparse{\theNumMesure/\tempoBPM*60*\bpb}\pgfmathresult {} s.
+		\hrule
+		\vspace{1em}
+		Total number of bars: \arabic{NumMesure}; duration: \pgfmathparse{int(round(\theNumMesure/\tempoBPM*\bpb))}\pgfmathresult{}'\pgfmathparse{int(mod(round(\theNumMesure/\tempoBPM*60*\bpb), 60))}\pgfmathresult{}''.
 	}{}
 }
 
@@ -191,6 +198,7 @@
 % DEFAULT SIZE
 % % % % % % % % % % % % % % % % % % % % % %
 \def\barsize{1.6}%	
+\def\ycoeff{0.8}%	
 \def\delta{0.36}
 
 % % % % % % % % % % % % % % % % % % % % % %
@@ -228,20 +236,20 @@
 		} 
 
 	\draw (0,0) -- (#2*\barsize,0);               % horizontal lines
-	\draw (0,\barsize) -- (#2*\barsize,\barsize);
+	\draw (0,\barsize*\ycoeff) -- (#2*\barsize,\barsize*\ycoeff);
 
-	\draw (0,0) -- (0,\barsize);                  % first vertical line
-	\draw (\barsize,0) -- (\barsize,\barsize);    % second vertical line
-	\draw (\barsize/2,\barsize/2) node [font=\chordFont]{#1};      % chord name
+	\draw (0,0) -- (0,\barsize*\ycoeff);                  % first vertical line
+	\draw (\barsize,0) -- (\barsize,\barsize*\ycoeff);    % second vertical line
+	\draw (\barsize/2,\ycoeff*\barsize/2) node [font=\chordFont]{#1};      % chord name
 
 	\foreach \k in {2,...,{#2}}
 	{
-		\draw (\k*\barsize,0) -- (\k*\barsize,\barsize);
+		\draw (\k*\barsize,0) -- (\k*\barsize,\barsize*\ycoeff);
 
 		\pgfmathsetmacro{\Axa}{(\k-1)*\barsize+\delta*\barsize}
 		\pgfmathsetmacro{\Axb}{\k*\barsize-\delta*\barsize}
-		\pgfmathsetmacro{\Aya}{(1-\delta)*\barsize}
-		\pgfmathsetmacro{\Ayb}{\delta*\barsize}
+		\pgfmathsetmacro{\Aya}{(1-\delta)*\barsize*\ycoeff}
+		\pgfmathsetmacro{\Ayb}{\delta*\barsize*\ycoeff}
 
 		\coordinate (A) at (\Axa,\Ayb);
 		\coordinate (B) at (\Axb,\Aya);
@@ -327,8 +335,10 @@
 			{}
 		\refstepcounter{CurrentBarInLine}%
 		\pgfmathsetmacro{\x}{-\barsize/2+\theCurrentBarInLine*\barsize}
-		\pgfmathsetmacro{\y}{\value{CurrentLine})*\barsize+\barsize/2}		
+
+		\pgfmathsetmacro{\y}{\value{CurrentLine})*\barsize*\ycoeff+\barsize*\ycoeff/2}		
 		\draw (\x,\y) node [font=\chordFont]{##1};%
+
 	}%
 
 	\newcommand{\chordh}[2]%
@@ -344,22 +354,23 @@
 %		\typeout{CurrentBarInLine=\theCurrentBarInLine}
 		\draw ( %
 			{\barsize*(\theCurrentBarInLine-1)}, %
-			{(\theCurrentLine+1)*\barsize} %
+			{(\theCurrentLine+1)*\barsize*\ycoeff} %
 		) %
 		-- %
 		( %
 			{\theCurrentBarInLine*\barsize}, %
-			{\theCurrentLine*\barsize} %
+			{\theCurrentLine*\barsize*\ycoeff} %
 		);		
+
 % TODO: fix position for half chords
-		\draw (
-			{-3*\barsize/4+\theCurrentBarInLine*\barsize}, % x
-			{\theCurrentLine*\barsize+1*\barsize/4}        % y
-		) node [font=\chordFont]{##1};                 % first chord
-		\draw (
-			{-\barsize/4+\theCurrentBarInLine*\barsize},   % x
-			{\theCurrentLine*\barsize+3*\barsize/4}        % y
-		) node [font=\chordFont]{##2};%	               % second chord
+		\draw (                                              % print first chord
+			{-3*\barsize/4+\theCurrentBarInLine*\barsize},
+			{\theCurrentLine*\barsize*\ycoeff+1*\barsize/4*\ycoeff}
+		) node [font=\chordFont]{##1};
+		\draw (                                               % print second chord
+			{-\barsize/4+\theCurrentBarInLine*\barsize},
+			{\theCurrentLine*\barsize*\ycoeff+3*\barsize/4*\ycoeff}
+		) node [font=\chordFont]{##2};%	
 	}
 	
 	\newcommand{\repeatBar}%
@@ -375,8 +386,8 @@
 	
 		\pgfmathsetmacro{\Axa}{(\theCurrentBarInLine-1)*\barsize+\delta*\barsize}
 		\pgfmathsetmacro{\Axb}{\theCurrentBarInLine*\barsize-\delta*\barsize}
-		\pgfmathsetmacro{\Aya}{(1-\delta)*\barsize+\theCurrentLine*\barsize}
-		\pgfmathsetmacro{\Ayb}{\delta*\barsize+\theCurrentLine*\barsize}
+		\pgfmathsetmacro{\Aya}{(1-\delta)*\barsize*\ycoeff+\theCurrentLine*\barsize*\ycoeff}
+		\pgfmathsetmacro{\Ayb}{\delta*\barsize*\ycoeff+\theCurrentLine*\barsize*\ycoeff}
 
 		\coordinate (A) at (\Axa,\Ayb);
 		\coordinate (B) at (\Axb,\Aya);
@@ -390,8 +401,8 @@
 	{ %
 		\pgfmathsetmacro{\Axa}{\theCurrentBarInLine*\barsize+\delta*\barsize}
 		\pgfmathsetmacro{\Axb}{(\theCurrentBarInLine+2)*\barsize-\delta*\barsize}
-		\pgfmathsetmacro{\Aya}{(1-\delta)*\barsize+\theCurrentLine*\barsize}
-		\pgfmathsetmacro{\Ayb}{\delta*\barsize+\theCurrentLine*\barsize}
+		\pgfmathsetmacro{\Aya}{(1-\delta)*\barsize*\ycoeff+\theCurrentLine*\barsize*\ycoeff}
+		\pgfmathsetmacro{\Ayb}{\delta*\barsize*\ycoeff+\theCurrentLine*\barsize*\ycoeff}
 
 		\coordinate (A) at (\Axa,\Ayb);
 		\coordinate (B) at (\Axb,\Aya);
@@ -425,22 +436,23 @@
 % diagonal line
 %	\draw (\xa,\ya) -- (\xb,\yb);  A BUG HERE: investigate
 		\draw
-		(\theCurrentBarInLine*\barsize,{\theCurrentLine*\barsize})
+		(\theCurrentBarInLine*\barsize,{\theCurrentLine*\barsize*\ycoeff})
 			--
-		({(\theCurrentBarInLine-1)*\barsize},{(\theCurrentLine+1)*\barsize});
+		({(\theCurrentBarInLine-1)*\barsize},{(\theCurrentLine+1)*\barsize*\ycoeff});
 
 % horizontal line
 		\draw
-		(\theCurrentBarInLine*\barsize,{\theCurrentLine*\barsize})
+		(\theCurrentBarInLine*\barsize,{\theCurrentLine*\barsize*\ycoeff})
 			--
-		({(\theCurrentBarInLine-1)*\barsize},{(\theCurrentLine)*\barsize});
-
+		({(\theCurrentBarInLine-1)*\barsize},{(\theCurrentLine)*\barsize*\ycoeff});
 
 		\pgfmathsetmacro{\x}{-3*\barsize/4+\theCurrentBarInLine*\barsize}
-		\pgfmathsetmacro{\y}{\value{CurrentLine})*\barsize+\barsize/4}		
-		\draw (\x,\y) node [font=\chordFont]{##1};%
 
-		\addtocounter{NumBeats}{2}
+%		\addtocounter{NumBeats}{2}
+
+		\pgfmathsetmacro{\y}{\value{CurrentLine})*\barsize*\ycoeff+\barsize/4}		
+		\draw (\x,\y) node [font=\chordFont]{##1};%
+	
 	}
 
 % HERE beginning of environment code		
@@ -504,7 +516,7 @@
 	\foreach \line in {1,...,\nblines}
 	{
 
-		\draw (0,{\barsize*(\line-1)}) -- (0,\line*\barsize); % first vertical line
+		\draw (0,{\barsize*\ycoeff*(\line-1)}) -- (0,\line*\barsize*\ycoeff); % first vertical line
 		\xdef\nbbars{\NumberOfBarsPerLine}
 		\ifnum\line=\nblines
 		{
@@ -515,8 +527,8 @@
 %		\typeout{chordbarl: nbbars=\nbbars}
 		\foreach \k in {1,...,{\nbbars}}
 		{
-			\draw (\k*\barsize,{(\line-1)*\barsize}) -- (\k*\barsize,{\line*\barsize});
-			\draw (0,{\line*\barsize}) -- (\k*\barsize,{\line*\barsize});
+			\draw (\k*\barsize,{(\line-1)*\barsize*\ycoeff}) -- (\k*\barsize,{\line*\barsize*\ycoeff});
+			\draw (0,{\line*\barsize*\ycoeff}) -- (\k*\barsize,{\line*\barsize*\ycoeff});
 			
 			\refstepcounter{CurrentBar}%
 		}
